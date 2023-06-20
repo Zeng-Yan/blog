@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="chinese (simplified)">
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content="Pelican" />
+        <title>一行代码部署Wiki系统: 用Docker部署Wiki.js</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+        <meta name="description" content="Wiki.js 是一个轻量且牛逼的, 该有的功能都有的开源知识库系统. 1 安装Docker 在 Linux 下安装 Docker , Ubuntu 使用命令 apt install docker , CentOS 使用命令 dnf …" />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">Zeng Yan's Blog</a></h1>
+                <nav><ul>
+                    <li class="active"><a href="/category/gong-ju.html">工具</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="/deploy-wikijs-simply.html" rel="bookmark"
+           title="Permalink to 一行代码部署Wiki系统: 用Docker部署Wiki.js">一行代码部署Wiki系统: 用Docker部署Wiki.js</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2023-06-20T00:00:00+08:00">
+                Published: 周二 20 六月 2023
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/zengyan.html">Zengyan</a>
+        </address>
+<p>In <a href="/category/gong-ju.html">工具</a>.</p>
+<p>tags: <a href="/tag/gong-ju.html">工具</a> </p>
+</footer><!-- /.post-info -->      <p><a href="https://js.wiki/">Wiki.js</a> 是一个轻量且牛逼的, 该有的功能都有的开源知识库系统.</p>
+<h2 id="1-docker">1 安装Docker</h2>
+<p>在 Linux 下安装 Docker , Ubuntu 使用命令 <code>apt install docker</code> , CentOS 使用命令 <code>dnf install docker</code> .</p>
+<p>在 Windows 下安装 Docker , 下载安装 <a href="https://www.docker.com/products/docker-desktop/">Docker Desktop</a> 并运行.</p>
+<h2 id="2-wikijs">2 安装运行Wiki.js</h2>
+<p>最简单的部署方法就是用 Sqlite 做存储, 直接用 Docker 部署, 在命令行输入:</p>
+<div class="highlight"><pre><span></span><code>docker run -d -p 9990:3000 --name wiki --restart unless-stopped -e &quot;DB_TYPE=sqlite&quot; requarks/wiki
+</code></pre></div>
+
+<p>这里我暴露的端口为<code>9990</code>, 在浏览器访问下列地址即可访问 Wiki.js :</p>
+<div class="highlight"><pre><span></span><code>http://localhost:9990/
+</code></pre></div>
+
+<p>第一次进入网页需要进行管理员配置, 完成后就可以愉快的开始写 Wiki 了.</p>
+<h2 id="3-wikijs">3 Wiki.js设置中文</h2>
+<p>进入管理页面, 在左侧边栏中点击 <code>Locale</code> , 然后在右侧 <code>Download Locale</code> 中选择中文并下载, 随后在中间的 <code>Site Locale</code> 中更改为中文, 最后在右上角点击 <code>APPLY</code> 应用更改.</p>
+<h2 id="refer">REFER</h2>
+<blockquote>
+<p><a href="https://docs.requarks.io/install/docker">Using the Docker image</a></p>
+<p><a href="https://b4d.sablun.org/blog/2021-02-07-instant-wikijs-with-docker/">Instant Wiki.js with Docker</a></p>
+</blockquote>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="">https://github.com/Zeng-Yan</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="">906596588@qq.com</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of <a href="https://www.python.org/">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>
