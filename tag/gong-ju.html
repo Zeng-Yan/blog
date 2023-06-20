@@ -5,30 +5,30 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta name="generator" content="Pelican" />
         <title>Zeng Yan's Blog - 工具</title>
-        <link rel="stylesheet" href="/theme/css/main.css" />
+        <link rel="stylesheet" href="https://zeng-yan.github.io/theme/css/main.css" />
 </head>
 
 <body id="index" class="home">
         <header id="banner" class="body">
-                <h1><a href="/">Zeng Yan's Blog</a></h1>
+                <h1><a href="https://zeng-yan.github.io/">Zeng Yan's Blog</a></h1>
                 <nav><ul>
-                    <li><a href="/category/gong-ju.html">工具</a></li>
+                    <li><a href="https://zeng-yan.github.io/category/gong-ju.html">工具</a></li>
                 </ul></nav>
         </header><!-- /#banner -->
 
             <aside id="featured" class="body">
                 <article>
-                    <h1 class="entry-title"><a href="/build-blog-using-python-pelican.html">使用Python的Pelican来搭建简易个人博客</a></h1>
+                    <h1 class="entry-title"><a href="https://zeng-yan.github.io/build-blog-using-python-pelican.html">使用Python的Pelican来搭建简易个人博客</a></h1>
 <footer class="post-info">
         <abbr class="published" title="2023-06-20T00:00:00+08:00">
                 Published: 周二 20 六月 2023
         </abbr>
 
         <address class="vcard author">
-                By                         <a class="url fn" href="/author/zengyan.html">Zengyan</a>
+                By                         <a class="url fn" href="https://zeng-yan.github.io/author/zengyan.html">Zengyan</a>
         </address>
-<p>In <a href="/category/gong-ju.html">工具</a>.</p>
-<p>tags: <a href="/tag/gong-ju.html">工具</a> </p>
+<p>In <a href="https://zeng-yan.github.io/category/gong-ju.html">工具</a>.</p>
+<p>tags: <a href="https://zeng-yan.github.io/tag/gong-ju.html">工具</a> </p>
 </footer><!-- /.post-info --><h2 id="pelican">Pelican的安装与使用</h2>
 <p>首先安装 Pelican</p>
 <div class="highlight"><pre><span></span><code>pip install pelican invoke markdown
@@ -62,6 +62,13 @@
 
 <h2 id="_1">发布博客</h2>
 <p>在Github或者Gitee上新建一个仓库, 注意仓库命名时需要有 <code>.github.io</code> 或者 <code>.gitee.io</code> 后缀, 最简单直接的方式是 <code>name.github.io</code> , 然后把这个仓库克隆到本地.</p>
+<p>修改一下 <code>pelicanconf.py</code> 添加以下内容, 然后重新渲染.</p>
+<div class="highlight"><pre><span></span><code>SITEURL = &#39;https://zeng-yan.github.io&#39;
+DOMAIN = SITEURL
+FEED_DOMAIN = SITEURL
+HTTPS = True
+</code></pre></div>
+
 <p>把 <code>outpt</code> 文件夹的内容放入仓库中, 将变更上传到远程仓库即可.</p>
 <h2 id="pelicanlatex">Pelican集成Latex公式渲染</h2>
 <p>安装插件即可</p>
@@ -159,8 +166,8 @@
 <blockquote>
 <p>https://docs.getpelican.com/en/4.8.0/settings.html</p>
 <p>https://github.com/pelican-plugins/render-math</p>
-<p>https://github.com/oruelle/md_mermaid<br>
-</p>
+<p>https://github.com/oruelle/md_mermaid</p>
+<p>https://sammirabyan.github.io/build-with-pelican.html</p>
 </blockquote>                </article>
             </aside><!-- /#featured -->
                 <section id="content" class="body">
@@ -170,7 +177,7 @@
 
             <li><article class="hentry">
                 <header>
-                    <h1><a href="/deploy-wikijs-simply.html" rel="bookmark"
+                    <h1><a href="https://zeng-yan.github.io/deploy-wikijs-simply.html" rel="bookmark"
                            title="Permalink to 一行代码部署Wiki系统: 用Docker部署Wiki.js">一行代码部署Wiki系统: 用Docker部署Wiki.js</a></h1>
                 </header>
 
@@ -181,14 +188,14 @@
         </abbr>
 
         <address class="vcard author">
-                By                         <a class="url fn" href="/author/zengyan.html">Zengyan</a>
+                By                         <a class="url fn" href="https://zeng-yan.github.io/author/zengyan.html">Zengyan</a>
         </address>
-<p>In <a href="/category/gong-ju.html">工具</a>.</p>
-<p>tags: <a href="/tag/gong-ju.html">工具</a> </p>
+<p>In <a href="https://zeng-yan.github.io/category/gong-ju.html">工具</a>.</p>
+<p>tags: <a href="https://zeng-yan.github.io/tag/gong-ju.html">工具</a> </p>
 </footer><!-- /.post-info -->                <p><a href="https://js.wiki/">Wiki.js</a> 是一个轻量且牛逼的, 该有的功能都有的开源知识库系统.</p>
 <h2 id="1-docker">1 安装Docker</h2>
 <p>在 Linux 下安装 Docker , Ubuntu 使用命令 <code>apt install docker</code> , CentOS 使用命令 <code>dnf …</code></p>
-                <a class="readmore" href="/deploy-wikijs-simply.html">read more</a>
+                <a class="readmore" href="https://zeng-yan.github.io/deploy-wikijs-simply.html">read more</a>
                 </div><!-- /.entry-content -->
             </article></li>
                 </ol><!-- /#posts-list -->

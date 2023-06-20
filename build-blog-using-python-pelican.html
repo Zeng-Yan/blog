@@ -5,22 +5,22 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta name="generator" content="Pelican" />
         <title>使用Python的Pelican来搭建简易个人博客</title>
-        <link rel="stylesheet" href="/theme/css/main.css" />
+        <link rel="stylesheet" href="https://zeng-yan.github.io/theme/css/main.css" />
         <meta name="description" content="Pelican的安装与使用 首先安装 Pelican pip install pelican invoke markdown 在本地仓库文件夹打开终端, 输入下列命令初始化项目: pelican-quickstart 额外的, 可以在 pelicanconf.py 文件中修改网页 …" />
 </head>
 
 <body id="index" class="home">
         <header id="banner" class="body">
-                <h1><a href="/">Zeng Yan's Blog</a></h1>
+                <h1><a href="https://zeng-yan.github.io/">Zeng Yan's Blog</a></h1>
                 <nav><ul>
-                    <li class="active"><a href="/category/gong-ju.html">工具</a></li>
+                    <li class="active"><a href="https://zeng-yan.github.io/category/gong-ju.html">工具</a></li>
                 </ul></nav>
         </header><!-- /#banner -->
 <section id="content" class="body">
   <article>
     <header>
       <h1 class="entry-title">
-        <a href="/build-blog-using-python-pelican.html" rel="bookmark"
+        <a href="https://zeng-yan.github.io/build-blog-using-python-pelican.html" rel="bookmark"
            title="Permalink to 使用Python的Pelican来搭建简易个人博客">使用Python的Pelican来搭建简易个人博客</a></h1>
     </header>
 
@@ -31,10 +31,10 @@
         </abbr>
 
         <address class="vcard author">
-                By                         <a class="url fn" href="/author/zengyan.html">Zengyan</a>
+                By                         <a class="url fn" href="https://zeng-yan.github.io/author/zengyan.html">Zengyan</a>
         </address>
-<p>In <a href="/category/gong-ju.html">工具</a>.</p>
-<p>tags: <a href="/tag/gong-ju.html">工具</a> </p>
+<p>In <a href="https://zeng-yan.github.io/category/gong-ju.html">工具</a>.</p>
+<p>tags: <a href="https://zeng-yan.github.io/tag/gong-ju.html">工具</a> </p>
 </footer><!-- /.post-info -->      <h2 id="pelican">Pelican的安装与使用</h2>
 <p>首先安装 Pelican</p>
 <div class="highlight"><pre><span></span><code>pip install pelican invoke markdown
@@ -68,6 +68,13 @@
 
 <h2 id="_1">发布博客</h2>
 <p>在Github或者Gitee上新建一个仓库, 注意仓库命名时需要有 <code>.github.io</code> 或者 <code>.gitee.io</code> 后缀, 最简单直接的方式是 <code>name.github.io</code> , 然后把这个仓库克隆到本地.</p>
+<p>修改一下 <code>pelicanconf.py</code> 添加以下内容, 然后重新渲染.</p>
+<div class="highlight"><pre><span></span><code>SITEURL = &#39;https://zeng-yan.github.io&#39;
+DOMAIN = SITEURL
+FEED_DOMAIN = SITEURL
+HTTPS = True
+</code></pre></div>
+
 <p>把 <code>outpt</code> 文件夹的内容放入仓库中, 将变更上传到远程仓库即可.</p>
 <h2 id="pelicanlatex">Pelican集成Latex公式渲染</h2>
 <p>安装插件即可</p>
@@ -165,8 +172,8 @@
 <blockquote>
 <p>https://docs.getpelican.com/en/4.8.0/settings.html</p>
 <p>https://github.com/pelican-plugins/render-math</p>
-<p>https://github.com/oruelle/md_mermaid<br>
-</p>
+<p>https://github.com/oruelle/md_mermaid</p>
+<p>https://sammirabyan.github.io/build-with-pelican.html</p>
 </blockquote>
     </div><!-- /.entry-content -->
 
