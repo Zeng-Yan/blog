@@ -49,7 +49,8 @@
 	<meta property="article:published_time" content="2023-06-20 00:00:00+08:00">
             <meta property="og:description" content="Pelican的安装与使用 首先安装 Pelican pip install pelican invoke markdown 在本地文件夹打开终端, 输入下列命令初始化项目: pelican-quickstart 额外的, 可以在 pelicanconf.py 文件中修改网页的各 …">
 
-            <meta property="og:image" content="https://zeng-yan.github.iotyler-edlin-tyler-edlin-skypiratebar.jpg">
+            <meta property="og:image" content="https://zeng-yan.github.io/images/tyler-edlin-tyler-edlin-skypiratebar.jpg">
+    <link rel="icon" href="/images/favicon.ico">
 </head>
 
 <body class="article-build-blog-using-python-pelican">
@@ -80,7 +81,7 @@
     </nav>
 
     <!-- Page Header -->
-        <header class="intro-header" style="background-image: url('https://zeng-yan.github.io/tyler-edlin-tyler-edlin-skypiratebar.jpg')">
+        <header class="intro-header" style="background-image: url('https://zeng-yan.github.io//images/tyler-edlin-tyler-edlin-skypiratebar.jpg')">
         <div class="container">
             <div class="row">
                 <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
@@ -156,6 +157,15 @@ HTTPS = True
 
 <p>在 <code>pelicanconf.py</code> 添加如下内容, 然后重新渲染.</p>
 <div class="highlight"><pre><span></span><code><span class="n">THEME</span> <span class="o">=</span> <span class="s1">&#39;pelican-clean-blog&#39;</span>
+</code></pre></div>
+
+<p>在 <code>content</code> 文件夹内新建 <code>images</code> 文件夹, 将背景图放置其中</p>
+<p>使用相对URL设置背景图, 在 <code>pelicanconf.py</code> 添加如下内容</p>
+<div class="highlight"><pre><span></span><code>HEADER_COVER = &#39;images/tyler-edlin-tyler-edlin-skypiratebar.png&#39;
+</code></pre></div>
+
+<p>对于文章背景图, 在 Markdown 文件开头添加元数据:</p>
+<div class="highlight"><pre><span></span><code>Header_Cover: /images/bkgimg.jpg
 </code></pre></div>
 
 <h2 id="pelicanlatex">Pelican集成Latex公式渲染</h2>
