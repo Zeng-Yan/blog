@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0"><channel><title>Zeng Yan's Blog - Zengyan</title><link>https://zeng-yan.github.io/</link><description>If dreams can't come true, then why not pretend?</description><lastBuildDate>Tue, 20 Jun 2023 00:00:00 +0800</lastBuildDate><item><title>使用Python的Pelican来搭建简易个人博客</title><link>https://zeng-yan.github.io/build-blog-using-python-pelican.html</link><description>&lt;h2 id="pelican"&gt;Pelican的安装与使用&lt;/h2&gt;
+&lt;p&gt;首先安装 Pelican&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;pip install pelican invoke markdown
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;在本地文件夹打开终端, 输入下列命令初始化项目:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;pelican-quickstart
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;额外的, 可以在 &lt;code&gt;pelicanconf.py&lt;/code&gt; 文件中修改网页的各 …&lt;/p&gt;&lt;/blockquote&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Zengyan</dc:creator><pubDate>Tue, 20 Jun 2023 00:00:00 +0800</pubDate><guid isPermaLink="false">tag:zeng-yan.github.io,2023-06-20:/build-blog-using-python-pelican.html</guid><category>工具</category><category>工具</category></item><item><title>一行代码部署Wiki系统: 用Docker部署Wiki.js</title><link>https://zeng-yan.github.io/deploy-wikijs-simply.html</link><description>&lt;p&gt;&lt;a href="https://js.wiki/"&gt;Wiki.js&lt;/a&gt; 是一个轻量且牛逼的, 该有的功能都有的开源知识库系统.&lt;/p&gt;
+&lt;h2 id="1-docker"&gt;1 安装Docker&lt;/h2&gt;
+&lt;p&gt;在 Linux 下安装 Docker , Ubuntu 使用命令 &lt;code&gt;apt install docker&lt;/code&gt; , CentOS 使用命令 &lt;code&gt;dnf …&lt;/code&gt;&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Zengyan</dc:creator><pubDate>Tue, 20 Jun 2023 00:00:00 +0800</pubDate><guid isPermaLink="false">tag:zeng-yan.github.io,2023-06-20:/deploy-wikijs-simply.html</guid><category>工具</category><category>工具</category></item></channel></rss>
