@@ -1,0 +1,13 @@
+[input]
+html_selector = "main"
+base_directory = "D:\\Others\\projects\\blog\\zeng-yan.github.io"
+
+[[input.files]]
+path = "build-blog-using-python-pelican.html"
+url = "/build-blog-using-python-pelican.html"
+title = "使用Python的Pelican来搭建简易个人博客"
+
+[[input.files]]
+path = "deploy-wikijs-simply.html"
+url = "/deploy-wikijs-simply.html"
+title = "一行代码部署Wiki系统: 用Docker部署Wiki.js"
