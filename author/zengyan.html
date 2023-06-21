@@ -1,228 +1,156 @@
 <!DOCTYPE html>
 <html lang="chinese (simplified)">
+
 <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta name="generator" content="Pelican" />
-        <title>Zeng Yan's Blog - Zengyan</title>
-        <link rel="stylesheet" href="https://zeng-yan.github.io/theme/css/main.css" />
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+        <title>Zeng Yan's Blog - Articles by Zengyan</title>
+
+        <!-- Bootstrap Core CSS -->
+        <link href="/theme/css/bootstrap.min.css" rel="stylesheet">
+
+        <!-- Custom CSS -->
+        <link href="/theme/css/clean-blog.min.css" rel="stylesheet">
+
+        <!-- Code highlight color scheme -->
+            <link href="/theme/css/code_blocks/monokai.css" rel="stylesheet">
+
+
+        <!-- Custom Fonts -->
+        <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+        <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+        <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+                    <meta property="og:locale" content="">
+		<meta property="og:site_name" content="Zeng Yan's Blog">
+
+    <meta property="og:title" content="Zeng Yan's Blog - Articles by Zengyan">
+    <meta property="og:type" content="profile">
+    <meta property="profile:first_name" content="Zengyan">
+    <meta property="profile:last_name" content="">
+    <meta property="profile:username" content="zengyan">
 </head>
 
-<body id="index" class="home">
-        <header id="banner" class="body">
-                <h1><a href="https://zeng-yan.github.io/">Zeng Yan's Blog</a></h1>
-                <nav><ul>
-                    <li><a href="https://zeng-yan.github.io/category/gong-ju.html">工具</a></li>
-                </ul></nav>
-        </header><!-- /#banner -->
 
-            <aside id="featured" class="body">
-                <article>
-                    <h1 class="entry-title"><a href="https://zeng-yan.github.io/build-blog-using-python-pelican.html">使用Python的Pelican来搭建简易个人博客</a></h1>
-<footer class="post-info">
-        <abbr class="published" title="2023-06-20T00:00:00+08:00">
-                Published: 周二 20 六月 2023
-        </abbr>
+    <!-- Navigation -->
+    <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header page-scroll">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">Zeng Yan's Blog</a>
+            </div>
 
-        <address class="vcard author">
-                By                         <a class="url fn" href="https://zeng-yan.github.io/author/zengyan.html">Zengyan</a>
-        </address>
-<p>In <a href="https://zeng-yan.github.io/category/gong-ju.html">工具</a>.</p>
-<p>tags: <a href="https://zeng-yan.github.io/tag/gong-ju.html">工具</a> </p>
-</footer><!-- /.post-info --><h2 id="pelican">Pelican的安装与使用</h2>
-<p>首先安装 Pelican</p>
-<div class="highlight"><pre><span></span><code>pip install pelican invoke markdown
-</code></pre></div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
 
-<p>在本地仓库文件夹打开终端, 输入下列命令初始化项目:</p>
-<div class="highlight"><pre><span></span><code>pelican-quickstart
-</code></pre></div>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
 
-<blockquote>
-<p>额外的, 可以在 <code>pelicanconf.py</code> 文件中修改网页的各项配置, 比如指定输出文件夹 <code>OUTPUT_PATH = 'zengyan.github.io/'</code></p>
-</blockquote>
-<p>将写好的 <code>markdown</code> 笔记放在 <code>content</code> 文件夹即可, 注意文件开头需要包含一些元数据, 如下所示:</p>
-<div class="highlight"><pre><span></span><code><span class="n">Title</span><span class="o">:</span><span class="w"> </span><span class="err">文章标题</span>
-<span class="n">Date</span><span class="o">:</span><span class="w"> </span><span class="mi">2010</span><span class="o">-</span><span class="mi">12</span><span class="o">-</span><span class="mi">03</span><span class="w"> </span><span class="mi">10</span><span class="o">:</span><span class="mi">20</span>
-<span class="n">Modified</span><span class="o">:</span><span class="w"> </span><span class="mi">2010</span><span class="o">-</span><span class="mi">12</span><span class="o">-</span><span class="mi">05</span><span class="w"> </span><span class="mi">19</span><span class="o">:</span><span class="mi">30</span>
-<span class="n">Category</span><span class="o">:</span><span class="w"> </span><span class="err">教程</span>
-<span class="n">Tags</span><span class="o">:</span><span class="w"> </span><span class="err">教程</span>
-<span class="n">Slug</span><span class="o">:</span><span class="w"> </span><span class="n">my</span><span class="o">-</span><span class="n">tutorial</span>
-<span class="n">Authors</span><span class="o">:</span><span class="w"> </span>
-<span class="n">Summary</span><span class="o">:</span><span class="w"> </span>
-</code></pre></div>
+    <!-- Page Header -->
+        <header class="intro-header" style="background-image: url('/static/LegoWarship.png')">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <div class="post-heading">
+                        <h1>Articles by Zengyan</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
 
-<p>随后使用下列命令将 <code>markdown</code> 渲染为 <code>HTML</code> , 结果会输出在 <code>output</code> 文件夹内.</p>
-<div class="highlight"><pre><span></span><code>pelican content
-</code></pre></div>
+    <!-- Main Content -->
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="post-preview">
+            <a href="/build-blog-using-python-pelican.html" rel="bookmark" title="Permalink to 使用Python的Pelican来搭建简易个人博客">
+                <h2 class="post-title">
+                    使用Python的Pelican来搭建简易个人博客
+                </h2>
+            </a>
+                <p class="article-summary">
+                    Pelican的安装与使用 首先安装 Pelican pip install pelican invoke markdown 在本地文件夹打开终端, 输入下列命令初始化项目: pelican-quickstart 额外的, 可以在 pelicanconf.py 文件中修改网页的各 …
+                </p>
+            <p class="post-meta">Posted by
+                    <a href="/author/zengyan.html">Zengyan</a>
+                 on 周二 20 六月 2023
+            </p>
+        </div>
+        <div class="post-preview">
+            <a href="/deploy-wikijs-simply.html" rel="bookmark" title="Permalink to 一行代码部署Wiki系统: 用Docker部署Wiki.js">
+                <h2 class="post-title">
+                    一行代码部署Wiki系统: 用Docker部署Wiki.js
+                </h2>
+            </a>
+                <p class="article-summary">
+                    Wiki.js 是一个轻量且牛逼的, 该有的功能都有的开源知识库系统. 1 安装Docker 在 Linux 下安装 Docker , Ubuntu 使用命令 apt install docker , CentOS 使用命令 dnf …
+                </p>
+            <p class="post-meta">Posted by
+                    <a href="/author/zengyan.html">Zengyan</a>
+                 on 周二 20 六月 2023
+            </p>
+        </div>
 
-<p>随后可以用下列命令启动一个本地服务来查看网页:</p>
-<div class="highlight"><pre><span></span><code>pelican --listen
-</code></pre></div>
+            </div>
+        </div>
+    </div>
 
-<h2 id="_1">发布博客</h2>
-<p>在Github或者Gitee上新建一个仓库, 注意仓库命名时需要有 <code>.github.io</code> 或者 <code>.gitee.io</code> 后缀, 最简单直接的方式是 <code>name.github.io</code> , 然后把这个仓库克隆到本地.</p>
-<p>修改一下 <code>pelicanconf.py</code> 添加以下内容, 然后重新渲染.</p>
-<div class="highlight"><pre><span></span><code>SITEURL = &#39;https://zeng-yan.github.io&#39;
-DOMAIN = SITEURL
-FEED_DOMAIN = SITEURL
-HTTPS = True
-</code></pre></div>
+    <hr>
 
-<p>把 <code>outpt</code> 文件夹的内容放入仓库中, 将变更上传到远程仓库即可.</p>
-<h2 id="pelicanlatex">Pelican集成Latex公式渲染</h2>
-<p>安装插件即可</p>
-<div class="highlight"><pre><span></span><code>pip install pelican-render-math
-</code></pre></div>
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <ul class="list-inline text-center">
+                            <li>
+                                <a href="">
+                                    <span class="fa-stack fa-lg">
+                                        <i class="fa fa-circle fa-stack-2x"></i>
+                                        <i class="fa fa-906596588@qq.com fa-stack-1x fa-inverse"></i>
+                                    </span>
+                                </a>
+                            </li>
+                    </ul>
+<p class="copyright text-muted">
+    Blog powered by <a href="http://getpelican.com">Pelican</a>,
+    which takes great advantage of <a href="http://python.org">Python</a>. <br />        &copy;  Zengyan
+</p>                </div>
+            </div>
+        </div>
+    </footer>
 
-<h2 id="pelicanmermaid">Pelican集成Mermaid渲染</h2>
-<p>在 <code>markdown</code> 库的 <code>extensions</code> 文件夹内新建一个 <code>mermaid.py</code> 文件, 使用 Anaconda 环境的位置大概是: <code>.../anaconda/envs/py310/Lib/site-packages/markdown/extensions</code> , <code>mermaid.py</code> 文件的内容如下:</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># -*- coding: utf-8 -*-</span>
-<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Mermaid Extension for Python-Markdown</span>
-<span class="sd">========================================</span>
-<span class="sd">Adds mermaid parser (like github-markdown) to standard Python-Markdown code blocks.</span>
-<span class="sd">Original code Copyright 2018-2020 [Olivier Ruelle].</span>
-<span class="sd">License: GNU GPLv3</span>
-<span class="sd">&quot;&quot;&quot;</span>
+    <!-- jQuery -->
+    <script src="/theme/js/jquery.min.js"></script>
 
-<span class="kn">from</span> <span class="nn">markdown.extensions</span> <span class="kn">import</span> <span class="n">Extension</span>
-<span class="kn">from</span> <span class="nn">markdown.preprocessors</span> <span class="kn">import</span> <span class="n">Preprocessor</span>
-<span class="kn">import</span> <span class="nn">re</span>
-<span class="kn">import</span> <span class="nn">string</span>
+    <!-- Bootstrap Core JavaScript -->
+    <script src="/theme/js/bootstrap.min.js"></script>
 
-
-<span class="n">MermaidRegex</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;^(?P&lt;mermaid_sign&gt;[\~\`])</span><span class="si">{3}</span><span class="s2">[\ \t]*[Mm]ermaid[\ \t]*$&quot;</span><span class="p">)</span>
-
-
-<span class="k">class</span> <span class="nc">MermaidPreprocessor</span><span class="p">(</span><span class="n">Preprocessor</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lines</span><span class="p">):</span>
-        <span class="n">new_lines</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">mermaid_sign</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
-        <span class="n">m_start</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="n">m_end</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="n">in_mermaid_code</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="n">is_mermaid</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">:</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">in_mermaid_code</span><span class="p">:</span>
-                <span class="n">m_start</span> <span class="o">=</span> <span class="n">MermaidRegex</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">m_end</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;^[&quot;</span><span class="o">+</span><span class="n">mermaid_sign</span><span class="o">+</span><span class="s2">&quot;]</span><span class="si">{3}</span><span class="s2">[\ </span><span class="se">\t</span><span class="s2">]*$&quot;</span><span class="p">,</span> <span class="n">line</span><span class="p">)</span>
-                <span class="k">if</span> <span class="n">m_end</span><span class="p">:</span>
-                    <span class="n">in_mermaid_code</span> <span class="o">=</span> <span class="kc">False</span>
-            <span class="k">if</span> <span class="n">m_start</span><span class="p">:</span>
-                <span class="n">in_mermaid_code</span> <span class="o">=</span> <span class="kc">True</span>
-                <span class="n">mermaid_sign</span> <span class="o">=</span> <span class="n">m_start</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;mermaid_sign&quot;</span><span class="p">)</span>
-                <span class="k">if</span> <span class="ow">not</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;^[\ \t]*$&quot;</span><span class="p">,</span> <span class="n">old_line</span><span class="p">):</span>
-                    <span class="n">new_lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
-                <span class="k">if</span> <span class="ow">not</span> <span class="n">is_mermaid</span><span class="p">:</span>
-                    <span class="n">is_mermaid</span> <span class="o">=</span> <span class="kc">True</span>
-                <span class="n">new_lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;&lt;div class=&quot;mermaid&quot;&gt;&#39;</span><span class="p">)</span>
-                <span class="n">m_start</span> <span class="o">=</span> <span class="kc">None</span>
-            <span class="k">elif</span> <span class="n">m_end</span><span class="p">:</span>
-                <span class="n">new_lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;&lt;/div&gt;&#39;</span><span class="p">)</span>
-                <span class="n">new_lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
-                <span class="n">m_end</span> <span class="o">=</span> <span class="kc">None</span>
-            <span class="k">elif</span> <span class="n">in_mermaid_code</span><span class="p">:</span>
-                <span class="n">new_lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">new_lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
-            <span class="n">old_line</span> <span class="o">=</span> <span class="n">line</span>
-        <span class="k">if</span> <span class="n">is_mermaid</span><span class="p">:</span>
-            <span class="n">new_lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
-            <span class="n">new_lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;&lt;script src=&quot;https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js&quot;&gt;&lt;/script&gt;&#39;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">new_lines</span>
-
-
-<span class="k">class</span> <span class="nc">MermaidExtension</span><span class="p">(</span><span class="n">Extension</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">extendMarkdown</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">md</span><span class="p">):</span>
-        <span class="n">md</span><span class="o">.</span><span class="n">preprocessors</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">MermaidPreprocessor</span><span class="p">(</span><span class="n">md</span><span class="p">),</span> <span class="s1">&#39;mermaid&#39;</span><span class="p">,</span> <span class="mi">35</span><span class="p">)</span>
-        <span class="n">md</span><span class="o">.</span><span class="n">registerExtension</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-
-<span class="k">def</span> <span class="nf">makeExtension</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">MermaidExtension</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-</code></pre></div>
-
-<p>在 <code>pelicanconf.py</code> 中添加以下内容:</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># markdown设置</span>
-<span class="n">MARKDOWN</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s1">&#39;extension_configs&#39;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s1">&#39;markdown.extensions.extra&#39;</span><span class="p">:</span> <span class="p">{},</span>
-        <span class="s1">&#39;markdown.extensions.admonition&#39;</span><span class="p">:</span> <span class="p">{},</span>
-        <span class="s1">&#39;markdown.extensions.codehilite&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;css_class&#39;</span><span class="p">:</span> <span class="s1">&#39;highlight&#39;</span><span class="p">},</span>
-        <span class="s1">&#39;markdown.extensions.meta&#39;</span><span class="p">:</span> <span class="p">{},</span>
-        <span class="s1">&#39;markdown.extensions.nl2br&#39;</span><span class="p">:</span> <span class="p">{},</span>
-        <span class="s1">&#39;markdown.extensions.sane_lists&#39;</span><span class="p">:</span> <span class="p">{},</span>
-        <span class="s1">&#39;markdown.extensions.smarty&#39;</span><span class="p">:{},</span>
-        <span class="s1">&#39;markdown.extensions.toc&#39;</span><span class="p">:</span> <span class="p">{},</span>
-        <span class="s1">&#39;markdown.extensions.wikilinks&#39;</span><span class="p">:</span> <span class="p">{},</span>
-        <span class="s1">&#39;markdown.extensions.mermaid&#39;</span><span class="p">:</span> <span class="p">{},</span>
-    <span class="p">},</span>
-    <span class="s1">&#39;output_format&#39;</span><span class="p">:</span> <span class="s1">&#39;html5&#39;</span><span class="p">,</span>
-<span class="p">}</span>
-</code></pre></div>
-
-<h2 id="refer">REFER</h2>
-<blockquote>
-<p>https://docs.getpelican.com/en/4.8.0/settings.html</p>
-<p>https://github.com/pelican-plugins/render-math</p>
-<p>https://github.com/oruelle/md_mermaid</p>
-<p>https://sammirabyan.github.io/build-with-pelican.html</p>
-</blockquote>                </article>
-            </aside><!-- /#featured -->
-                <section id="content" class="body">
-                    <h1>Other articles</h1>
-                    <hr />
-                    <ol id="posts-list" class="hfeed">
-
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="https://zeng-yan.github.io/deploy-wikijs-simply.html" rel="bookmark"
-                           title="Permalink to 一行代码部署Wiki系统: 用Docker部署Wiki.js">一行代码部署Wiki系统: 用Docker部署Wiki.js</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2023-06-20T00:00:00+08:00">
-                Published: 周二 20 六月 2023
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="https://zeng-yan.github.io/author/zengyan.html">Zengyan</a>
-        </address>
-<p>In <a href="https://zeng-yan.github.io/category/gong-ju.html">工具</a>.</p>
-<p>tags: <a href="https://zeng-yan.github.io/tag/gong-ju.html">工具</a> </p>
-</footer><!-- /.post-info -->                <p><a href="https://js.wiki/">Wiki.js</a> 是一个轻量且牛逼的, 该有的功能都有的开源知识库系统.</p>
-<h2 id="1-docker">1 安装Docker</h2>
-<p>在 Linux 下安装 Docker , Ubuntu 使用命令 <code>apt install docker</code> , CentOS 使用命令 <code>dnf …</code></p>
-                <a class="readmore" href="https://zeng-yan.github.io/deploy-wikijs-simply.html">read more</a>
-                </div><!-- /.entry-content -->
-            </article></li>
-                </ol><!-- /#posts-list -->
-                </section><!-- /#content -->
-        <section id="extras" class="body">
-                <div class="blogroll">
-                        <h2>links</h2>
-                        <ul>
-                            <li><a href="">https://github.com/Zeng-Yan</a></li>
-                        </ul>
-                </div><!-- /.blogroll -->
-                <div class="social">
-                        <h2>social</h2>
-                        <ul>
-
-                            <li><a href="">906596588@qq.com</a></li>
-                        </ul>
-                </div><!-- /.social -->
-        </section><!-- /#extras -->
-
-        <footer id="contentinfo" class="body">
-                <address id="about" class="vcard body">
-                Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of <a href="https://www.python.org/">Python</a>.
-                </address><!-- /#about -->
-
-                <p>The theme is by <a href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
-        </footer><!-- /#contentinfo -->
+        <!-- Custom Theme JavaScript -->
+        <script src="/theme/js/clean-blog.min.js"></script>
 
 </body>
+
 </html>
