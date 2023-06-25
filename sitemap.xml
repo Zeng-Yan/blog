@@ -5,7 +5,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://zeng-yan.github.io/</loc>
-<lastmod>2023-06-21T15:37:56-00:00</lastmod>
+<lastmod>2023-06-25T15:09:21-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -20,6 +20,20 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
 <loc>https://zeng-yan.github.io/deploy-wikijs-simply.html</loc>
 <lastmod>2023-06-20T00:00:00+08:00</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://zeng-yan.github.io/note-of-docker.html</loc>
+<lastmod>2022-12-09T00:00:00+08:00</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://zeng-yan.github.io/note-of-git.html</loc>
+<lastmod>2022-12-09T00:00:00+08:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>

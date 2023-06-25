@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="chinese (simplified)">
+
+<head>
+            <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+        <title>Docker简明笔记</title>
+
+            <link href="https://zeng-yan.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Zeng Yan's Blog Full Atom Feed" />
+            <link href="https://zeng-yan.github.io/feeds/{slug}.atom.xml" type="application/atom+xml" rel="alternate" title="Zeng Yan's Blog Categories Atom Feed" />
+        <!-- Bootstrap Core CSS -->
+        <link href="https://zeng-yan.github.io/theme/css/bootstrap.min.css" rel="stylesheet">
+
+        <!-- Custom CSS -->
+        <link href="https://zeng-yan.github.io/theme/css/clean-blog.min.css" rel="stylesheet">
+
+        <!-- Code highlight color scheme -->
+            <link href="https://zeng-yan.github.io/theme/css/code_blocks/monokai.css" rel="stylesheet">
+
+
+        <!-- Custom Fonts -->
+        <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+        <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+        <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+
+
+        <meta name="description" content="1 简介 虚拟机是完整的os, Linux 容器不是模拟完整的os, 而是对进程进行隔离, docker是对Linux容器的封装. Docker的三个核心概念: - Image 镜像 (只读模板) : 一个文件系统, 提供运行 …">
+
+        <meta name="author" content="Zengyan">
+
+        <meta name="tags" content="工具">
+
+	                <meta property="og:locale" content="">
+		<meta property="og:site_name" content="Zeng Yan's Blog">
+
+	<meta property="og:type" content="article">
+            <meta property="article:author" content="https://zeng-yan.github.io/author/zengyan.html">
+	<meta property="og:url" content="https://zeng-yan.github.io/note-of-docker.html">
+	<meta property="og:title" content="Docker简明笔记">
+	<meta property="article:published_time" content="2022-12-09 00:00:00+08:00">
+            <meta property="og:description" content="1 简介 虚拟机是完整的os, Linux 容器不是模拟完整的os, 而是对进程进行隔离, docker是对Linux容器的封装. Docker的三个核心概念: - Image 镜像 (只读模板) : 一个文件系统, 提供运行 …">
+
+            <meta property="og:image" content="https://zeng-yan.github.io/images/raphael-lacoste-boat-web.jpg">
+    <link rel="icon" href="/images/favicon.ico">
+</head>
+
+<body class="article-note-of-docker">
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header page-scroll">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="https://zeng-yan.github.io/">Zeng Yan's Blog</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <!-- Page Header -->
+        <header class="intro-header" style="background-image: url('https://zeng-yan.github.io//images/raphael-lacoste-boat-web.jpg')">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <div class="post-heading">
+                        <h1>Docker简明笔记</h1>
+                        <span class="meta">Posted by
+                                <a href="https://zeng-yan.github.io/author/zengyan.html">Zengyan</a>
+                             on 周五 09 十二月 2022
+                        </span>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+    <!-- Post Content -->
+    <article>
+        <h2 id="1">1 简介</h2>
+<p>虚拟机是完整的os, Linux 容器不是模拟完整的os, 而是对进程进行隔离, docker是对Linux容器的封装. </p>
+<p>Docker的三个核心概念: <br>
+-   Image 镜像 (只读模板) : 一个文件系统, 提供运行环境 (程序及其依赖) <br>
+-   Container 容器 (镜像实例) : 一个进程, 在镜像上创建可写层, 是一组应用及其运行环境<br>
+-   Repository 仓库: 存放镜像的地方</p>
+<h2 id="2">2 深入</h2>
+<h3 id="21">2.1 分层存储</h3>
+<p>镜像构建时, 会一层层构建, 前一层是后一层的基础. 每一层构建完就不会再发生改变, 后一层上的任何改变只发生在自己这一层. 比如, 删除前一层文件的操作, 实际不是真的删除前一层的文件, 而是仅在当前层标记为该文件已删除. 这种分层存储的特征使得镜像的复用, 定制变的更为容易. </p>
+<p>每一个容器运行时, 是以镜像为基础层, 在其上创建一个当前容器的存储层, 这个为容器运行时读写而准备的存储层可以称为容器存储层. 容器存储层的生存周期和容器一样, 容器消亡时, 容器存储层也随之消亡. </p>
+<p>按照 Docker 最佳实践的要求, 容器不应该向其存储层内写入任何数据, 容器存储层要保持无状态化. 所有的文件写入操作, 都应该使用 <code>数据卷 (Volume)</code> , 或者 <code>绑定宿主目录</code>, 让数据生存周期独立于容器, 在这些位置的读写会跳过容器存储层, 直接对宿主 (或网络存储) 发生读写, 其性能和稳定性更高. </p>
+<p><code>commit</code> 命令可以将容器打包为镜像, 尽管这不是一个推荐的打包方式 (定制镜像应该使用 Dockerfile 来完成) , 但可以帮助理解 Docker 的分层存储:</p>
+<div class="mermaid">
+flowchart LR
+subgraph l [ ]
+con1
+img1
+end
+
+subgraph con1 [writebale]
+lyr1[container: new]
+end
+
+subgraph img1 [read only]
+lyr1 -.- lyr2[image: old] --- lyr3[image: base]
+end
+
+subgraph img2 [read only]
+lyra[image: new] --- lyrb[image: old] --- lyrc[image: base]
+end
+
+l -->|commit| img2
+</div>
+
+<h3 id="22">2.2 组成关系</h3>
+<p>镜像和其标签组合起来被作为标识存放在 repository 中, 而存放 repository 的地方称为 registry , 而 <a href="https://hub.docker.com">Docker Hub</a> 正是 Docker 官方所提供的 registry . </p>
+<div class="mermaid">
+flowchart LR
+
+subgraph reg [registry]
+subgraph repo1 [repository]
+tag11[tag] --> img11[img]
+tag12[...] --> img12[...]
+tag13[tag] --> img13[img]
+end
+subgraph repo2 [...]
+tag[...]
+end
+subgraph repo3 [repository]
+tag31[tag] --> img31[img]
+tag32[...] --> img32[...]
+tag33[tag] --> img33[img]
+end
+end
+</div>
+
+<h3 id="23">2.3 镜像的体积</h3>
+<p><code>docker image ls</code> 列表中的镜像体积总和并非是所有镜像的实际硬盘消耗. 由于 Docker 镜像是多层存储结构, 并且可以继承和复用, 因此不同镜像可能会因为使用相同的基础镜像, 从而拥有共同的层. 相同的层只需要保存一份即可, 因此实际镜像硬盘占用空间很可能要比这个列表镜像大小的总和要小的多. </p>
+<p>可以通过 <code>docker system df</code> 命令来便捷的查看镜像, 容器, 数据卷所占用的空间. </p>
+<h2 id="3">3 常用命令</h2>
+<p>对容器的命令操作使容器进入不同状态, 容器的状态很多, 这里只展现两种最常用的状态 Running 和 Exited 之间的切换, 创建, 启动和停止. </p>
+<div class="mermaid">
+flowchart TB
+img[image] -->|docker run -it| conr[in terminal]
+conr -->|exit| cone
+
+subgraph run [running container]
+conr
+cond[backend] -->|docker exec -it| conr
+end
+
+cone[exited container] -->|docker start| run
+run -->|docker stop| cone
+
+img -->|docker run -d| cond
+</div>
+
+<p>其他的命令和状态切换可以参考:</p>
+<div class="mermaid">
+flowchart RL
+
+subgraph reg [Docker registry]
+imga[img]
+imgb[img]
+imgc[img]
+end
+
+subgraph loc [local]
+con[container1]
+dcf[dockerfile]
+bkp[backup.tar]
+subgraph rep [repository]
+img1[image1]
+img2[image2]
+img3[image3]
+end
+end
+
+imgb -->|pull| img1
+img1 -->|push| imgb
+img2 -->|tag| img2
+
+img2 -->|run| con
+con -->|commit| img2
+
+con -->|start/stop| con
+dcf -->|build| img1
+
+img3 -->|save| bkp
+bkp -->|load| img3
+
+loc -->|search| reg
+</div>
+
+<p>遇事不决, 查看帮助</p>
+<div class="highlight"><pre><span></span><code>docker<span class="w"> </span><span class="nb">help</span>
+docker<span class="w"> </span><span class="nb">command</span><span class="w"> </span>--help
+</code></pre></div>
+
+<p>具体的, 一些常用命令:</p>
+<div class="highlight"><pre><span></span><code>docker<span class="w"> </span>search<span class="w"> </span>XX<span class="w">    </span>
+<span class="c"># 查找镜像</span>
+
+docker<span class="w"> </span>pull<span class="w"> </span>XX<span class="w">    </span>
+<span class="c"># 获取镜像</span>
+
+docker<span class="w"> </span>images<span class="w">    </span>
+<span class="c"># 查看当前系统镜像</span>
+
+docker<span class="w"> </span>run<span class="w"> </span>-it<span class="w"> </span>name:tag<span class="w"> </span><span class="nb">command</span><span class="w">    </span>
+<span class="c"># 启动镜像 (启动后自动创建容器) -i 打开并输出 -t 分配终端 -d 后台运行</span>
+
+docker<span class="w"> </span>ps<span class="w"> </span>-a<span class="w">    </span>
+<span class="c"># 查看正在运行的容器</span>
+
+docker<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span><span class="o">[</span>name/id<span class="o">]</span><span class="w"> </span><span class="o">[</span>cmd<span class="o">]</span><span class="w">  </span>
+<span class="c"># 进入容器 </span>
+
+docker<span class="w"> </span>start<span class="w"> </span>name或id<span class="w">    </span>
+<span class="c"># 启动容器</span>
+
+docker<span class="w"> </span>attach<span class="w"> </span>name或id<span class="w">   </span>
+<span class="c"># 进入容器</span>
+
+docker<span class="w"> </span><span class="nb">exit</span><span class="w">    </span>
+<span class="c"># 退出当前容器 (不后台) </span>
+
+ctrl+p<span class="w"> </span>ctrl+q<span class="w">    </span>
+<span class="c"># 退出当前容器 (后台) </span>
+
+docker<span class="w"> </span>rm<span class="w"> </span>name或id<span class="w">    </span>
+<span class="c"># 删除容器</span>
+
+docker<span class="w"> </span>rmi<span class="w"> </span>name或id<span class="w">    </span>
+<span class="c"># 删除镜像</span>
+
+docker<span class="w"> </span>save<span class="w"> </span>-o<span class="w"> </span>centos.tar<span class="w"> </span>xianhu/centos:git<span class="w">    </span>
+<span class="c"># 保存镜像, -o也可以是--output</span>
+
+docker<span class="w"> </span>load<span class="w"> </span>-i<span class="w"> </span>centos.tar<span class="w">    </span>
+<span class="c"># 加载镜像, -i也可以是--input</span>
+
+docker<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;说明&quot;</span><span class="w"> </span>-a<span class="w"> </span><span class="s2">&quot;用户信息&quot;</span><span class="w"> </span>ID<span class="w"> </span>指定目标用户名/仓库名:TAG<span class="w">  </span>
+<span class="c"># 转化容器为镜像</span>
+
+docker<span class="w"> </span>logs<span class="w"> </span>name或id<span class="w">  </span>
+<span class="c"># 查看日志</span>
+</code></pre></div>
+
+<p>特别的, 关于run的常用参数:</p>
+<div class="highlight"><pre><span></span><code>docker<span class="w"> </span>run<span class="w"> </span>
+-it<span class="w">  </span><span class="c1"># 容器的Shell映射到当前的Shell</span>
+-u<span class="w"> </span><span class="o">[</span>name<span class="o">]</span><span class="w">  </span><span class="c1"># 指定登录容器的用户名</span>
+-v<span class="w"> </span><span class="o">[</span>host<span class="w"> </span>path<span class="o">]</span>:<span class="o">[</span>path<span class="o">]</span><span class="w">  </span><span class="c1"># 挂载数据卷, 即挂载宿主机路径 (目录或文件) 到容器中</span>
+-p<span class="w"> </span><span class="o">[</span>host<span class="w"> </span>port<span class="o">]</span>:<span class="o">[</span>port<span class="o">]</span><span class="w">  </span><span class="c1"># 将容器的端口映射到宿主机端口</span>
+<span class="o">[</span>name<span class="o">]</span>:<span class="o">[</span>tag<span class="o">]</span><span class="w">  </span><span class="c1"># 镜像</span>
+<span class="o">[</span>cmd<span class="o">]</span><span class="w">  </span><span class="c1"># 容器启动后第一个执行的命令, 替换Dockerfile中的CMD默认值, 如/bin/bash启动Bash让用户使用Shell</span>
+</code></pre></div>
+
+<blockquote>
+<p>删除容器时, 不能删除正在运行的容器, 要先stop再rm</p>
+</blockquote>
+<h2 id="4-dockerfile">4 Dockerfile和构建镜像</h2>
+<p>首先打开一个目录作为项目的根目录, 创建一个文件 Dockerfile , 其内容格式如下: </p>
+<div class="highlight"><pre><span></span><code><span class="k">FROM</span><span class="w"> </span><span class="s">[image]:[tag]</span><span class="w">  </span>
+<span class="c"># 继承[tag]版本的镜像[image], 有且仅有一个, 必须在第一行</span>
+
+<span class="k">ENV</span><span class="w"> </span><span class="o">[</span>key<span class="o">]=[</span>value<span class="o">]</span><span class="w"> </span><span class="o">[</span>key<span class="o">]=[</span>value<span class="o">]</span><span class="w"> </span>...<span class="w"> </span>
+<span class="c"># 设置环境变量 </span>
+
+<span class="k">COPY</span><span class="w"> </span><span class="o">[</span>path<span class="o">]</span><span class="w"> </span><span class="o">[</span>image<span class="w"> </span>path<span class="o">]</span><span class="w">  </span>
+<span class="c"># 将本机路径中的内容拷贝到镜像的路径中, 除了.dockerignore排除的路径</span>
+
+<span class="k">ADD</span><span class="w"> </span><span class="o">[</span>path<span class="o">]</span><span class="w"> </span><span class="o">[</span>image<span class="w"> </span>path<span class="o">]</span><span class="w">  </span>
+<span class="c"># 功能更多的COPY, 建议在需要自动解压缩时使用, 源路径是压缩文件时会自动解压到目标路径</span>
+
+<span class="k">WORKDIR</span><span class="w"> </span><span class="s">[image dir]  </span>
+<span class="c"># 设定镜像的工作目录</span>
+
+<span class="k">RUN</span><span class="w"> </span><span class="o">[</span>shell/exec<span class="o">]</span><span class="w">  </span>
+<span class="c"># 在镜像构建阶段执行的命令, 执行结果都会打包进镜像, 可以包含多个RUN命令</span>
+
+<span class="k">EXPOSE</span><span class="w"> </span><span class="s">[[port1] [port2] ...]  </span>
+<span class="c"># 声明容器暴露的端口</span>
+
+<span class="k">CMD</span><span class="w"> </span><span class="p">[</span><span class="err">shell/exec</span><span class="p">]</span><span class="w">  </span>
+<span class="c"># 在容器启动后执行的命令, 只能有一个, 可以在启动容器时写出命令替换掉该默认命令</span>
+</code></pre></div>
+
+<p>要注意的是, Dockerfile 的每条指令就是描述和构建新的一层. 所以尽管能使用多个 <code>RUN</code> 一一对应不同的命令, 但不要这样做, 而是在 <code>RUN</code> 指令中使用 <code>&amp;&amp;</code> 将几个命令串联起来, 同时可以用 <code>\</code> 和 <code>#</code> 进行换行和注释. </p>
+<p><code>exec</code> 格式的 <code>RUN</code> 命令为 <code>RUN ["可执行文件", "参数1", "参数2"]</code> , 例如 <code>RUN ["./run.py", "eval"]</code> 等价于 <code>RUN ./run.py eval</code> . </p>
+<p>从Dockerfile构建镜像的命令如下, 不指定 <code>tag</code> 时的默认标签是 <code>latest</code> . 这里的上下文路径是和 <code>Dockerfile</code> 中的相对路径对应的, 即项目根目录, 告诉 Docker 引擎在构建时在哪个上下文中去获取必要的文件, 通常是 <code>.</code> , 即当前路径. </p>
+<div class="highlight"><pre><span></span><code>docker<span class="w"> </span>image<span class="w"> </span>build<span class="w"> </span>-t<span class="w"> </span><span class="o">[</span>name<span class="o">]</span>:<span class="o">[</span>tag<span class="o">]</span><span class="w"> </span><span class="o">[</span>上下文路径<span class="o">]</span>
+</code></pre></div>
+
+<p>额外的, 可以同时创建一个文件 <code>.dockerignore</code> , 在该文件中写入上下文中要排除而不打包进镜像的路径. </p>
+<p>其他构建镜像的方法:</p>
+<div class="mermaid">
+flowchart TB
+
+repo[Git Repo] -->|docker build -t tag url#分支/构建目录| img[image]
+tar[压缩包] -->|docker build url/path| img
+ipt[标准输入] -->|docker build - < input| img
+</div>
+
+<h2 id="refer">REFER</h2>
+<blockquote>
+<p><a href="https://yeasy.gitbook.io/docker_practice/">Docker — 从入门到实践 (gitbook.io)</a></p>
+<p><a href="https://blog.csdn.net/Castlehe/article/details/115118710"> (四) docker容器状态和容器生命周期</a></p>
+</blockquote>
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    </article>
+
+        <div class="tags">
+            <p>tags: <a href="https://zeng-yan.github.io/tag/gong-ju.html">工具</a></p>
+        </div>
+
+    <hr>
+
+            </div>
+        </div>
+    </div>
+
+    <hr>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <ul class="list-inline text-center">
+                            <li>
+                                <a href="https://github.com/Zeng-Yan">
+                                    <span class="fa-stack fa-lg">
+                                        <i class="fa fa-circle fa-stack-2x"></i>
+                                        <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                    </span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="906596588@qq.com">
+                                    <span class="fa-stack fa-lg">
+                                        <i class="fa fa-circle fa-stack-2x"></i>
+                                        <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                                    </span>
+                                </a>
+                            </li>
+                    </ul>
+<p class="copyright text-muted">
+    Blog powered by <a href="http://getpelican.com">Pelican</a>,
+    which takes great advantage of <a href="http://python.org">Python</a>. <br />        &copy;  Zengyan
+</p>                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- jQuery -->
+    <script src="https://zeng-yan.github.io/theme/js/jquery.min.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="https://zeng-yan.github.io/theme/js/bootstrap.min.js"></script>
+
+        <!-- Custom Theme JavaScript -->
+        <script src="https://zeng-yan.github.io/theme/js/clean-blog.min.js"></script>
+
+</body>
+
+</html>

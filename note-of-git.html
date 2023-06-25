@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="chinese (simplified)">
+
+<head>
+            <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+        <title>Git简明笔记</title>
+
+            <link href="https://zeng-yan.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Zeng Yan's Blog Full Atom Feed" />
+            <link href="https://zeng-yan.github.io/feeds/{slug}.atom.xml" type="application/atom+xml" rel="alternate" title="Zeng Yan's Blog Categories Atom Feed" />
+        <!-- Bootstrap Core CSS -->
+        <link href="https://zeng-yan.github.io/theme/css/bootstrap.min.css" rel="stylesheet">
+
+        <!-- Custom CSS -->
+        <link href="https://zeng-yan.github.io/theme/css/clean-blog.min.css" rel="stylesheet">
+
+        <!-- Code highlight color scheme -->
+            <link href="https://zeng-yan.github.io/theme/css/code_blocks/monokai.css" rel="stylesheet">
+
+
+        <!-- Custom Fonts -->
+        <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+        <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+        <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+
+
+        <meta name="description" content="组成 Git是一个版本控制工具，主要包含以下几个部分： 远端（Remote）：源码位置。 工作空间（Workingspace）：本地存放项目代码的地方。 暂存区（Index/Stage）：一个记录改动信息的 …">
+
+        <meta name="author" content="Zengyan">
+
+        <meta name="tags" content="工具">
+
+	                <meta property="og:locale" content="">
+		<meta property="og:site_name" content="Zeng Yan's Blog">
+
+	<meta property="og:type" content="article">
+            <meta property="article:author" content="https://zeng-yan.github.io/author/zengyan.html">
+	<meta property="og:url" content="https://zeng-yan.github.io/note-of-git.html">
+	<meta property="og:title" content="Git简明笔记">
+	<meta property="article:published_time" content="2022-12-09 00:00:00+08:00">
+            <meta property="og:description" content="组成 Git是一个版本控制工具，主要包含以下几个部分： 远端（Remote）：源码位置。 工作空间（Workingspace）：本地存放项目代码的地方。 暂存区（Index/Stage）：一个记录改动信息的 …">
+
+            <meta property="og:image" content="https://zeng-yan.github.io/images/andreas-rocha-castleonahill01.jpg">
+    <link rel="icon" href="/images/favicon.ico">
+</head>
+
+<body class="article-note-of-git">
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header page-scroll">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="https://zeng-yan.github.io/">Zeng Yan's Blog</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <!-- Page Header -->
+        <header class="intro-header" style="background-image: url('https://zeng-yan.github.io//images/andreas-rocha-castleonahill01.jpg')">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <div class="post-heading">
+                        <h1>Git简明笔记</h1>
+                        <span class="meta">Posted by
+                                <a href="https://zeng-yan.github.io/author/zengyan.html">Zengyan</a>
+                             on 周五 09 十二月 2022
+                        </span>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+    <!-- Post Content -->
+    <article>
+        <h2 id="_1">组成</h2>
+<p><img alt="image.png" src="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/06965cafe85442baa41f8f3f90c175af~tplv-k3u1fbpfcp-watermark.image?"></p>
+<p>Git是一个版本控制工具，主要包含以下几个部分：</p>
+<ul>
+<li>远端（Remote）：源码位置。</li>
+<li>工作空间（Workingspace）：本地存放项目代码的地方。</li>
+<li>暂存区（Index/Stage）：一个记录改动信息的文件，临时存放改动，保存即将提交的文件列表信息。</li>
+<li>仓库（Repository）：维护版本信息，包含提交的所有版本的数据。</li>
+</ul>
+<h2 id="_2">常用命令</h2>
+<p>上述几个部分之间主要由6个常用命令来进行数据的交互：</p>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>命令</th>
+<th>含义</th>
+<th>格式</th>
+<th>参数</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>创建</td>
+<td>clone</td>
+<td>拷贝远程仓库到本地</td>
+<td><code>git clone [url/ssh]</code></td>
+<td></td>
+</tr>
+<tr>
+<td>提交与修改</td>
+<td>add</td>
+<td>添加文件到暂存区</td>
+<td><code>git add [file或.]</code></td>
+<td></td>
+</tr>
+<tr>
+<td>提交与修改</td>
+<td>commit</td>
+<td>提交暂存区到本地仓库</td>
+<td><code>git commit [file或空]</code></td>
+<td><code>-a 合并add操作</code> <code>-m "信息"</code></td>
+</tr>
+<tr>
+<td>远程</td>
+<td>pull</td>
+<td>下载远程代码并合并</td>
+<td><code>git pull [url/ssh或origin] [远程分支]:[本地分支]</code></td>
+<td></td>
+</tr>
+<tr>
+<td>远程</td>
+<td>push</td>
+<td>上传远程代码并合并</td>
+<td><code>git push [url/ssh或origin] [本地分支]:[远程分支]</code></td>
+<td></td>
+</tr>
+<tr>
+<td>分支</td>
+<td>checkout</td>
+<td>切换分支</td>
+<td><code>git checkout [branch]</code></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="_3">分支</h2>
+<p>分支（branch）可以理解为指针，关联的commit串联成时间线，分支指向这个时间线最近的commit。如下图中就有两个分支<code>main</code>和<code>develop</code>。Git会使用HEAD来指向特定的分支来指明当前仓库所属的分支，Git切换不同的分支时，就是让HEAD指向另一个分支。</p>
+<div class="mermaid">
+gitGraph
+commit id: "build 1"
+commit id: "build 2"
+branch develop
+checkout develop
+commit id: "feat 1"
+commit id: "feat 2"
+checkout main
+commit id: "fix 1"
+merge develop
+commit id: "build 3"
+checkout develop
+commit id: "feat 3" tag: "HEAD"
+</div>
+
+<h2 id="_4">工作流程</h2>
+<p>如下设定了一个简单的场景展示Git的工作流程，开发时开发者从主分支建立自己的分支并进行修改和维护，在该阶段任务完成后合并所有子分支来更新主分支。</p>
+<div class="mermaid">
+flowchart TD
+
+rmt1[remote branch:main]
+hed[HEAD]
+man[local branch:main]
+lac[local branch:local]
+rmt2[remote branch:local]
+rmt3[remote branch:main]
+m((+))
+
+subgraph rep [repository]
+man
+lac
+hed
+end
+
+rmt1 -->|git clone URL/SSH| man
+man -->|git branch local| lac
+hed -->|git checkout local| lac
+rmt1 -->|git pull origin main:local| lac
+lac -->|git commit -am INFO| lac
+lac -->|git push origin local:local| rmt2
+
+rmt1 --> m
+rmt2 -->|merge request| m
+m -->|merge| rmt3
+</div>
+
+<blockquote>
+<p>注意提交信息用双引号🤣</p>
+</blockquote>
+<h2 id="_5">其他命令</h2>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>命令</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>创建</td>
+<td>init</td>
+<td>在当前文件夹初始化仓库</td>
+</tr>
+<tr>
+<td>创建</td>
+<td>clone</td>
+<td>拷贝远程仓库</td>
+</tr>
+<tr>
+<td>提交与修改</td>
+<td>status</td>
+<td>查看仓库当前的状态</td>
+</tr>
+<tr>
+<td>提交与修改</td>
+<td>add</td>
+<td>添加文件到暂存区</td>
+</tr>
+<tr>
+<td>提交与修改</td>
+<td>diff</td>
+<td>比较暂存区和工作区的不同</td>
+</tr>
+<tr>
+<td>提交与修改</td>
+<td>commit</td>
+<td>提交暂存区到本地仓库</td>
+</tr>
+<tr>
+<td>提交与修改</td>
+<td>reset</td>
+<td>回退版本</td>
+</tr>
+<tr>
+<td>提交与修改</td>
+<td>rm</td>
+<td>从暂存区和工作区中删除</td>
+</tr>
+<tr>
+<td>提交与修改</td>
+<td>mv</td>
+<td>移动或重命名工作区文件</td>
+</tr>
+<tr>
+<td>日志</td>
+<td>log</td>
+<td>查看提交记录</td>
+</tr>
+<tr>
+<td>日志</td>
+<td>blame</td>
+<td>查看指定文件的修改记录</td>
+</tr>
+<tr>
+<td>远程</td>
+<td>remote</td>
+<td>远程仓库操作</td>
+</tr>
+<tr>
+<td>远程</td>
+<td>fetch</td>
+<td>从远程获取代码库</td>
+</tr>
+<tr>
+<td>远程</td>
+<td>pull</td>
+<td>下载远程代码并合并</td>
+</tr>
+<tr>
+<td>远程</td>
+<td>push</td>
+<td>上传远程代码并合并</td>
+</tr>
+</tbody>
+</table>
+<h2 id="_6">提交规范</h2>
+<p>每一次的commit应该进行规范且详细的说明，目前最受欢迎的是Angular规范，其格式如下，实在是懒的话只写第一行也能接受。</p>
+<div class="highlight"><pre><span></span><code>提交类型(影响范围，可选): 提交简述
+
+提交的详细信息
+
+注脚
+</code></pre></div>
+
+<p>其中提交类型主要有下面几种：</p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>feat</td>
+<td>实现新功能</td>
+</tr>
+<tr>
+<td>fix</td>
+<td>修复BUG</td>
+</tr>
+<tr>
+<td>perf</td>
+<td>优化</td>
+</tr>
+<tr>
+<td>refactor</td>
+<td>重构，不增加功能不修复BUG的修改</td>
+</tr>
+<tr>
+<td>style</td>
+<td>格式变动</td>
+</tr>
+<tr>
+<td>test</td>
+<td>测试相关</td>
+</tr>
+<tr>
+<td>build</td>
+<td>构建相关</td>
+</tr>
+<tr>
+<td>docs</td>
+<td>文档相关</td>
+</tr>
+<tr>
+<td>ci</td>
+<td>CI相关</td>
+</tr>
+</tbody>
+</table>
+<h2 id="_7">忽略规则</h2>
+<p>Git可以配置.gitignore文件来管理Git忽略规则，以忽略/不跟踪项目目录下的一些文件变动。</p>
+<div class="highlight"><pre><span></span><code><span class="o">/</span><span class="n">file</span><span class="w">     </span><span class="o">//</span>忽略<span class="nb">pwd</span><span class="o">/</span><span class="n">file文件</span>
+<span class="nb">dir</span><span class="o">/</span><span class="w">      </span><span class="o">//</span>忽略<span class="nb">pwd</span><span class="o">/</span><span class="nb">dir</span><span class="o">/</span>目录下的文件
+<span class="o">*</span><span class="p">.</span><span class="n">xml</span><span class="w">     </span><span class="o">//</span>忽略所有<span class="p">.</span><span class="n">xml结尾的文件</span>
+<span class="sx">!lib.xml  //不忽略lib.xml</span>
+</code></pre></div>
+
+<p>有时在修改.gitignore后可能出现规则没有及时更新的情况，需要手动清空cached的缓存内容，然后再add一次。</p>
+<div class="highlight"><pre><span></span><code>git rm -rf --cached .
+git fetch
+git add .
+</code></pre></div>
+
+<h2 id="vs-code">在VS code中的使用</h2>
+<p>在vsc中推荐安装GitLens扩展就可以方便地使用Git了。</p>
+<h2 id="pycharm">在Pycharm中的使用</h2>
+<ul>
+<li>在远端拷贝项目链接 <code>[克隆]  --&gt; [使用HTTP克隆]</code></li>
+<li>克隆项目到本地 <code>[File] --&gt; [New] --&gt; [Project from Version Control]</code></li>
+<li>和远端同步刷新，在IDE的左下角 <code>[git] --&gt; [Fetch All Remotes]</code></li>
+<li>创建分支，在IDE的右下角 <code>[main] --&gt; [Remote Branches] --&gt; [选择分支] --&gt; [&gt;] --&gt; [New Branch from '...']</code></li>
+<li>切换分支，在IDE的右下角 <code>[main] --&gt; [选择分支] --&gt; [Checkout]</code></li>
+<li>提交，在IDE左侧边栏 <code>[Commit] --&gt; [勾选提交文件] --&gt; [填写提交信息] --&gt; [Commit and Push]</code></li>
+</ul>
+<h2 id="_8">上传代码到远程新分支</h2>
+<p>查看远程分支</p>
+<div class="highlight"><pre><span></span><code>git branch -r
+</code></pre></div>
+
+<p>查看全部分支</p>
+<div class="highlight"><pre><span></span><code>git branch -a
+</code></pre></div>
+
+<p>新建分支</p>
+<div class="highlight"><pre><span></span><code>git checkout -b 分支名
+</code></pre></div>
+
+<p>上传到远程指定分支, 若不存在会新建</p>
+<div class="highlight"><pre><span></span><code>git push origin 本地分支:远程分支
+</code></pre></div>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    </article>
+
+        <div class="tags">
+            <p>tags: <a href="https://zeng-yan.github.io/tag/gong-ju.html">工具</a></p>
+        </div>
+
+    <hr>
+
+            </div>
+        </div>
+    </div>
+
+    <hr>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <ul class="list-inline text-center">
+                            <li>
+                                <a href="https://github.com/Zeng-Yan">
+                                    <span class="fa-stack fa-lg">
+                                        <i class="fa fa-circle fa-stack-2x"></i>
+                                        <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                    </span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="906596588@qq.com">
+                                    <span class="fa-stack fa-lg">
+                                        <i class="fa fa-circle fa-stack-2x"></i>
+                                        <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                                    </span>
+                                </a>
+                            </li>
+                    </ul>
+<p class="copyright text-muted">
+    Blog powered by <a href="http://getpelican.com">Pelican</a>,
+    which takes great advantage of <a href="http://python.org">Python</a>. <br />        &copy;  Zengyan
+</p>                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- jQuery -->
+    <script src="https://zeng-yan.github.io/theme/js/jquery.min.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="https://zeng-yan.github.io/theme/js/bootstrap.min.js"></script>
+
+        <!-- Custom Theme JavaScript -->
+        <script src="https://zeng-yan.github.io/theme/js/clean-blog.min.js"></script>
+
+</body>
+
+</html>

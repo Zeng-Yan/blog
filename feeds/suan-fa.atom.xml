@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Zeng Yan's Blog - 算法</title><link href="http://127.0.0.1:8000/" rel="alternate"></link><link href="http://127.0.0.1:8000/feeds/suan-fa.atom.xml" rel="self"></link><id>http://127.0.0.1:8000/</id><updated>2023-03-07T00:00:00+08:00</updated><subtitle>If dreams can't come true, then why not pretend?</subtitle><entry><title>路径规划算法之RRT</title><link href="http://127.0.0.1:8000/alg-rrt.html" rel="alternate"></link><published>2023-03-07T00:00:00+08:00</published><updated>2023-03-07T00:00:00+08:00</updated><author><name>Zengyan</name></author><id>tag:127.0.0.1,2023-03-07:/alg-rrt.html</id><summary type="html">&lt;h2 id="_1"&gt;算法简介&lt;/h2&gt;
+&lt;p&gt;快速随机搜索树算法 (Rapidly-exploring Random Tree), 是一种采用增量方式增长的随机采样算法.&lt;/p&gt;
+&lt;p&gt;优势在于无需对系统进行建模, 无需对 …&lt;/p&gt;</summary><content type="html">&lt;h2 id="_1"&gt;算法简介&lt;/h2&gt;
+&lt;p&gt;快速随机搜索树算法 (Rapidly-exploring Random Tree), 是一种采用增量方式增长的随机采样算法.&lt;/p&gt;
+&lt;p&gt;优势在于无需对系统进行建模, 无需对搜索区域进行几何划分, 在搜索空间的覆盖率高; 可以有效地将非完整约束考虑在算法内部, 从而避免复杂的运动学约束, 使得路径规划问题简单化.&lt;/p&gt;
+&lt;h2 id="_2"&gt;算法流程&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;以&lt;span class="math"&gt;\(X\)&lt;/span&gt;表示整体状态空间，以&lt;span class="math"&gt;\(X_{obs}\)&lt;/span&gt;表示障碍空间，以&lt;span class="math"&gt;\(X_{free}\)&lt;/span&gt;表示可达空间，首先定义起始节点&lt;span class="math"&gt;\(x_{init}\)&lt;/span&gt;和目标节点&lt;span class="math"&gt;\(x_{goal}\)&lt;/span&gt;属于&lt;span class="math"&gt;\(X_{free}\)&lt;/span&gt;，将&lt;span class="math"&gt;\(x_{init}\)&lt;/span&gt;加入空随机树&lt;span class="math"&gt;\(T\)&lt;/span&gt;；&lt;/li&gt;
+&lt;li&gt;产生一个随机点&lt;span class="math"&gt;\(x_{rand}\)&lt;/span&gt;，随机点的生成是任意的，即可以在整个状态空间&lt;span class="math"&gt;\(X\)&lt;/span&gt;内；&lt;/li&gt;
+&lt;li&gt;在产生随机点后，遍历随机树&lt;span class="math"&gt;\(T\)&lt;/span&gt;中的每一个节点，计算它们与&lt;span class="math"&gt;\(x_{rand}\)&lt;/span&gt;之间的距离，找出距离此随机点最近的节点，记为&lt;span class="math"&gt;\(x_{near}\)&lt;/span&gt;；&lt;/li&gt;
+&lt;li&gt;定义一个步长&lt;span class="math"&gt;\(EPS\)&lt;/span&gt;，当找到&lt;span class="math"&gt;\(x_{near}\)&lt;/span&gt;时，&lt;span class="math"&gt;\(x_{near}\)&lt;/span&gt;向&lt;span class="math"&gt;\(x_{near}\)&lt;/span&gt;与&lt;span class="math"&gt;\(x_{rand}\)&lt;/span&gt;连线方向扩展&lt;span class="math"&gt;\(EPS\)&lt;/span&gt;的距离产生新的节点&lt;span class="math"&gt;\(x_{new}\)&lt;/span&gt;。&lt;/li&gt;
+&lt;li&gt;判断&lt;span class="math"&gt;\(x_{new}\)&lt;/span&gt;是否满足（非完整微分）约束，如果不满足，舍弃&lt;span class="math"&gt;\(x_{new}\)&lt;/span&gt;，回退到步骤2，如果满足则保留&lt;span class="math"&gt;\(x_{new}\)&lt;/span&gt;，并在&lt;span class="math"&gt;\(x_{rand}\)&lt;/span&gt;到&lt;span class="math"&gt;\(x_{new}\)&lt;/span&gt;之间加上一条边；&lt;/li&gt;
+&lt;li&gt;判断&lt;span class="math"&gt;\(x_{near}\)&lt;/span&gt;、&lt;span class="math"&gt;\(x_{new}\)&lt;/span&gt;和&lt;span class="math"&gt;\(x_{near}\)&lt;/span&gt;到&lt;span class="math"&gt;\(x_{new}\)&lt;/span&gt;之间的边任意一个是否位于&lt;span class="math"&gt;\(X_{obs}\)&lt;/span&gt;中或者与&lt;span class="math"&gt;\(X_{obs}\)&lt;/span&gt;相交，若满足，舍弃&lt;span class="math"&gt;\(x_{new}\)&lt;/span&gt;，回退到步骤2，如果属于&lt;span class="math"&gt;\(X_{free}\)&lt;/span&gt;，则保留新节点。&lt;/li&gt;
+&lt;li&gt;将&lt;span class="math"&gt;\(x_{new}\)&lt;/span&gt;加入&lt;span class="math"&gt;\(T\)&lt;/span&gt;；&lt;/li&gt;
+&lt;li&gt;重复步骤2-8直到&lt;span class="math"&gt;\(x_{new}\)&lt;/span&gt;到&lt;span class="math"&gt;\(x_{goal}\)&lt;/span&gt;的距离小于设定的阈值&lt;span class="math"&gt;\(Thresh\)&lt;/span&gt;；&lt;/li&gt;
+&lt;li&gt;从最后一个&lt;span class="math"&gt;\(x_{new}\)&lt;/span&gt;回溯到&lt;span class="math"&gt;\(x_{init}\)&lt;/span&gt;得到路径。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="mermaid"&gt;
+flowchart TD
+
+subgraph init[init]
+x1[X_obs]
+x2["X_free"]
+x3["x_init ∈ X_free"]
+x4["x_goal ∈ X_free"]
+x5["T: {x_init}"]
+
+x2 --- x3
+x2 --- x4
+x5 --- x3
+end
+
+1[gen x_rand in X]
+2[find x_near in T]
+3[x_new = x_near + EPS]
+4{judge}
+5[T.add x_new]
+
+5[dis=T.last]
+6{dis &lt; Thresh}
+
+7[end]
+8(( ))
+
+init --&gt; 1 --&gt; 2 --&gt; 3 --&gt; 4 --&gt;|yes| 5 --&gt; 6 --&gt;|yes| 7
+4 ---|NO| 8
+6 ---|NO| 8
+8 --&gt; 1
+&lt;/div&gt;
+
+&lt;h2 id="python"&gt;Python实现&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"&gt;&lt;/script&gt;
+
+&lt;script type="text/javascript"&gt;if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var align = "center",
+        indent = "0em",
+        linebreak = "false";
+
+    if (false) {
+        align = (screen.width &lt; 768) ? "left" : align;
+        indent = (screen.width &lt; 768) ? "0em" : indent;
+        linebreak = (screen.width &lt; 768) ? 'true' : linebreak;
+    }
+
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.3/latest.js?config=TeX-AMS-MML_HTMLorMML';
+
+    var configscript = document.createElement('script');
+    configscript.type = 'text/x-mathjax-config';
+    configscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'none' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: '"+ align +"'," +
+        "    displayIndent: '"+ indent +"'," +
+        "    showMathMenu: true," +
+        "    messageStyle: 'normal'," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        "        availableFonts: ['STIX', 'TeX']," +
+        "        preferredFont: 'STIX'," +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
+        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
+        "    }, " +
+        "}); " +
+        "if ('default' !== 'default') {" +
+            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+        "}";
+
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(configscript);
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+&lt;/script&gt;</content><category term="算法"></category><category term="算法"></category></entry></feed>
