@@ -35,7 +35,7 @@
 
 
 
-        <meta name="description" content="组成 Git是一个版本控制工具，主要包含以下几个部分： 远端（Remote）：源码位置。 工作空间（Workingspace）：本地存放项目代码的地方。 暂存区（Index/Stage）：一个记录改动信息的 …">
+        <meta name="description" content="组成 Git是一个版本控制工具, 主要包含以下几个部分: 远端 (Remote) : 源码位置. 工作空间 (Workingspace) : 本地存放项目代码的地方. 暂存区 (Index/Stage) : 一个记录改动信息的 …">
 
         <meta name="author" content="Zengyan">
 
@@ -49,7 +49,7 @@
 	<meta property="og:url" content="https://zeng-yan.github.io/note-of-git.html">
 	<meta property="og:title" content="Git简明笔记">
 	<meta property="article:published_time" content="2022-12-09 00:00:00+08:00">
-            <meta property="og:description" content="组成 Git是一个版本控制工具，主要包含以下几个部分： 远端（Remote）：源码位置。 工作空间（Workingspace）：本地存放项目代码的地方。 暂存区（Index/Stage）：一个记录改动信息的 …">
+            <meta property="og:description" content="组成 Git是一个版本控制工具, 主要包含以下几个部分: 远端 (Remote) : 源码位置. 工作空间 (Workingspace) : 本地存放项目代码的地方. 暂存区 (Index/Stage) : 一个记录改动信息的 …">
 
             <meta property="og:image" content="https://zeng-yan.github.io/images/andreas-rocha-castleonahill01.jpg">
     <link rel="icon" href="/images/favicon.ico">
@@ -108,15 +108,15 @@
     <article>
         <h2 id="_1">组成</h2>
 <p><img alt="image.png" src="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/06965cafe85442baa41f8f3f90c175af~tplv-k3u1fbpfcp-watermark.image?"></p>
-<p>Git是一个版本控制工具，主要包含以下几个部分：</p>
+<p>Git是一个版本控制工具, 主要包含以下几个部分: </p>
 <ul>
-<li>远端（Remote）：源码位置。</li>
-<li>工作空间（Workingspace）：本地存放项目代码的地方。</li>
-<li>暂存区（Index/Stage）：一个记录改动信息的文件，临时存放改动，保存即将提交的文件列表信息。</li>
-<li>仓库（Repository）：维护版本信息，包含提交的所有版本的数据。</li>
+<li>远端 (Remote) : 源码位置. </li>
+<li>工作空间 (Workingspace) : 本地存放项目代码的地方. </li>
+<li>暂存区 (Index/Stage) : 一个记录改动信息的文件, 临时存放改动, 保存即将提交的文件列表信息. </li>
+<li>仓库 (Repository) : 维护版本信息, 包含提交的所有版本的数据. </li>
 </ul>
 <h2 id="_2">常用命令</h2>
-<p>上述几个部分之间主要由6个常用命令来进行数据的交互：</p>
+<p>上述几个部分之间主要由6个常用命令来进行数据的交互: </p>
 <table>
 <thead>
 <tr>
@@ -173,7 +173,7 @@
 </tbody>
 </table>
 <h2 id="_3">分支</h2>
-<p>分支（branch）可以理解为指针，关联的commit串联成时间线，分支指向这个时间线最近的commit。如下图中就有两个分支<code>main</code>和<code>develop</code>。Git会使用HEAD来指向特定的分支来指明当前仓库所属的分支，Git切换不同的分支时，就是让HEAD指向另一个分支。</p>
+<p>分支 (branch) 可以理解为指针, 关联的commit串联成时间线, 分支指向这个时间线最近的commit. 如下图中就有两个分支<code>main</code>和<code>develop</code>. Git会使用HEAD来指向特定的分支来指明当前仓库所属的分支, Git切换不同的分支时, 就是让HEAD指向另一个分支. </p>
 <div class="mermaid">
 gitGraph
 commit id: "build 1"
@@ -191,7 +191,7 @@ commit id: "feat 3" tag: "HEAD"
 </div>
 
 <h2 id="_4">工作流程</h2>
-<p>如下设定了一个简单的场景展示Git的工作流程，开发时开发者从主分支建立自己的分支并进行修改和维护，在该阶段任务完成后合并所有子分支来更新主分支。</p>
+<p>如下设定了一个简单的场景展示Git的工作流程, 开发时开发者从主分支建立自己的分支并进行修改和维护, 在该阶段任务完成后合并所有子分支来更新主分支. </p>
 <div class="mermaid">
 flowchart TD
 
@@ -312,15 +312,15 @@ m -->|merge| rmt3
 </tbody>
 </table>
 <h2 id="_6">提交规范</h2>
-<p>每一次的commit应该进行规范且详细的说明，目前最受欢迎的是Angular规范，其格式如下，实在是懒的话只写第一行也能接受。</p>
-<div class="highlight"><pre><span></span><code>提交类型(影响范围，可选): 提交简述
+<p>每一次的commit应该进行规范且详细的说明, 目前最受欢迎的是Angular规范, 其格式如下, 实在是懒的话只写第一行也能接受. </p>
+<div class="highlight"><pre><span></span><code>提交类型(影响范围, 可选): 提交简述
 
 提交的详细信息
 
 注脚
 </code></pre></div>
 
-<p>其中提交类型主要有下面几种：</p>
+<p>其中提交类型主要有下面几种: </p>
 <table>
 <thead>
 <tr>
@@ -343,7 +343,7 @@ m -->|merge| rmt3
 </tr>
 <tr>
 <td>refactor</td>
-<td>重构，不增加功能不修复BUG的修改</td>
+<td>重构, 不增加功能不修复BUG的修改</td>
 </tr>
 <tr>
 <td>style</td>
@@ -368,29 +368,29 @@ m -->|merge| rmt3
 </tbody>
 </table>
 <h2 id="_7">忽略规则</h2>
-<p>Git可以配置.gitignore文件来管理Git忽略规则，以忽略/不跟踪项目目录下的一些文件变动。</p>
+<p>Git可以配置.gitignore文件来管理Git忽略规则, 以忽略/不跟踪项目目录下的一些文件变动. </p>
 <div class="highlight"><pre><span></span><code><span class="o">/</span><span class="n">file</span><span class="w">     </span><span class="o">//</span>忽略<span class="nb">pwd</span><span class="o">/</span><span class="n">file文件</span>
 <span class="nb">dir</span><span class="o">/</span><span class="w">      </span><span class="o">//</span>忽略<span class="nb">pwd</span><span class="o">/</span><span class="nb">dir</span><span class="o">/</span>目录下的文件
 <span class="o">*</span><span class="p">.</span><span class="n">xml</span><span class="w">     </span><span class="o">//</span>忽略所有<span class="p">.</span><span class="n">xml结尾的文件</span>
 <span class="sx">!lib.xml  //不忽略lib.xml</span>
 </code></pre></div>
 
-<p>有时在修改.gitignore后可能出现规则没有及时更新的情况，需要手动清空cached的缓存内容，然后再add一次。</p>
+<p>有时在修改.gitignore后可能出现规则没有及时更新的情况, 需要手动清空cached的缓存内容, 然后再add一次. </p>
 <div class="highlight"><pre><span></span><code>git rm -rf --cached .
 git fetch
 git add .
 </code></pre></div>
 
 <h2 id="vs-code">在VS code中的使用</h2>
-<p>在vsc中推荐安装GitLens扩展就可以方便地使用Git了。</p>
+<p>在vsc中推荐安装GitLens扩展就可以方便地使用Git了. </p>
 <h2 id="pycharm">在Pycharm中的使用</h2>
 <ul>
 <li>在远端拷贝项目链接 <code>[克隆]  --&gt; [使用HTTP克隆]</code></li>
 <li>克隆项目到本地 <code>[File] --&gt; [New] --&gt; [Project from Version Control]</code></li>
-<li>和远端同步刷新，在IDE的左下角 <code>[git] --&gt; [Fetch All Remotes]</code></li>
-<li>创建分支，在IDE的右下角 <code>[main] --&gt; [Remote Branches] --&gt; [选择分支] --&gt; [&gt;] --&gt; [New Branch from '...']</code></li>
-<li>切换分支，在IDE的右下角 <code>[main] --&gt; [选择分支] --&gt; [Checkout]</code></li>
-<li>提交，在IDE左侧边栏 <code>[Commit] --&gt; [勾选提交文件] --&gt; [填写提交信息] --&gt; [Commit and Push]</code></li>
+<li>和远端同步刷新, 在IDE的左下角 <code>[git] --&gt; [Fetch All Remotes]</code></li>
+<li>创建分支, 在IDE的右下角 <code>[main] --&gt; [Remote Branches] --&gt; [选择分支] --&gt; [&gt;] --&gt; [New Branch from '...']</code></li>
+<li>切换分支, 在IDE的右下角 <code>[main] --&gt; [选择分支] --&gt; [Checkout]</code></li>
+<li>提交, 在IDE左侧边栏 <code>[Commit] --&gt; [勾选提交文件] --&gt; [填写提交信息] --&gt; [Commit and Push]</code></li>
 </ul>
 <h2 id="_8">上传代码到远程新分支</h2>
 <p>查看远程分支</p>
@@ -435,14 +435,6 @@ git add .
                                     <span class="fa-stack fa-lg">
                                         <i class="fa fa-circle fa-stack-2x"></i>
                                         <i class="fa fa-github fa-stack-1x fa-inverse"></i>
-                                    </span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="906596588@qq.com">
-                                    <span class="fa-stack fa-lg">
-                                        <i class="fa fa-circle fa-stack-2x"></i>
-                                        <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
                                     </span>
                                 </a>
                             </li>

@@ -138,7 +138,7 @@
 </code></pre></div>
 
 <h2 id="_1">发布博客</h2>
-<p>在Github或者Gitee上新建一个仓库, 注意仓库命名时需要有 <code>.github.io</code> 或者 <code>.gitee.io</code> 后缀, 最简单直接的方式是 <code>username.github.io</code> , 然后把这个远程仓库和本地的 <code>output</code> 文件夹用 Git 关联.</p>
+<p>在Github或者Gitee上新建一个仓库, 注意仓库命名时应该是用户名加 <code>.github.io</code> 或者 <code>.gitee.io</code> 后缀, 即 <code>username.github.io</code> , 然后把这个远程仓库和本地的 <code>output</code> 文件夹用 Git 关联.</p>
 <p>修改一下 <code>pelicanconf.py</code> 添加以下内容, 然后重新渲染.</p>
 <div class="highlight"><pre><span></span><code>SITEURL = &#39;https://zeng-yan.github.io&#39;
 DOMAIN = SITEURL
@@ -161,7 +161,7 @@ HTTPS = True
 <div class="highlight"><pre><span></span><code><span class="n">THEME</span> <span class="o">=</span> <span class="s1">&#39;pelican-clean-blog&#39;</span>
 </code></pre></div>
 
-<p>在 <code>content</code> 文件夹内新建 <code>images</code> 文件夹, 将背景图放置其中</p>
+<p>在 <code>content</code> 文件夹内新建 <code>images</code> 文件夹, 将背景图放置其中.</p>
 <p>使用相对URL设置背景图, 在 <code>pelicanconf.py</code> 添加如下内容</p>
 <div class="highlight"><pre><span></span><code>HEADER_COVER = &#39;images/tyler-edlin-tyler-edlin-skypiratebar.jpg&#39;
 </code></pre></div>
@@ -294,14 +294,6 @@ HTTPS = True
                                     <span class="fa-stack fa-lg">
                                         <i class="fa fa-circle fa-stack-2x"></i>
                                         <i class="fa fa-github fa-stack-1x fa-inverse"></i>
-                                    </span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="906596588@qq.com">
-                                    <span class="fa-stack fa-lg">
-                                        <i class="fa fa-circle fa-stack-2x"></i>
-                                        <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
                                     </span>
                                 </a>
                             </li>

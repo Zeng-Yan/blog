@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="chinese (simplified)">
+
+<head>
+            <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+        <title>Build Image of Python-Gdal</title>
+
+            <link href="https://zeng-yan.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Zeng Yan's Blog Full Atom Feed" />
+            <link href="https://zeng-yan.github.io/feeds/{slug}.atom.xml" type="application/atom+xml" rel="alternate" title="Zeng Yan's Blog Categories Atom Feed" />
+        <!-- Bootstrap Core CSS -->
+        <link href="https://zeng-yan.github.io/theme/css/bootstrap.min.css" rel="stylesheet">
+
+        <!-- Custom CSS -->
+        <link href="https://zeng-yan.github.io/theme/css/clean-blog.min.css" rel="stylesheet">
+
+        <!-- Code highlight color scheme -->
+            <link href="https://zeng-yan.github.io/theme/css/code_blocks/monokai.css" rel="stylesheet">
+
+
+        <!-- Custom Fonts -->
+        <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+        <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+        <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+
+
+        <meta name="description" content="Installation of Python-Gdal is a annoying thing, in addition to using conda to deal with various dependencies. On the other hand, Docker...">
+
+        <meta name="author" content="Zengyan">
+
+        <meta name="tags" content="Python">
+
+	                <meta property="og:locale" content="">
+		<meta property="og:site_name" content="Zeng Yan's Blog">
+
+	<meta property="og:type" content="article">
+            <meta property="article:author" content="https://zeng-yan.github.io/author/zengyan.html">
+	<meta property="og:url" content="https://zeng-yan.github.io/build-python-gdal-docker.html">
+	<meta property="og:title" content="Build Image of Python-Gdal">
+	<meta property="article:published_time" content="2023-06-09 00:00:00+08:00">
+            <meta property="og:description" content="Installation of Python-Gdal is a annoying thing, in addition to using conda to deal with various dependencies. On the other hand, Docker...">
+
+            <meta property="og:image" content="https://zeng-yan.github.io/images/wanying-h-02.jpg">
+    <link rel="icon" href="/images/favicon.ico">
+</head>
+
+<body class="article-build-python-gdal-docker">
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header page-scroll">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="https://zeng-yan.github.io/">Zeng Yan's Blog</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <!-- Page Header -->
+        <header class="intro-header" style="background-image: url('https://zeng-yan.github.io//images/wanying-h-02.jpg')">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <div class="post-heading">
+                        <h1>Build Image of Python-Gdal</h1>
+                        <span class="meta">Posted by
+                                <a href="https://zeng-yan.github.io/author/zengyan.html">Zengyan</a>
+                             on 周五 09 六月 2023
+                        </span>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+    <!-- Post Content -->
+    <article>
+        <p>Installation of Python-Gdal is a annoying thing, in addition to using conda to deal with various dependencies. On the other hand, Docker Hub provides a lot of Python-Gdal images, but they either do not match the version requirements, or are difficult to use. </p>
+<p>Here provides a simple alternative to build Docker image of Python-Gdal, that is, install conda in the image and install Python-Gdal through it.</p>
+<div class="highlight"><pre><span></span><code><span class="k">FROM</span><span class="w"> </span><span class="s">debian:latest</span>
+<span class="c">#COPY Miniconda3-py310_23.3.1-0-Linux-aarch64.sh /Miniconda3-py310_23.3.1-0-Linux-aarch64.sh</span>
+<span class="k">RUN</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>#<span class="w"> </span>change<span class="w"> </span>apt<span class="w"> </span><span class="nb">source</span><span class="w"> </span><span class="k">for</span><span class="w"> </span>PRC<span class="w"> </span>region
+<span class="w">    </span>mv<span class="w"> </span>/etc/apt/sources.list<span class="w"> </span>/etc/apt/sources.list.back<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span><span class="o">&amp;&amp;</span><span class="w"> </span>touch<span class="w"> </span>/etc/apt/sources.list<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span>deb<span class="w"> </span>http://mirrors.tuna.tsinghua.edu.cn/debian/<span class="w"> </span>bullseye<span class="w"> </span>main<span class="w"> </span>contrib<span class="w"> </span>non-free<span class="w"> </span>&gt;&gt;<span class="w"> </span>/etc/apt/sources.list<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span>deb<span class="w"> </span>http://mirrors.tuna.tsinghua.edu.cn/debian/<span class="w"> </span>bullseye-updates<span class="w"> </span>main<span class="w"> </span>contrib<span class="w"> </span>non-free<span class="w"> </span>&gt;&gt;<span class="w"> </span>/etc/apt/sources.list<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span>deb<span class="w"> </span>http://mirrors.tuna.tsinghua.edu.cn/debian/<span class="w"> </span>bullseye-backports<span class="w"> </span>main<span class="w"> </span>contrib<span class="w"> </span>non-free<span class="w"> </span>&gt;&gt;<span class="w"> </span>/etc/apt/sources.list<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span>deb<span class="w"> </span>http://mirrors.tuna.tsinghua.edu.cn/debian-security<span class="w"> </span>bullseye-security<span class="w"> </span>main<span class="w"> </span>contrib<span class="w"> </span>non-free<span class="w"> </span>&gt;&gt;<span class="w"> </span>/etc/apt/sources.list<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span><span class="o">&amp;&amp;</span><span class="w"> </span>apt<span class="w"> </span>update<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>#<span class="w"> </span>install<span class="w"> </span>gcc
+<span class="w">    </span><span class="o">&amp;&amp;</span><span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>gcc<span class="w"> </span>-y<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>#<span class="w"> </span>install<span class="w"> </span>miniconda
+<span class="w">    </span><span class="o">&amp;&amp;</span><span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>wget<span class="w"> </span>-y<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span><span class="o">&amp;&amp;</span><span class="w"> </span>wget<span class="w"> </span>https://repo.anaconda.com/miniconda/Miniconda3-py310_23.3.1-0-Linux-aarch64.sh<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span><span class="o">&amp;&amp;</span><span class="w"> </span>bash<span class="w"> </span>Miniconda3-py310_23.3.1-0-Linux-aarch64.sh<span class="w"> </span>-b<span class="w"> </span>-p<span class="w"> </span>/opt/conda<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">export</span><span class="w"> </span><span class="nv">PATH</span><span class="o">=</span>/opt/conda/bin:<span class="nv">$PATH</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span><span class="o">&amp;&amp;</span><span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>coreutils<span class="w"> </span>-y<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span><span class="o">&amp;&amp;</span><span class="w"> </span>rm<span class="w"> </span>Miniconda3-py310_23.3.1-0-Linux-aarch64.sh<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>#<span class="w"> </span>change<span class="w"> </span>pip<span class="w"> </span><span class="nb">source</span><span class="w"> </span><span class="k">for</span><span class="w"> </span>PRC<span class="w"> </span>region
+<span class="w">    </span><span class="o">&amp;&amp;</span><span class="w"> </span>pip<span class="w"> </span>config<span class="w"> </span><span class="nb">set</span><span class="w"> </span>global.index-url<span class="w"> </span>https://pypi.tuna.tsinghua.edu.cn/simple<span class="w"> </span><span class="se">\ </span>
+<span class="w">    </span><span class="o">&amp;&amp;</span><span class="w"> </span>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>--upgrade<span class="w"> </span>pip<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>#<span class="w"> </span>install<span class="w"> </span>Python-Gdal
+<span class="w">    </span><span class="o">&amp;&amp;</span><span class="w"> </span>conda<span class="w"> </span>install<span class="w"> </span>-c<span class="w"> </span>conda-forge<span class="w"> </span>gdal
+<span class="k">ENV</span><span class="w"> </span><span class="nv">PATH</span><span class="o">=</span>/opt/conda/bin:<span class="nv">$PATH</span>
+</code></pre></div>
+
+<h2 id="refer">REFER</h2>
+<blockquote>
+<p><a href="https://github.com/andriyreznik/docker-python-gdal">docker-python-gdal</a></p>
+</blockquote>
+    </article>
+
+        <div class="tags">
+            <p>tags: <a href="https://zeng-yan.github.io/tag/python.html">Python</a></p>
+        </div>
+
+    <hr>
+
+            </div>
+        </div>
+    </div>
+
+    <hr>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <ul class="list-inline text-center">
+                            <li>
+                                <a href="https://github.com/Zeng-Yan">
+                                    <span class="fa-stack fa-lg">
+                                        <i class="fa fa-circle fa-stack-2x"></i>
+                                        <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                    </span>
+                                </a>
+                            </li>
+                    </ul>
+<p class="copyright text-muted">
+    Blog powered by <a href="http://getpelican.com">Pelican</a>,
+    which takes great advantage of <a href="http://python.org">Python</a>. <br />        &copy;  Zengyan
+</p>                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- jQuery -->
+    <script src="https://zeng-yan.github.io/theme/js/jquery.min.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="https://zeng-yan.github.io/theme/js/bootstrap.min.js"></script>
+
+        <!-- Custom Theme JavaScript -->
+        <script src="https://zeng-yan.github.io/theme/js/clean-blog.min.js"></script>
+
+</body>
+
+</html>

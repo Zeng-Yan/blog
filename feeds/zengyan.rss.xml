@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0"><channel><title>Zeng Yan's Blog - Zengyan</title><link>https://zeng-yan.github.io/</link><description>If dreams can't come true, then why not pretend?</description><lastBuildDate>Tue, 20 Jun 2023 00:00:00 +0800</lastBuildDate><item><title>使用Python的Pelican来搭建简易个人博客</title><link>https://zeng-yan.github.io/build-blog-using-python-pelican.html</link><description>&lt;h2 id="pelican"&gt;Pelican的安装与使用&lt;/h2&gt;
+<rss version="2.0"><channel><title>Zeng Yan's Blog - Zengyan</title><link>https://zeng-yan.github.io/</link><description>If dreams can't come true, then why not pretend?</description><lastBuildDate>Thu, 04 Jul 2024 00:00:00 +0800</lastBuildDate><item><title>Voronoi 图和 Delaunay 三角剖分及相关代码实现</title><link>https://zeng-yan.github.io/voronoi-and-delaunay.html</link><description>&lt;h2 id="voronoi-delaunay"&gt;Voronoi 图和 Delaunay 三角剖分&lt;/h2&gt;
+&lt;p&gt;Voronoi 图和 Delaunay 三角剖分均是图形处理等多个领域中的重要技术.&lt;/p&gt;
+&lt;p&gt;Delaunay 三角剖分是一种点集的三角剖分标准 …&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Zengyan</dc:creator><pubDate>Thu, 04 Jul 2024 00:00:00 +0800</pubDate><guid isPermaLink="false">tag:zeng-yan.github.io,2024-07-04:/voronoi-and-delaunay.html</guid><category>算法</category><category>算法</category></item><item><title>栅格地图 (二) DEM高程地图处理</title><link>https://zeng-yan.github.io/dem.html</link><description>&lt;p&gt;&lt;img alt="结果示例" src="essayimages/dem-tw.png"&gt;&lt;/p&gt;
+&lt;p&gt;要使用 &lt;code&gt;gdal-python&lt;/code&gt; 来读取和处理 &lt;code&gt;tif&lt;/code&gt; 格式的高程地图, 其核心在于理解 gdal 中的 &lt;code&gt;GetGeoTransform&lt;/code&gt; 方法并使用它来进行坐标转换. 下面我绘制了一张 …&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Zengyan</dc:creator><pubDate>Thu, 27 Jun 2024 00:00:00 +0800</pubDate><guid isPermaLink="false">tag:zeng-yan.github.io,2024-06-27:/dem.html</guid><category>算法</category><category>算法</category></item><item><title>栅格地图 (一) 直线光栅化</title><link>https://zeng-yan.github.io/rasterization.html</link><description>&lt;p&gt;&lt;img alt="alt text" src="essayimages/rasterization.png"&gt;&lt;/p&gt;
+&lt;p&gt;在工作中频繁涉及对栅格地图的处理, 所以写一些笔记来进行归纳总结.&lt;/p&gt;
+&lt;p&gt;在栅格地图中做直线的光栅化主要有两个目的 …&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Zengyan</dc:creator><pubDate>Thu, 27 Jun 2024 00:00:00 +0800</pubDate><guid isPermaLink="false">tag:zeng-yan.github.io,2024-06-27:/rasterization.html</guid><category>算法</category><category>算法</category></item><item><title>程序化生成 一种地牢生成算法</title><link>https://zeng-yan.github.io/dungeon-generator.html</link><description>&lt;p&gt;地牢是 Rouge-like 游戏中常见的一种地形设计, 一个地牢通常包含很多房间, 房间之间通过蜿蜒曲折的通道连接起来. 在我一开始 …&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Zengyan</dc:creator><pubDate>Wed, 26 Jun 2024 00:00:00 +0800</pubDate><guid isPermaLink="false">tag:zeng-yan.github.io,2024-06-26:/dungeon-generator.html</guid><category>算法</category><category>算法</category></item><item><title>使用神经网络寻找相似图像和图像去重</title><link>https://zeng-yan.github.io/image-similarity-and-deduplicate.html</link><description>&lt;h1 id="_1"&gt;使用神经网络计算图像图像相似度&lt;/h1&gt;
+&lt;p&gt;这里 Resnet18 用作图像的特征提取器, 即模型隐藏层的输出被视为输入图像的特征. 然后, 通 …&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Zengyan</dc:creator><pubDate>Wed, 26 Jul 2023 00:00:00 +0800</pubDate><guid isPermaLink="false">tag:zeng-yan.github.io,2023-07-26:/image-similarity-and-deduplicate.html</guid><category>算法</category><category>算法</category></item><item><title>使用Python的Pelican来搭建简易个人博客</title><link>https://zeng-yan.github.io/build-blog-using-python-pelican.html</link><description>&lt;h2 id="pelican"&gt;Pelican的安装与使用&lt;/h2&gt;
 &lt;p&gt;首先安装 Pelican&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;pip install pelican invoke markdown
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
@@ -11,13 +17,104 @@
 &lt;blockquote&gt;
 &lt;p&gt;额外的, 可以在 &lt;code&gt;pelicanconf.py&lt;/code&gt; 文件中修改网页的各 …&lt;/p&gt;&lt;/blockquote&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Zengyan</dc:creator><pubDate>Tue, 20 Jun 2023 00:00:00 +0800</pubDate><guid isPermaLink="false">tag:zeng-yan.github.io,2023-06-20:/build-blog-using-python-pelican.html</guid><category>工具</category><category>工具</category></item><item><title>一行命令部署Wiki系统: 用Docker部署Wiki.js</title><link>https://zeng-yan.github.io/deploy-wikijs-simply.html</link><description>&lt;p&gt;&lt;a href="https://js.wiki/"&gt;Wiki.js&lt;/a&gt; 是一个轻量且牛逼的, 该有的功能都有的开源知识库系统.&lt;/p&gt;
 &lt;h2 id="1-docker"&gt;1 安装Docker&lt;/h2&gt;
-&lt;p&gt;在 Linux 下安装 Docker , Ubuntu 使用命令 &lt;code&gt;apt install docker&lt;/code&gt; , CentOS 使用命令 &lt;code&gt;dnf …&lt;/code&gt;&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Zengyan</dc:creator><pubDate>Tue, 20 Jun 2023 00:00:00 +0800</pubDate><guid isPermaLink="false">tag:zeng-yan.github.io,2023-06-20:/deploy-wikijs-simply.html</guid><category>工具</category><category>工具</category></item><item><title>Docker简明笔记</title><link>https://zeng-yan.github.io/note-of-docker.html</link><description>&lt;h2 id="1"&gt;1 简介&lt;/h2&gt;
+&lt;p&gt;在 Linux 下安装 Docker , Ubuntu 使用命令 &lt;code&gt;apt install docker&lt;/code&gt; , CentOS 使用命令 &lt;code&gt;dnf …&lt;/code&gt;&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Zengyan</dc:creator><pubDate>Tue, 20 Jun 2023 00:00:00 +0800</pubDate><guid isPermaLink="false">tag:zeng-yan.github.io,2023-06-20:/deploy-wikijs-simply.html</guid><category>工具</category><category>工具</category></item><item><title>Build Image of Python-Gdal</title><link>https://zeng-yan.github.io/build-python-gdal-docker.html</link><description>&lt;p&gt;Installation of Python-Gdal is a annoying thing, in addition to using conda to deal with various dependencies. On the other hand, Docker Hub provides a lot of Python-Gdal images, but they either do not match the version requirements, or are difficult to use. &lt;/p&gt;
+&lt;p&gt;Here provides a simple alternative to build …&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Zengyan</dc:creator><pubDate>Fri, 09 Jun 2023 00:00:00 +0800</pubDate><guid isPermaLink="false">tag:zeng-yan.github.io,2023-06-09:/build-python-gdal-docker.html</guid><category>Python</category><category>Python</category></item><item><title>理解Attention机制</title><link>https://zeng-yan.github.io/attention.html</link><description>&lt;p&gt;在Seq2Seq结构中, 编码器输出语义向量c作为解码器的输入. &lt;br&gt;
+在早期模型中, 编码器只输出一个c, 它可以是编码器最后一个时间步的h, 也可以是全部时 …&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Zengyan</dc:creator><pubDate>Wed, 01 Mar 2023 00:00:00 +0800</pubDate><guid isPermaLink="false">tag:zeng-yan.github.io,2023-03-01:/attention.html</guid><category>算法</category><category>算法</category></item><item><title>Base64 与 ndarray 相互转换</title><link>https://zeng-yan.github.io/base64-and-ndarray.html</link><description>&lt;p&gt;一个base64图片编码示例&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="n"&gt;image&lt;/span&gt;&lt;span class="sr"&gt;/jpeg;base64,/9j/4AAQSkZJRgABAQEAYABgAAD/2wBDAAMCAgMCAgMDAwMEAwMEBQgFBQQEBQoHBwYIDAoMDAsKCwsNDhIQDQ4RDgsLEBYQERMUFRUVDA8XGBYUGBIUFRT/2wBDAQMEBAUEBQkFBQkUDQsNFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBT/wAARCAAYABgDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD9M/HHihPCvhvU7uOW2bUorOaaztJ5VQ3EqoSqDJGctgfjXw/4y/aY+L/hTWo2fXZI7KbbJFFc6bZqGwql0+QMcBiR97JGDxmrXx+8J33xK/a3uvDc141pbzLbpFPIpZYbdbRZZCq98ESnHc5rXj/ZR8IJMpfXdaljB5AihQsP1x+td+IzbI+HY0/7WrRTqK6Ti27fK54EqOY5pOawUHaDtdStr+B9feAvFS+MPB+g6rIYY7y/062vZraJs+WZYlfGM5A+bjNFcN4Ahih8SabBYwNb2NrbrbRRA7tkMcPloCe/Cr+NFfGZHnUM9pVsTSjaEakox84qzT12unt3Pq8ThZYRwpzd3ypv16noGueE9L1qb7dNptlLq8UEkFtqE1ujTQB1ZSFcjcoO45we5rh9P8Ia/Y3BAtSI24YpLHz1weSf5UUVlnHDuFzqtSxFec4yp6JxaWj9U/03Lw2MnhYyhBJqW9z0fTbIWVnCjKhmWNVkkVQNzAcn86KKK+kpU40YKnDZHFKTk7s//&lt;/span&gt;&lt;span class="mi"&gt;9&lt;/span&gt;&lt;span class="n"&gt;k&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h2 id="_1"&gt;不同数据 …&lt;/h2&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Zengyan</dc:creator><pubDate>Mon, 06 Feb 2023 00:00:00 +0800</pubDate><guid isPermaLink="false">tag:zeng-yan.github.io,2023-02-06:/base64-and-ndarray.html</guid><category>工具</category><category>工具</category></item><item><title>Docker简明笔记</title><link>https://zeng-yan.github.io/note-of-docker.html</link><description>&lt;h2 id="1"&gt;1 简介&lt;/h2&gt;
 &lt;p&gt;虚拟机是完整的os, Linux 容器不是模拟完整的os, 而是对进程进行隔离, docker是对Linux容器的封装. &lt;/p&gt;
 &lt;p&gt;Docker的三个核心概念: &lt;br&gt;
 -   Image 镜像 (只读模板) : 一个文件系统, 提供运行 …&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Zengyan</dc:creator><pubDate>Fri, 09 Dec 2022 00:00:00 +0800</pubDate><guid isPermaLink="false">tag:zeng-yan.github.io,2022-12-09:/note-of-docker.html</guid><category>工具</category><category>工具</category></item><item><title>Git简明笔记</title><link>https://zeng-yan.github.io/note-of-git.html</link><description>&lt;h2 id="_1"&gt;组成&lt;/h2&gt;
 &lt;p&gt;&lt;img alt="image.png" src="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/06965cafe85442baa41f8f3f90c175af~tplv-k3u1fbpfcp-watermark.image?"&gt;&lt;/p&gt;
-&lt;p&gt;Git是一个版本控制工具，主要包含以下几个部分：&lt;/p&gt;
+&lt;p&gt;Git是一个版本控制工具, 主要包含以下几个部分: &lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;远端（Remote）：源码位置。&lt;/li&gt;
-&lt;li&gt;工作空间（Workingspace）：本地存放项目代码的地方。&lt;/li&gt;
-&lt;li&gt;暂存区（Index/Stage）：一个记录改动信息的 …&lt;/li&gt;&lt;/ul&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Zengyan</dc:creator><pubDate>Fri, 09 Dec 2022 00:00:00 +0800</pubDate><guid isPermaLink="false">tag:zeng-yan.github.io,2022-12-09:/note-of-git.html</guid><category>工具</category><category>工具</category></item></channel></rss>
+&lt;li&gt;远端 (Remote) : 源码位置. &lt;/li&gt;
+&lt;li&gt;工作空间 (Workingspace) : 本地存放项目代码的地方. &lt;/li&gt;
+&lt;li&gt;暂存区 (Index/Stage) : 一个记录改动信息的 …&lt;/li&gt;&lt;/ul&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Zengyan</dc:creator><pubDate>Fri, 09 Dec 2022 00:00:00 +0800</pubDate><guid isPermaLink="false">tag:zeng-yan.github.io,2022-12-09:/note-of-git.html</guid><category>工具</category><category>工具</category></item><item><title>绘制神经网络层的权值分布</title><link>https://zeng-yan.github.io/draw-nn-weight-distribution.html</link><description>&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;plot_module_weights&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;module&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;excludes&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;bias&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]):&lt;/span&gt;
+    &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;math&lt;/span&gt;
+    &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;matplotlib.pyplot&lt;/span&gt; &lt;span class="k"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;plt&lt;/span&gt;
+
+    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;get_flatten_weight&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;weight&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+        &lt;span class="n"&gt;w&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;weight&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;data&lt;/span&gt;
+        &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;w&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;cpu&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;numpy&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;flatten&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+
+    &lt;span class="n"&gt;tp&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[(&lt;/span&gt;&lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;get_flatten_weight&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;weight&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;weight&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;module&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;named_parameters&lt;/span&gt;&lt;span class="p"&gt;()]&lt;/span&gt;  
+    &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;n&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;excludes&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+        &lt;span class="n"&gt;tp&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;named_p&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;named_p&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;tp&lt;/span&gt; &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;n&lt;/span&gt; &lt;span class="ow"&gt;not&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;named_p&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]]&lt;/span&gt;
+
+    &lt;span class="n"&gt;n_col …&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Zengyan</dc:creator><pubDate>Wed, 05 Oct 2022 00:00:00 +0800</pubDate><guid isPermaLink="false">tag:zeng-yan.github.io,2022-10-05:/draw-nn-weight-distribution.html</guid><category>算法</category><category>算法</category></item><item><title>RNN和LSTM的理解</title><link>https://zeng-yan.github.io/rnn-and-lstm.html</link><description>&lt;h3 id="rnn"&gt;RNN&lt;/h3&gt;
+&lt;p&gt;现在我们的数据样本是这样的序列的形式：&lt;/p&gt;
+&lt;div class="math"&gt;$$
+[x_1,x_2,...,x_t,..., x_n]
+$$&lt;/div&gt;
+&lt;p&gt;序列中的每个元素都不是独立的，而是和其他元素存在着一定联 …&lt;/p&gt;&lt;script type='text/javascript'&gt;if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var align = "center",
+        indent = "0em",
+        linebreak = "false";
+
+    if (false) {
+        align = (screen.width &lt; 768) ? "left" : align;
+        indent = (screen.width &lt; 768) ? "0em" : indent;
+        linebreak = (screen.width &lt; 768) ? 'true' : linebreak;
+    }
+
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.3/latest.js?config=TeX-AMS-MML_HTMLorMML';
+
+    var configscript = document.createElement('script');
+    configscript.type = 'text/x-mathjax-config';
+    configscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'none' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: '"+ align +"'," +
+        "    displayIndent: '"+ indent +"'," +
+        "    showMathMenu: true," +
+        "    messageStyle: 'normal'," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        "        availableFonts: ['STIX', 'TeX']," +
+        "        preferredFont: 'STIX'," +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
+        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
+        "    }, " +
+        "}); " +
+        "if ('default' !== 'default') {" +
+            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+        "}";
+
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(configscript);
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+&lt;/script&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Zengyan</dc:creator><pubDate>Mon, 13 Sep 2021 00:00:00 +0800</pubDate><guid isPermaLink="false">tag:zeng-yan.github.io,2021-09-13:/rnn-and-lstm.html</guid><category>算法</category><category>算法</category></item><item><title>支持向量机的理解和推导</title><link>https://zeng-yan.github.io/svm.html</link><description>&lt;p&gt;支持向量机(Support Vector Machines, SVM)&lt;/p&gt;
+&lt;h2 id="_1"&gt;一些概念&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;超平面（hyperplane）：决策面，分类的决策边界，如图中黑色直线&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;支持向量（support vector）：距离超平面距离最近的 …&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Zengyan</dc:creator><pubDate>Fri, 10 Sep 2021 00:00:00 +0800</pubDate><guid isPermaLink="false">tag:zeng-yan.github.io,2021-09-10:/svm.html</guid><category>算法</category><category>算法</category></item></channel></rss>

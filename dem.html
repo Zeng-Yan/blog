@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="chinese (simplified)">
+
+<head>
+            <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+        <title>栅格地图 (二) DEM高程地图处理</title>
+
+            <link href="https://zeng-yan.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Zeng Yan's Blog Full Atom Feed" />
+            <link href="https://zeng-yan.github.io/feeds/{slug}.atom.xml" type="application/atom+xml" rel="alternate" title="Zeng Yan's Blog Categories Atom Feed" />
+        <!-- Bootstrap Core CSS -->
+        <link href="https://zeng-yan.github.io/theme/css/bootstrap.min.css" rel="stylesheet">
+
+        <!-- Custom CSS -->
+        <link href="https://zeng-yan.github.io/theme/css/clean-blog.min.css" rel="stylesheet">
+
+        <!-- Code highlight color scheme -->
+            <link href="https://zeng-yan.github.io/theme/css/code_blocks/monokai.css" rel="stylesheet">
+
+
+        <!-- Custom Fonts -->
+        <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+        <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+        <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+
+
+        <meta name="description" content="要使用 gdal-python 来读取和处理 tif 格式的高程地图, 其核心在于理解 gdal 中的 GetGeoTransform 方法并使用它来进行坐标转换. 下面我绘制了一张 …">
+
+        <meta name="author" content="Zengyan">
+
+        <meta name="tags" content="算法">
+
+	                <meta property="og:locale" content="">
+		<meta property="og:site_name" content="Zeng Yan's Blog">
+
+	<meta property="og:type" content="article">
+            <meta property="article:author" content="https://zeng-yan.github.io/author/zengyan.html">
+	<meta property="og:url" content="https://zeng-yan.github.io/dem.html">
+	<meta property="og:title" content="栅格地图 (二) DEM高程地图处理">
+	<meta property="article:published_time" content="2024-06-27 00:00:00+08:00">
+            <meta property="og:description" content="要使用 gdal-python 来读取和处理 tif 格式的高程地图, 其核心在于理解 gdal 中的 GetGeoTransform 方法并使用它来进行坐标转换. 下面我绘制了一张 …">
+
+            <meta property="og:image" content="https://zeng-yan.github.io/images/raphael-lacoste-boat-web.jpg">
+    <link rel="icon" href="/images/favicon.ico">
+</head>
+
+<body class="article-dem">
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header page-scroll">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="https://zeng-yan.github.io/">Zeng Yan's Blog</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <!-- Page Header -->
+        <header class="intro-header" style="background-image: url('https://zeng-yan.github.io//images/raphael-lacoste-boat-web.jpg')">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <div class="post-heading">
+                        <h1>栅格地图 (二) DEM高程地图处理</h1>
+                        <span class="meta">Posted by
+                                <a href="https://zeng-yan.github.io/author/zengyan.html">Zengyan</a>
+                             on 周四 27 六月 2024
+                        </span>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+    <!-- Post Content -->
+    <article>
+        <p><img alt="结果示例" src="essayimages/dem-tw.png"></p>
+<p>要使用 <code>gdal-python</code> 来读取和处理 <code>tif</code> 格式的高程地图, 其核心在于理解 gdal 中的 <code>GetGeoTransform</code> 方法并使用它来进行坐标转换. 下面我绘制了一张图片来帮助理解 <code>GetGeoTransform</code> 方法返回结果的含义: 对于读取的方形区域图像, <span class="math">\(GT[0]\)</span> 和 <span class="math">\(GT[3]\)</span> 标识了区域的左上角顶点的经纬度, <span class="math">\(GT[1]\)</span> 和 <span class="math">\(GT[5]\)</span> 表示该图像每个像素对应经纬度的大小, 以 <span class="math">\(\theta\)</span> 表示区域相对正北方向的偏移角度, <span class="math">\(GT[2]\)</span> 和 <span class="math">\(GT[4]\)</span> 表示 <span class="math">\(-\tanh\theta\)</span> 的值.</p>
+<p><img alt="GetGeoTransform" src="essayimages/gdal%20transform.svg"></p>
+<p>这里使用到了第一部分光栅化 <code>src.raster_utils</code> 中的部分函数.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">loguru</span> <span class="kn">import</span> <span class="n">logger</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Optional</span>
+
+<span class="kn">from</span> <span class="nn">src.raster_utils</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">flood_fill</span><span class="p">,</span> <span class="n">create_circle_mask</span><span class="p">,</span> <span class="n">create_poly_mask</span>
+<span class="p">)</span>
+
+<span class="n">CONSTANTS_RADIUS_OF_EARTH</span> <span class="o">=</span> <span class="mf">6371000.</span>     <span class="c1"># meters (m)</span>
+
+
+<span class="k">def</span> <span class="nf">geo_to_xy</span><span class="p">(</span><span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">ref_lon</span><span class="o">=</span><span class="mf">0.</span><span class="p">,</span> <span class="n">ref_lat</span><span class="o">=</span><span class="mf">0.</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    input GPS ($lon, $lat) in degrees (longitude, latitude) and Reference GPS ($ref_lon, $ref_lat) in degrees, output (x, y) in meters(m) (North, East).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">lat_rad</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">lat</span><span class="p">)</span>
+    <span class="n">lon_rad</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">lon</span><span class="p">)</span>
+    <span class="n">ref_lat_rad</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">ref_lat</span><span class="p">)</span>
+    <span class="n">ref_lon_rad</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">ref_lon</span><span class="p">)</span>
+
+    <span class="n">sin_lat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">lat_rad</span><span class="p">)</span>
+    <span class="n">cos_lat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">lat_rad</span><span class="p">)</span>
+    <span class="n">ref_sin_lat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">ref_lat_rad</span><span class="p">)</span>
+    <span class="n">ref_cos_lat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">ref_lat_rad</span><span class="p">)</span>
+
+    <span class="n">cos_d_lon</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">lon_rad</span> <span class="o">-</span> <span class="n">ref_lon_rad</span><span class="p">)</span>
+
+    <span class="n">arg</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">ref_sin_lat</span> <span class="o">*</span> <span class="n">sin_lat</span> <span class="o">+</span> <span class="n">ref_cos_lat</span> <span class="o">*</span> <span class="n">cos_lat</span> <span class="o">*</span> <span class="n">cos_d_lon</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arccos</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span>
+
+    <span class="n">k</span> <span class="o">=</span> <span class="mf">1.0</span>
+    <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">k</span> <span class="o">=</span> <span class="p">(</span><span class="n">c</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">c</span><span class="p">))</span>
+
+    <span class="n">x</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">k</span> <span class="o">*</span> <span class="p">(</span><span class="n">ref_cos_lat</span> <span class="o">*</span> <span class="n">sin_lat</span> <span class="o">-</span> <span class="n">ref_sin_lat</span> <span class="o">*</span> <span class="n">cos_lat</span> <span class="o">*</span> <span class="n">cos_d_lon</span><span class="p">)</span> <span class="o">*</span> <span class="n">CONSTANTS_RADIUS_OF_EARTH</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">k</span> <span class="o">*</span> <span class="n">cos_lat</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">lon_rad</span> <span class="o">-</span> <span class="n">ref_lon_rad</span><span class="p">)</span> <span class="o">*</span> <span class="n">CONSTANTS_RADIUS_OF_EARTH</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span>
+
+
+<span class="k">def</span> <span class="nf">xy_to_geo</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">ref_lon</span><span class="o">=</span><span class="mf">0.</span><span class="p">,</span> <span class="n">ref_lat</span><span class="o">=</span><span class="mf">0.</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    input ($x, $y) in meters(m) (North, East) and Reference GPS ($ref_lon, $ref_lat) in degrees, output GPS.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">x_rad</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">/</span> <span class="n">CONSTANTS_RADIUS_OF_EARTH</span>
+    <span class="n">y_rad</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="o">/</span> <span class="n">CONSTANTS_RADIUS_OF_EARTH</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">x_rad</span> <span class="o">*</span> <span class="n">x_rad</span> <span class="o">+</span> <span class="n">y_rad</span> <span class="o">*</span> <span class="n">y_rad</span><span class="p">)</span>
+
+    <span class="n">ref_lat_rad</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">ref_lat</span><span class="p">)</span>
+    <span class="n">ref_lon_rad</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">ref_lon</span><span class="p">)</span>
+
+    <span class="n">ref_sin_lat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">ref_lat_rad</span><span class="p">)</span>
+    <span class="n">ref_cos_lat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">ref_lat_rad</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">sin_c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+        <span class="n">cos_c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+
+        <span class="n">lat_rad</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asin</span><span class="p">(</span><span class="n">cos_c</span> <span class="o">*</span> <span class="n">ref_sin_lat</span> <span class="o">+</span> <span class="p">(</span><span class="n">x_rad</span> <span class="o">*</span> <span class="n">sin_c</span> <span class="o">*</span> <span class="n">ref_cos_lat</span><span class="p">)</span> <span class="o">/</span> <span class="n">c</span><span class="p">)</span>
+        <span class="n">lon_rad</span> <span class="o">=</span> <span class="p">(</span><span class="n">ref_lon_rad</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">atan2</span><span class="p">(</span><span class="n">y_rad</span> <span class="o">*</span> <span class="n">sin_c</span><span class="p">,</span> <span class="n">c</span> <span class="o">*</span> <span class="n">ref_cos_lat</span> <span class="o">*</span> <span class="n">cos_c</span> <span class="o">-</span> <span class="n">x_rad</span> <span class="o">*</span> <span class="n">ref_sin_lat</span> <span class="o">*</span> <span class="n">sin_c</span><span class="p">))</span>
+
+        <span class="n">lat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">lat_rad</span><span class="p">)</span>
+        <span class="n">lon</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">lon_rad</span><span class="p">)</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">lat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">ref_lat</span><span class="p">)</span>
+        <span class="n">lon</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">ref_lon</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">lon</span><span class="p">,</span> <span class="n">lat</span>
+
+
+<span class="k">def</span> <span class="nf">calc_geo_distance</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    given (longitude, latitude, altitude) or (longitude, latitude) format point $p1 and $p2,</span>
+<span class="sd">    calcluate distance between $p1 and $p2.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">c1</span> <span class="o">=</span> <span class="n">geo_to_xy</span><span class="p">(</span><span class="n">p1</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">p1</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">c2</span> <span class="o">=</span> <span class="n">geo_to_xy</span><span class="p">(</span><span class="n">p2</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">p2</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">p1</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">p2</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="n">p1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">c1</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">c1</span><span class="p">[</span><span class="mi">1</span><span class="p">]])</span>
+        <span class="n">p2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">c2</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">c2</span><span class="p">[</span><span class="mi">1</span><span class="p">]])</span>
+        <span class="n">distance</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">p2</span> <span class="o">-</span> <span class="n">p1</span><span class="p">)))</span>
+    <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">p1</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">p2</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="n">p1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">c1</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">c1</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">p1</span><span class="p">[</span><span class="mi">2</span><span class="p">]])</span>
+        <span class="n">p2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">c2</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">c2</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">p2</span><span class="p">[</span><span class="mi">2</span><span class="p">]])</span>
+        <span class="n">distance</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">p2</span> <span class="o">-</span> <span class="n">p1</span><span class="p">)))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Wrong dimensions of input: expect same dimensions of 2 or 3, but given </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">p1</span><span class="p">)</span><span class="si">}</span><span class="s1"> and </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">p2</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">distance</span>
+
+
+<span class="k">def</span> <span class="nf">simple_down_sampling</span><span class="p">(</span><span class="n">mat</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">scale</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+    <span class="n">rows</span><span class="p">,</span> <span class="n">cols</span> <span class="o">=</span> <span class="n">mat</span><span class="o">.</span><span class="n">shape</span>
+    <span class="n">idx_r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">rows</span><span class="p">,</span> <span class="n">scale</span><span class="p">)</span>
+    <span class="n">idx_c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">cols</span><span class="p">,</span> <span class="n">scale</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">mat</span><span class="p">[</span><span class="n">idx_r</span><span class="p">][:,</span> <span class="n">idx_c</span><span class="p">]</span>
+
+
+<span class="k">def</span> <span class="nf">simple_edge_detect</span><span class="p">(</span><span class="n">mat</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">thresh</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+    <span class="n">shift_r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">roll</span><span class="p">(</span><span class="n">mat</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">shift_c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">roll</span><span class="p">(</span><span class="n">mat</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="n">detect</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">mat</span> <span class="o">-</span> <span class="n">shift_r</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">mat</span> <span class="o">-</span> <span class="n">shift_c</span><span class="p">)</span>
+    <span class="n">detect</span><span class="p">[</span><span class="n">detect</span> <span class="o">&lt;</span> <span class="n">thresh</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">detect</span><span class="p">[</span><span class="n">detect</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+
+    <span class="k">return</span> <span class="n">detect</span>
+
+
+<span class="k">def</span> <span class="nf">scale_height</span><span class="p">(</span><span class="n">mat</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">low</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">high</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+    <span class="n">h_max</span><span class="p">,</span> <span class="n">h_min</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">mat</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">mat</span><span class="p">)</span>
+    <span class="c1"># print(h_max, h_min)</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">mat</span> <span class="o">-</span> <span class="n">h_min</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">h_max</span> <span class="o">-</span> <span class="n">h_min</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">high</span><span class="o">-</span><span class="n">low</span><span class="p">)</span> <span class="o">+</span> <span class="n">low</span>
+
+
+<span class="k">class</span> <span class="nc">BaseDEMMap</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">band</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="c1"># print(dataset.GetMetadata())  # 元数据</span>
+        <span class="n">nx</span><span class="p">,</span> <span class="n">ny</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">RasterXSize</span><span class="p">,</span> <span class="n">dataset</span><span class="o">.</span><span class="n">RasterYSize</span>  <span class="c1"># x及y方向的像素计数</span>
+        <span class="n">bands</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">RasterCount</span>  <span class="c1"># 波段数</span>
+        <span class="n">band</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">GetRasterBand</span><span class="p">(</span><span class="n">band</span><span class="p">)</span>  <span class="c1"># 获取特定波段</span>
+
+        <span class="c1"># 获取地图坐标范围</span>
+        <span class="n">geo_transform</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">GetGeoTransform</span><span class="p">()</span>  <span class="c1"># 地理坐标信息</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;GEO METADATA: </span><span class="si">{</span><span class="n">dataset</span><span class="o">.</span><span class="n">GetMetadata</span><span class="p">()</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;GEO TRANSFORM: </span><span class="si">{</span><span class="n">dataset</span><span class="o">.</span><span class="n">GetGeoTransform</span><span class="p">()</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">x_min</span><span class="p">,</span> <span class="n">y_min</span> <span class="o">=</span> <span class="n">geo_transform</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">geo_transform</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>  <span class="c1"># 左上角x，y的坐标</span>
+        <span class="n">x_max</span> <span class="o">=</span> <span class="n">x_min</span> <span class="o">+</span> <span class="n">nx</span> <span class="o">*</span> <span class="n">geo_transform</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">ny</span> <span class="o">*</span> <span class="n">geo_transform</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+        <span class="n">y_max</span> <span class="o">=</span> <span class="n">y_min</span> <span class="o">+</span> <span class="n">nx</span> <span class="o">*</span> <span class="n">geo_transform</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">+</span> <span class="n">ny</span> <span class="o">*</span> <span class="n">geo_transform</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span>
+
+        <span class="c1">#  (x_min, y_max)* -- (x_max, y_max)</span>
+        <span class="c1">#        |                  |</span>
+        <span class="c1">#  (x_min, y_min)  -- (x_max, y_min)*</span>
+
+        <span class="n">lon_min</span><span class="p">,</span> <span class="n">lon_max</span> <span class="o">=</span> <span class="n">x_min</span><span class="p">,</span> <span class="n">x_max</span>
+        <span class="n">lat_max</span><span class="p">,</span> <span class="n">lat_min</span> <span class="o">=</span> <span class="n">y_min</span><span class="p">,</span> <span class="n">y_max</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;GEO RANGE: (</span><span class="si">{</span><span class="n">lon_min</span><span class="si">}</span><span class="s1">, </span><span class="si">{</span><span class="n">lat_min</span><span class="si">}</span><span class="s1">), (</span><span class="si">{</span><span class="n">lon_max</span><span class="si">}</span><span class="s1">, </span><span class="si">{</span><span class="n">lat_max</span><span class="si">}</span><span class="s1">), </span><span class="si">{</span><span class="n">nx</span><span class="si">}</span><span class="s1"> X </span><span class="si">{</span><span class="n">ny</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+        <span class="c1"># 坐标及高程数据</span>
+        <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">x_min</span><span class="p">,</span> <span class="n">x_max</span><span class="p">,</span> <span class="n">nx</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">y_min</span><span class="p">,</span> <span class="n">y_max</span><span class="p">,</span> <span class="n">ny</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Z</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">=</span> <span class="n">band</span><span class="o">.</span><span class="n">ReadAsArray</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">)</span>  <span class="c1"># type: ignore # 这一段就是讲数据的x，y，z化作numpy矩阵</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">origin_X</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">origin_Y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">origin_Z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Y</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Z</span><span class="p">)</span>
+
+        <span class="c1"># 其他</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_obstacles</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;GEO cell length: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_cell_length</span><span class="p">()</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">aux_operate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">coord</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="s1">&#39;xyz&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        apply function $func with its params to chosen coordinates given by string $coord.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">affine</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">Y</span><span class="p">,</span> <span class="s1">&#39;z&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">Z</span><span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Z</span> <span class="o">=</span> <span class="p">[</span><span class="n">func</span><span class="p">(</span><span class="n">affine</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">coord</span> <span class="k">else</span> <span class="n">affine</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;z&#39;</span><span class="p">]]</span>
+
+    <span class="k">def</span> <span class="nf">coord_to_geo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">with_h</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">|</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        convert (row, col) format coordinate ($x, $y) into (longitude, latitude, altitude).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">with_h</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="p">[</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">Y</span><span class="p">[</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">Z</span><span class="p">[</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">]</span>  <span class="c1"># type: ignore # 经度，纬度, 海拔</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="p">[</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">Y</span><span class="p">[</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">]</span>  <span class="c1"># type: ignore</span>
+
+    <span class="k">def</span> <span class="nf">geo_to_coord</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">longitude</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">latitude</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        convert ($longitude, $latitude) into (row, col) format coordinate.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">xs</span><span class="p">,</span> <span class="n">xe</span><span class="p">,</span> <span class="n">ys</span><span class="p">,</span> <span class="n">ye</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">Y</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">Y</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span>  <span class="c1">#</span>
+        <span class="n">rows</span><span class="p">,</span> <span class="n">cols</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Z</span><span class="o">.</span><span class="n">shape</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="p">((</span><span class="n">longitude</span> <span class="o">-</span> <span class="n">xs</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">xe</span> <span class="o">-</span> <span class="n">xs</span><span class="p">))</span> <span class="o">*</span> <span class="n">cols</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="p">((</span><span class="n">latitude</span> <span class="o">-</span> <span class="n">ys</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">ye</span> <span class="o">-</span> <span class="n">ys</span><span class="p">))</span> <span class="o">*</span> <span class="n">rows</span>
+        <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">y</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_geo_to_coord_on_origin</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">longitude</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">latitude</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        convert ($longitude, $latitude) into (row, col) format coordinate according to the original map.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">xs</span><span class="p">,</span> <span class="n">xe</span><span class="p">,</span> <span class="n">ys</span><span class="p">,</span> <span class="n">ye</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">origin_X</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">origin_X</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">origin_Y</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">origin_Y</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span>  <span class="c1">#</span>
+        <span class="n">rows</span><span class="p">,</span> <span class="n">cols</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">origin_X</span><span class="o">.</span><span class="n">shape</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="p">((</span><span class="n">longitude</span> <span class="o">-</span> <span class="n">xs</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">xe</span> <span class="o">-</span> <span class="n">xs</span><span class="p">))</span> <span class="o">*</span> <span class="n">cols</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="p">((</span><span class="n">latitude</span> <span class="o">-</span> <span class="n">ys</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">ye</span> <span class="o">-</span> <span class="n">ys</span><span class="p">))</span> <span class="o">*</span> <span class="n">rows</span>
+        <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">y</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">legitimize_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">:</span> <span class="n">List</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        check and relocate a given geo location $p to make sure it located in map region.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">rows</span><span class="p">,</span> <span class="n">cols</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Z</span><span class="o">.</span><span class="n">shape</span>
+        <span class="n">lon_min</span><span class="p">,</span> <span class="n">lon_max</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="p">[</span><span class="n">rows</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">cols</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">lat_max</span><span class="p">,</span> <span class="n">lat_min</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Y</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">Y</span><span class="p">[</span><span class="n">rows</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">cols</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="n">lon</span><span class="p">,</span> <span class="n">lat</span> <span class="o">=</span> <span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">lon</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">lon</span><span class="p">,</span> <span class="n">lon_min</span><span class="p">)</span>
+        <span class="n">lon</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">lon</span><span class="p">,</span> <span class="n">lon_max</span><span class="p">)</span>
+
+        <span class="n">lat</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">lat</span><span class="p">,</span> <span class="n">lat_min</span><span class="p">)</span>
+        <span class="n">lat</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">lat</span><span class="p">,</span> <span class="n">lat_max</span><span class="p">)</span>
+
+        <span class="n">old_p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">])</span>
+        <span class="n">new_p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">])</span>
+
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">old_p</span> <span class="o">-</span> <span class="n">new_p</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Point out of map, relocate point </span><span class="si">{</span><span class="n">old_p</span><span class="si">}</span><span class="s1"> to </span><span class="si">{</span><span class="n">new_p</span><span class="si">}</span><span class="s1">.&#39;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">p</span>
+
+    <span class="k">def</span> <span class="nf">set_area</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">top_left_pos</span><span class="p">,</span> <span class="n">bottom_right_pos</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        clip a rectangle area from the original map.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">top_left_pos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">legitimize_point</span><span class="p">(</span><span class="n">top_left_pos</span><span class="p">)</span>
+        <span class="n">bottom_right_pos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">legitimize_point</span><span class="p">(</span><span class="n">bottom_right_pos</span><span class="p">)</span>
+
+        <span class="n">tf_x</span><span class="p">,</span> <span class="n">tf_y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_geo_to_coord_on_origin</span><span class="p">(</span><span class="n">top_left_pos</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">top_left_pos</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">br_x</span><span class="p">,</span> <span class="n">br_y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_geo_to_coord_on_origin</span><span class="p">(</span><span class="n">bottom_right_pos</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">bottom_right_pos</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+        <span class="n">region</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">s_</span><span class="p">[</span><span class="n">tf_x</span><span class="p">:</span><span class="n">br_x</span><span class="p">,</span> <span class="n">tf_y</span><span class="p">:</span><span class="n">br_y</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Z</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">origin_X</span><span class="p">[</span><span class="n">region</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">origin_Y</span><span class="p">[</span><span class="n">region</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">origin_Z</span><span class="p">[</span><span class="n">region</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">get_cell_length</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">calc_geo_distance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">coord_to_geo</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">with_h</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">coord_to_geo</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">with_h</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+
+
+<span class="k">class</span> <span class="nc">DEMMap</span><span class="p">(</span><span class="n">BaseDEMMap</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">create_circle_mask</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ctlp</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span> <span class="n">radius</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+        <span class="n">ctlp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">legitimize_point</span><span class="p">(</span><span class="n">ctlp</span><span class="p">)</span>
+
+        <span class="n">shape</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Z</span><span class="o">.</span><span class="n">shape</span>
+
+        <span class="k">def</span> <span class="nf">geo_distance_with_coord</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">):</span>
+            <span class="n">geo1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">coord_to_geo</span><span class="p">(</span><span class="n">p1</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">p1</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">with_h</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">geo2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">coord_to_geo</span><span class="p">(</span><span class="n">p2</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">p2</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">with_h</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">calc_geo_distance</span><span class="p">(</span><span class="n">geo1</span><span class="p">,</span> <span class="n">geo2</span><span class="p">)</span>
+
+        <span class="n">cell_length</span> <span class="o">=</span> <span class="n">calc_geo_distance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">coord_to_geo</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">with_h</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">coord_to_geo</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">with_h</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+        <span class="n">ctlp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">geo_to_coord</span><span class="p">(</span><span class="n">ctlp</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">ctlp</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">mask</span> <span class="o">=</span> <span class="n">create_circle_mask</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">ctlp</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">cell_length</span><span class="p">,</span> <span class="n">geo_distance_with_coord</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">mask</span>
+
+    <span class="k">def</span> <span class="nf">create_poly_mask</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p_list</span><span class="p">:</span> <span class="n">List</span><span class="p">,</span> <span class="n">ctlp</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">typ</span><span class="o">=</span><span class="s1">&#39;slim&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+        <span class="n">p_list</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">legitimize_point</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">p_list</span><span class="p">]</span>
+        <span class="n">ctlp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">legitimize_point</span><span class="p">(</span><span class="n">ctlp</span><span class="p">)</span> <span class="k">if</span> <span class="n">ctlp</span> <span class="k">else</span> <span class="kc">None</span>
+
+        <span class="n">shape</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Z</span><span class="o">.</span><span class="n">shape</span>
+        <span class="n">points</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">geo_to_coord</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">p_list</span><span class="p">]</span>
+        <span class="n">mask</span> <span class="o">=</span> <span class="n">create_poly_mask</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">points</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">geo_to_coord</span><span class="p">(</span><span class="o">*</span><span class="n">ctlp</span><span class="p">),</span> <span class="n">typ</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">mask</span>
+
+    <span class="k">def</span> <span class="nf">create_h_mask</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">h_threshold</span><span class="p">):</span>
+        <span class="n">mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Z</span><span class="p">)</span>
+        <span class="n">mask</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">Z</span> <span class="o">&gt;=</span> <span class="n">h_threshold</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="n">mask</span>
+
+    <span class="k">def</span> <span class="nf">wrap_path_to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">route</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        return a dict describing a path by giving a list composed of (x, y). and it will be like:</span>
+<span class="sd">            {&#39;index&#39;:{&#39;lng&#39;: longitude, &#39;lat&#39;: latitude, &#39;alt&#39;: altitude}}</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">path_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">route</span><span class="p">):</span>
+            <span class="n">longitude</span><span class="p">,</span> <span class="n">latitude</span><span class="p">,</span> <span class="n">altitude</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">coord_to_geo</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">with_h</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+            <span class="n">path_dict</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">idx</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;lng&#39;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">longitude</span><span class="p">),</span> <span class="s1">&#39;lat&#39;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">latitude</span><span class="p">),</span> <span class="s1">&#39;alt&#39;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">altitude</span><span class="p">)}</span>  <span class="c1"># 经纬高</span>
+            <span class="c1"># path_dict[f&#39;{idx}&#39;] = [longitude, latitude, altitude]  # 经纬高</span>
+        <span class="k">return</span> <span class="n">path_dict</span>
+
+    <span class="k">def</span> <span class="nf">get_binary_image</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">height_diff_thresh</span> <span class="o">=</span> <span class="mi">20</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+        <span class="c1"># 预处理</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">aux_operate</span><span class="p">(</span><span class="n">simple_down_sampling</span><span class="p">,</span> <span class="s1">&#39;xyz&#39;</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mi">13</span><span class="p">)</span>  <span class="c1"># 下采样</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">aux_operate</span><span class="p">(</span><span class="n">scale_height</span><span class="p">,</span> <span class="s1">&#39;z&#39;</span><span class="p">,</span> <span class="n">low</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>  <span class="c1"># 高度缩放</span>
+
+        <span class="n">grid</span> <span class="o">=</span> <span class="n">simple_edge_detect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Z</span><span class="p">,</span> <span class="n">height_diff_thresh</span><span class="p">)</span>  <span class="c1"># 坡度检测</span>
+        <span class="n">grid_binary</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">flood_fill</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>  <span class="c1"># 洪水去噪</span>
+        <span class="k">return</span> <span class="n">grid_binary</span>
+
+    <span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">route</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        plot a 3D surface of this DEM image with a path &#39;route&#39; on it.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">cm</span>
+        <span class="kn">from</span> <span class="nn">matplotlib.colors</span> <span class="kn">import</span> <span class="n">LightSource</span>
+        <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+        <span class="c1"># plot surface</span>
+        <span class="c1"># plt.clf()</span>
+        <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">subplot_kw</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;projection&#39;</span><span class="p">:</span> <span class="s1">&#39;3d&#39;</span><span class="p">},</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+        <span class="n">ls</span> <span class="o">=</span> <span class="n">LightSource</span><span class="p">(</span><span class="mi">270</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>  <span class="c1"># 设置你可视化数据的色带</span>
+        <span class="n">rgb</span> <span class="o">=</span> <span class="n">ls</span><span class="o">.</span><span class="n">shade</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Z</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cm</span><span class="o">.</span><span class="n">gist_earth</span><span class="p">,</span> <span class="n">vert_exag</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">blend_mode</span><span class="o">=</span><span class="s1">&#39;soft&#39;</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+        <span class="n">surf</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">plot_surface</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Z</span><span class="p">,</span> <span class="n">rstride</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">cstride</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">facecolors</span><span class="o">=</span><span class="n">rgb</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">antialiased</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">shade</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+        <span class="c1"># surf = ax.plot_wireframe(X, Y, Z, antialiased=False)</span>
+
+        <span class="c1"># trick</span>
+        <span class="n">z_max</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Z</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Z</span><span class="p">))</span> <span class="o">*</span> <span class="mi">7</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Z</span><span class="p">)</span>
+        <span class="n">px</span><span class="p">,</span> <span class="n">py</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">coord_to_geo</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">with_h</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot3D</span><span class="p">([</span><span class="n">px</span><span class="p">],</span> <span class="p">[</span><span class="n">py</span><span class="p">],</span> <span class="p">[</span><span class="n">z_max</span><span class="p">],</span> <span class="s1">&#39;gray&#39;</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+
+        <span class="c1"># plot route</span>
+        <span class="k">if</span> <span class="n">route</span><span class="p">:</span>
+            <span class="n">path_x</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="p">[</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">route</span><span class="p">]</span>
+            <span class="n">path_y</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">Y</span><span class="p">[</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">route</span><span class="p">]</span>
+            <span class="n">path_z</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">Z</span><span class="p">[</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">route</span><span class="p">]</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">path_x</span><span class="p">,</span> <span class="n">path_y</span><span class="p">,</span> <span class="n">path_z</span><span class="p">,</span> <span class="s1">&#39;white&#39;</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+
+        <span class="c1"># plt.savefig(&#39;surface.jpg&#39;)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div>
+
+<p>测试代码</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">src.dem_utils</span> <span class="kn">import</span> <span class="n">DEMMap</span><span class="p">,</span> <span class="n">simple_down_sampling</span>
+<span class="kn">from</span> <span class="nn">src.raster_utils</span> <span class="kn">import</span> <span class="n">RasterImgPainter</span>
+
+
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">osgeo</span> <span class="kn">import</span> <span class="n">gdal</span>
+
+
+<span class="c1"># 仅显示地图</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">())</span>
+<span class="n">filePath</span> <span class="o">=</span> <span class="s2">&quot;world_tw.tif&quot;</span>
+<span class="n">gmap</span> <span class="o">=</span> <span class="n">DEMMap</span><span class="p">(</span><span class="n">gdal</span><span class="o">.</span><span class="n">Open</span><span class="p">(</span><span class="n">filePath</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">gmap</span><span class="o">.</span><span class="n">Z</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="c1"># 区域裁剪</span>
+<span class="n">gmap</span><span class="o">.</span><span class="n">set_area</span><span class="p">((</span><span class="mf">120.32150293495484</span><span class="p">,</span> <span class="mf">25.46804652177778</span><span class="p">),</span> <span class="p">(</span><span class="mf">121.98846359821114</span><span class="p">,</span> <span class="mf">21.717030261777776</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">gmap</span><span class="o">.</span><span class="n">Z</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="c1"># 下采样</span>
+<span class="n">gmap</span><span class="o">.</span><span class="n">aux_operate</span><span class="p">(</span><span class="n">simple_down_sampling</span><span class="p">,</span> <span class="s1">&#39;xyz&#39;</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">gmap</span><span class="o">.</span><span class="n">get_cell_length</span><span class="p">())</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">gmap</span><span class="o">.</span><span class="n">Z</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="c1"># 高度限制</span>
+<span class="n">bmat</span> <span class="o">=</span> <span class="n">gmap</span><span class="o">.</span><span class="n">create_h_mask</span><span class="p">(</span><span class="mi">1000</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">bmat</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="n">gmap</span><span class="o">.</span><span class="n">create_circle_mask</span><span class="p">()</span>
+</code></pre></div>
+
+<script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var align = "center",
+        indent = "0em",
+        linebreak = "false";
+
+    if (false) {
+        align = (screen.width < 768) ? "left" : align;
+        indent = (screen.width < 768) ? "0em" : indent;
+        linebreak = (screen.width < 768) ? 'true' : linebreak;
+    }
+
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.3/latest.js?config=TeX-AMS-MML_HTMLorMML';
+
+    var configscript = document.createElement('script');
+    configscript.type = 'text/x-mathjax-config';
+    configscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'none' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: '"+ align +"'," +
+        "    displayIndent: '"+ indent +"'," +
+        "    showMathMenu: true," +
+        "    messageStyle: 'normal'," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        "        availableFonts: ['STIX', 'TeX']," +
+        "        preferredFont: 'STIX'," +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
+        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
+        "    }, " +
+        "}); " +
+        "if ('default' !== 'default') {" +
+            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+        "}";
+
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(configscript);
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+</script>
+    </article>
+
+        <div class="tags">
+            <p>tags: <a href="https://zeng-yan.github.io/tag/suan-fa.html">算法</a></p>
+        </div>
+
+    <hr>
+
+            </div>
+        </div>
+    </div>
+
+    <hr>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <ul class="list-inline text-center">
+                            <li>
+                                <a href="https://github.com/Zeng-Yan">
+                                    <span class="fa-stack fa-lg">
+                                        <i class="fa fa-circle fa-stack-2x"></i>
+                                        <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                    </span>
+                                </a>
+                            </li>
+                    </ul>
+<p class="copyright text-muted">
+    Blog powered by <a href="http://getpelican.com">Pelican</a>,
+    which takes great advantage of <a href="http://python.org">Python</a>. <br />        &copy;  Zengyan
+</p>                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- jQuery -->
+    <script src="https://zeng-yan.github.io/theme/js/jquery.min.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="https://zeng-yan.github.io/theme/js/bootstrap.min.js"></script>
+
+        <!-- Custom Theme JavaScript -->
+        <script src="https://zeng-yan.github.io/theme/js/clean-blog.min.js"></script>
+
+</body>
+
+</html>

@@ -41,7 +41,7 @@
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;h2 id="_1"&gt;发布博客&lt;/h2&gt;
-&lt;p&gt;在Github或者Gitee上新建一个仓库, 注意仓库命名时需要有 &lt;code&gt;.github.io&lt;/code&gt; 或者 &lt;code&gt;.gitee.io&lt;/code&gt; 后缀, 最简单直接的方式是 &lt;code&gt;username.github.io&lt;/code&gt; , 然后把这个远程仓库和本地的 &lt;code&gt;output&lt;/code&gt; 文件夹用 Git 关联.&lt;/p&gt;
+&lt;p&gt;在Github或者Gitee上新建一个仓库, 注意仓库命名时应该是用户名加 &lt;code&gt;.github.io&lt;/code&gt; 或者 &lt;code&gt;.gitee.io&lt;/code&gt; 后缀, 即 &lt;code&gt;username.github.io&lt;/code&gt; , 然后把这个远程仓库和本地的 &lt;code&gt;output&lt;/code&gt; 文件夹用 Git 关联.&lt;/p&gt;
 &lt;p&gt;修改一下 &lt;code&gt;pelicanconf.py&lt;/code&gt; 添加以下内容, 然后重新渲染.&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;SITEURL = &amp;#39;https://zeng-yan.github.io&amp;#39;
 DOMAIN = SITEURL
@@ -64,7 +64,7 @@ HTTPS = True
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;THEME&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;pelican-clean-blog&amp;#39;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-&lt;p&gt;在 &lt;code&gt;content&lt;/code&gt; 文件夹内新建 &lt;code&gt;images&lt;/code&gt; 文件夹, 将背景图放置其中&lt;/p&gt;
+&lt;p&gt;在 &lt;code&gt;content&lt;/code&gt; 文件夹内新建 &lt;code&gt;images&lt;/code&gt; 文件夹, 将背景图放置其中.&lt;/p&gt;
 &lt;p&gt;使用相对URL设置背景图, 在 &lt;code&gt;pelicanconf.py&lt;/code&gt; 添加如下内容&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;HEADER_COVER = &amp;#39;images/tyler-edlin-tyler-edlin-skypiratebar.jpg&amp;#39;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
@@ -193,7 +193,92 @@ HTTPS = True
 &lt;blockquote&gt;
 &lt;p&gt;&lt;a href="https://docs.requarks.io/install/docker"&gt;Using the Docker image&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a href="https://b4d.sablun.org/blog/2021-02-07-instant-wikijs-with-docker/"&gt;Instant Wiki.js with Docker&lt;/a&gt;&lt;/p&gt;
-&lt;/blockquote&gt;</content><category term="工具"></category><category term="工具"></category></entry><entry><title>Docker简明笔记</title><link href="https://zeng-yan.github.io/note-of-docker.html" rel="alternate"></link><published>2022-12-09T00:00:00+08:00</published><updated>2022-12-09T00:00:00+08:00</updated><author><name>Zengyan</name></author><id>tag:zeng-yan.github.io,2022-12-09:/note-of-docker.html</id><summary type="html">&lt;h2 id="1"&gt;1 简介&lt;/h2&gt;
+&lt;/blockquote&gt;</content><category term="工具"></category><category term="工具"></category></entry><entry><title>Base64 与 ndarray 相互转换</title><link href="https://zeng-yan.github.io/base64-and-ndarray.html" rel="alternate"></link><published>2023-02-06T00:00:00+08:00</published><updated>2023-02-06T00:00:00+08:00</updated><author><name>Zengyan</name></author><id>tag:zeng-yan.github.io,2023-02-06:/base64-and-ndarray.html</id><summary type="html">&lt;p&gt;一个base64图片编码示例&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="n"&gt;image&lt;/span&gt;&lt;span class="sr"&gt;/jpeg;base64,/9j/4AAQSkZJRgABAQEAYABgAAD/2wBDAAMCAgMCAgMDAwMEAwMEBQgFBQQEBQoHBwYIDAoMDAsKCwsNDhIQDQ4RDgsLEBYQERMUFRUVDA8XGBYUGBIUFRT/2wBDAQMEBAUEBQkFBQkUDQsNFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBT/wAARCAAYABgDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD9M/HHihPCvhvU7uOW2bUorOaaztJ5VQ3EqoSqDJGctgfjXw/4y/aY+L/hTWo2fXZI7KbbJFFc6bZqGwql0+QMcBiR97JGDxmrXx+8J33xK/a3uvDc141pbzLbpFPIpZYbdbRZZCq98ESnHc5rXj/ZR8IJMpfXdaljB5AihQsP1x+td+IzbI+HY0/7WrRTqK6Ti27fK54EqOY5pOawUHaDtdStr+B9feAvFS+MPB+g6rIYY7y/062vZraJs+WZYlfGM5A+bjNFcN4Ahih8SabBYwNb2NrbrbRRA7tkMcPloCe/Cr+NFfGZHnUM9pVsTSjaEakox84qzT12unt3Pq8ThZYRwpzd3ypv16noGueE9L1qb7dNptlLq8UEkFtqE1ujTQB1ZSFcjcoO45we5rh9P8Ia/Y3BAtSI24YpLHz1weSf5UUVlnHDuFzqtSxFec4yp6JxaWj9U/03Lw2MnhYyhBJqW9z0fTbIWVnCjKhmWNVkkVQNzAcn86KKK+kpU40YKnDZHFKTk7s//&lt;/span&gt;&lt;span class="mi"&gt;9&lt;/span&gt;&lt;span class="n"&gt;k&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h2 id="_1"&gt;不同数据 …&lt;/h2&gt;</summary><content type="html">&lt;p&gt;一个base64图片编码示例&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="n"&gt;image&lt;/span&gt;&lt;span class="sr"&gt;/jpeg;base64,/9j/4AAQSkZJRgABAQEAYABgAAD/2wBDAAMCAgMCAgMDAwMEAwMEBQgFBQQEBQoHBwYIDAoMDAsKCwsNDhIQDQ4RDgsLEBYQERMUFRUVDA8XGBYUGBIUFRT/2wBDAQMEBAUEBQkFBQkUDQsNFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBT/wAARCAAYABgDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD9M/HHihPCvhvU7uOW2bUorOaaztJ5VQ3EqoSqDJGctgfjXw/4y/aY+L/hTWo2fXZI7KbbJFFc6bZqGwql0+QMcBiR97JGDxmrXx+8J33xK/a3uvDc141pbzLbpFPIpZYbdbRZZCq98ESnHc5rXj/ZR8IJMpfXdaljB5AihQsP1x+td+IzbI+HY0/7WrRTqK6Ti27fK54EqOY5pOawUHaDtdStr+B9feAvFS+MPB+g6rIYY7y/062vZraJs+WZYlfGM5A+bjNFcN4Ahih8SabBYwNb2NrbrbRRA7tkMcPloCe/Cr+NFfGZHnUM9pVsTSjaEakox84qzT12unt3Pq8ThZYRwpzd3ypv16noGueE9L1qb7dNptlLq8UEkFtqE1ujTQB1ZSFcjcoO45we5rh9P8Ia/Y3BAtSI24YpLHz1weSf5UUVlnHDuFzqtSxFec4yp6JxaWj9U/03Lw2MnhYyhBJqW9z0fTbIWVnCjKhmWNVkkVQNzAcn86KKK+kpU40YKnDZHFKTk7s//&lt;/span&gt;&lt;span class="mi"&gt;9&lt;/span&gt;&lt;span class="n"&gt;k&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h2 id="_1"&gt;不同数据的转换关系&lt;/h2&gt;
+&lt;div class="mermaid"&gt;
+graph LR
+np[ndarray] &lt;--&gt; f[file]
+np &lt;--&gt; b[bytes]
+f &lt;--&gt; b
+b &lt;--&gt; bs64[base64]
+&lt;/div&gt;
+
+&lt;h2 id="falsk"&gt;用falsk接受请求中的图片&lt;/h2&gt;
+&lt;p&gt;前端以POST方法发送图片&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;input_img&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;request&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;form&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;img&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;前端以POST的载荷的形式发送图片，数据在raw里&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;data&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;request&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get_data&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;span class="n"&gt;data&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;json&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;loads&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;input_img&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;img&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;span class="c1"&gt;# bs64_img = data[&amp;#39;img&amp;#39;].split(&amp;#39;,&amp;#39;)[1]  # 去掉图片数据的标识头&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h2 id="base64-ndarray"&gt;base64 -&amp;gt; ndarray&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;img_bs64_to_array&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;bs64_img&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nb"&gt;str&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;url_safe&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nb"&gt;bool&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kc"&gt;False&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="sd"&gt;&amp;quot;&amp;quot;&amp;quot;Convert an image encoded by base64 into a numpy array.&lt;/span&gt;
+&lt;span class="sd"&gt;    &amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
+    &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="nb"&gt;len&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;bs64_img&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;%&lt;/span&gt; &lt;span class="mi"&gt;3&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+        &lt;span class="n"&gt;bs64_img&lt;/span&gt; &lt;span class="o"&gt;+=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;==&amp;#39;&lt;/span&gt;
+    &lt;span class="k"&gt;elif&lt;/span&gt; &lt;span class="nb"&gt;len&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;bs64_img&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;%&lt;/span&gt; &lt;span class="mi"&gt;3&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+        &lt;span class="n"&gt;bs64_img&lt;/span&gt; &lt;span class="o"&gt;+=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;=&amp;#39;&lt;/span&gt;
+
+    &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;url_safe&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+        &lt;span class="n"&gt;bytes_img&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;base64&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;urlsafe_b64decode&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;bs64_img&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="k"&gt;else&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+        &lt;span class="n"&gt;bytes_img&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;base64&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;b64decode&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;bs64_img&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+    &lt;span class="n"&gt;array_img&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;frombuffer&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;bytes_img&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;uint8&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="n"&gt;array_img&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;cv2&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;imdecode&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;array_img&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;cv2&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;IMREAD_COLOR&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;array_img&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h2 id="ndarray-base64"&gt;ndarray -&amp;gt; base64&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;img_array_to_bs64&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;array_img&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;ndarray&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;cfmt&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nb"&gt;str&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;bgr&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;url_safe&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nb"&gt;bool&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kc"&gt;False&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="sd"&gt;&amp;quot;&amp;quot;&amp;quot;Encode an image in a numpy array with base64.&lt;/span&gt;
+&lt;span class="sd"&gt;    &amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
+
+    &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;cfmt&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;rgb&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+        &lt;span class="n"&gt;_&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;output_img&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;cv2&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;imencode&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;.jpg&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;array_img&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="o"&gt;...&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;::&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;  &lt;span class="c1"&gt;# RGB&lt;/span&gt;
+    &lt;span class="k"&gt;else&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+        &lt;span class="n"&gt;_&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;output_img&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;cv2&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;imencode&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;.jpg&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;array_img&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  &lt;span class="c1"&gt;# BGR&lt;/span&gt;
+
+    &lt;span class="n"&gt;bytes_img&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;output_img&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;tobytes&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+
+    &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;url_safe&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+        &lt;span class="n"&gt;bs64_img&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;base64&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;urlsafe_b64encode&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;bytes_img&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;decode&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;utf8&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="k"&gt;else&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+        &lt;span class="n"&gt;bs64_img&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;base64&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;b64encode&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;bytes_img&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;decode&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;utf8&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;bs64_img&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h2 id="plt-base64"&gt;plt -&amp;gt; base64&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;img_plt_to_bs64&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;array_img&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;ndarray&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="sd"&gt;&amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
+&lt;span class="sd"&gt;    &amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
+    &lt;span class="k"&gt;with&lt;/span&gt; &lt;span class="n"&gt;BytesIO&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="k"&gt;as&lt;/span&gt; &lt;span class="n"&gt;buffer&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+        &lt;span class="n"&gt;plt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;imshow&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;array_img&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="n"&gt;plt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;savefig&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;buffer&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="n"&gt;buffer&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;seek&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="n"&gt;bs4_img&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;base64&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;b64encode&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;buffer&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;read&lt;/span&gt;&lt;span class="p"&gt;())&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;decode&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;utf8&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;bs4_img&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;REFER:&lt;br&gt;
+* https://zhuanlan.zhihu.com/p/383156319&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"&gt;&lt;/script&gt;</content><category term="工具"></category><category term="工具"></category></entry><entry><title>Docker简明笔记</title><link href="https://zeng-yan.github.io/note-of-docker.html" rel="alternate"></link><published>2022-12-09T00:00:00+08:00</published><updated>2022-12-09T00:00:00+08:00</updated><author><name>Zengyan</name></author><id>tag:zeng-yan.github.io,2022-12-09:/note-of-docker.html</id><summary type="html">&lt;h2 id="1"&gt;1 简介&lt;/h2&gt;
 &lt;p&gt;虚拟机是完整的os, Linux 容器不是模拟完整的os, 而是对进程进行隔离, docker是对Linux容器的封装. &lt;/p&gt;
 &lt;p&gt;Docker的三个核心概念: &lt;br&gt;
 -   Image 镜像 (只读模板) : 一个文件系统, 提供运行 …&lt;/p&gt;</summary><content type="html">&lt;h2 id="1"&gt;1 简介&lt;/h2&gt;
@@ -428,21 +513,21 @@ ipt[标准输入] --&gt;|docker build - &lt; input| img
 &lt;/blockquote&gt;
 &lt;script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"&gt;&lt;/script&gt;</content><category term="工具"></category><category term="工具"></category></entry><entry><title>Git简明笔记</title><link href="https://zeng-yan.github.io/note-of-git.html" rel="alternate"></link><published>2022-12-09T00:00:00+08:00</published><updated>2022-12-09T00:00:00+08:00</updated><author><name>Zengyan</name></author><id>tag:zeng-yan.github.io,2022-12-09:/note-of-git.html</id><summary type="html">&lt;h2 id="_1"&gt;组成&lt;/h2&gt;
 &lt;p&gt;&lt;img alt="image.png" src="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/06965cafe85442baa41f8f3f90c175af~tplv-k3u1fbpfcp-watermark.image?"&gt;&lt;/p&gt;
-&lt;p&gt;Git是一个版本控制工具，主要包含以下几个部分：&lt;/p&gt;
+&lt;p&gt;Git是一个版本控制工具, 主要包含以下几个部分: &lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;远端（Remote）：源码位置。&lt;/li&gt;
-&lt;li&gt;工作空间（Workingspace）：本地存放项目代码的地方。&lt;/li&gt;
-&lt;li&gt;暂存区（Index/Stage）：一个记录改动信息的 …&lt;/li&gt;&lt;/ul&gt;</summary><content type="html">&lt;h2 id="_1"&gt;组成&lt;/h2&gt;
+&lt;li&gt;远端 (Remote) : 源码位置. &lt;/li&gt;
+&lt;li&gt;工作空间 (Workingspace) : 本地存放项目代码的地方. &lt;/li&gt;
+&lt;li&gt;暂存区 (Index/Stage) : 一个记录改动信息的 …&lt;/li&gt;&lt;/ul&gt;</summary><content type="html">&lt;h2 id="_1"&gt;组成&lt;/h2&gt;
 &lt;p&gt;&lt;img alt="image.png" src="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/06965cafe85442baa41f8f3f90c175af~tplv-k3u1fbpfcp-watermark.image?"&gt;&lt;/p&gt;
-&lt;p&gt;Git是一个版本控制工具，主要包含以下几个部分：&lt;/p&gt;
+&lt;p&gt;Git是一个版本控制工具, 主要包含以下几个部分: &lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;远端（Remote）：源码位置。&lt;/li&gt;
-&lt;li&gt;工作空间（Workingspace）：本地存放项目代码的地方。&lt;/li&gt;
-&lt;li&gt;暂存区（Index/Stage）：一个记录改动信息的文件，临时存放改动，保存即将提交的文件列表信息。&lt;/li&gt;
-&lt;li&gt;仓库（Repository）：维护版本信息，包含提交的所有版本的数据。&lt;/li&gt;
+&lt;li&gt;远端 (Remote) : 源码位置. &lt;/li&gt;
+&lt;li&gt;工作空间 (Workingspace) : 本地存放项目代码的地方. &lt;/li&gt;
+&lt;li&gt;暂存区 (Index/Stage) : 一个记录改动信息的文件, 临时存放改动, 保存即将提交的文件列表信息. &lt;/li&gt;
+&lt;li&gt;仓库 (Repository) : 维护版本信息, 包含提交的所有版本的数据. &lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2 id="_2"&gt;常用命令&lt;/h2&gt;
-&lt;p&gt;上述几个部分之间主要由6个常用命令来进行数据的交互：&lt;/p&gt;
+&lt;p&gt;上述几个部分之间主要由6个常用命令来进行数据的交互: &lt;/p&gt;
 &lt;table&gt;
 &lt;thead&gt;
 &lt;tr&gt;
@@ -499,7 +584,7 @@ ipt[标准输入] --&gt;|docker build - &lt; input| img
 &lt;/tbody&gt;
 &lt;/table&gt;
 &lt;h2 id="_3"&gt;分支&lt;/h2&gt;
-&lt;p&gt;分支（branch）可以理解为指针，关联的commit串联成时间线，分支指向这个时间线最近的commit。如下图中就有两个分支&lt;code&gt;main&lt;/code&gt;和&lt;code&gt;develop&lt;/code&gt;。Git会使用HEAD来指向特定的分支来指明当前仓库所属的分支，Git切换不同的分支时，就是让HEAD指向另一个分支。&lt;/p&gt;
+&lt;p&gt;分支 (branch) 可以理解为指针, 关联的commit串联成时间线, 分支指向这个时间线最近的commit. 如下图中就有两个分支&lt;code&gt;main&lt;/code&gt;和&lt;code&gt;develop&lt;/code&gt;. Git会使用HEAD来指向特定的分支来指明当前仓库所属的分支, Git切换不同的分支时, 就是让HEAD指向另一个分支. &lt;/p&gt;
 &lt;div class="mermaid"&gt;
 gitGraph
 commit id: "build 1"
@@ -517,7 +602,7 @@ commit id: "feat 3" tag: "HEAD"
 &lt;/div&gt;
 
 &lt;h2 id="_4"&gt;工作流程&lt;/h2&gt;
-&lt;p&gt;如下设定了一个简单的场景展示Git的工作流程，开发时开发者从主分支建立自己的分支并进行修改和维护，在该阶段任务完成后合并所有子分支来更新主分支。&lt;/p&gt;
+&lt;p&gt;如下设定了一个简单的场景展示Git的工作流程, 开发时开发者从主分支建立自己的分支并进行修改和维护, 在该阶段任务完成后合并所有子分支来更新主分支. &lt;/p&gt;
 &lt;div class="mermaid"&gt;
 flowchart TD
 
@@ -638,15 +723,15 @@ m --&gt;|merge| rmt3
 &lt;/tbody&gt;
 &lt;/table&gt;
 &lt;h2 id="_6"&gt;提交规范&lt;/h2&gt;
-&lt;p&gt;每一次的commit应该进行规范且详细的说明，目前最受欢迎的是Angular规范，其格式如下，实在是懒的话只写第一行也能接受。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;提交类型(影响范围，可选): 提交简述
+&lt;p&gt;每一次的commit应该进行规范且详细的说明, 目前最受欢迎的是Angular规范, 其格式如下, 实在是懒的话只写第一行也能接受. &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;提交类型(影响范围, 可选): 提交简述
 
 提交的详细信息
 
 注脚
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-&lt;p&gt;其中提交类型主要有下面几种：&lt;/p&gt;
+&lt;p&gt;其中提交类型主要有下面几种: &lt;/p&gt;
 &lt;table&gt;
 &lt;thead&gt;
 &lt;tr&gt;
@@ -669,7 +754,7 @@ m --&gt;|merge| rmt3
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;refactor&lt;/td&gt;
-&lt;td&gt;重构，不增加功能不修复BUG的修改&lt;/td&gt;
+&lt;td&gt;重构, 不增加功能不修复BUG的修改&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;style&lt;/td&gt;
@@ -694,29 +779,29 @@ m --&gt;|merge| rmt3
 &lt;/tbody&gt;
 &lt;/table&gt;
 &lt;h2 id="_7"&gt;忽略规则&lt;/h2&gt;
-&lt;p&gt;Git可以配置.gitignore文件来管理Git忽略规则，以忽略/不跟踪项目目录下的一些文件变动。&lt;/p&gt;
+&lt;p&gt;Git可以配置.gitignore文件来管理Git忽略规则, 以忽略/不跟踪项目目录下的一些文件变动. &lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;file&lt;/span&gt;&lt;span class="w"&gt;     &lt;/span&gt;&lt;span class="o"&gt;//&lt;/span&gt;忽略&lt;span class="nb"&gt;pwd&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;file文件&lt;/span&gt;
 &lt;span class="nb"&gt;dir&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="o"&gt;//&lt;/span&gt;忽略&lt;span class="nb"&gt;pwd&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="nb"&gt;dir&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;目录下的文件
 &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;xml&lt;/span&gt;&lt;span class="w"&gt;     &lt;/span&gt;&lt;span class="o"&gt;//&lt;/span&gt;忽略所有&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;xml结尾的文件&lt;/span&gt;
 &lt;span class="sx"&gt;!lib.xml  //不忽略lib.xml&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-&lt;p&gt;有时在修改.gitignore后可能出现规则没有及时更新的情况，需要手动清空cached的缓存内容，然后再add一次。&lt;/p&gt;
+&lt;p&gt;有时在修改.gitignore后可能出现规则没有及时更新的情况, 需要手动清空cached的缓存内容, 然后再add一次. &lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;git rm -rf --cached .
 git fetch
 git add .
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;h2 id="vs-code"&gt;在VS code中的使用&lt;/h2&gt;
-&lt;p&gt;在vsc中推荐安装GitLens扩展就可以方便地使用Git了。&lt;/p&gt;
+&lt;p&gt;在vsc中推荐安装GitLens扩展就可以方便地使用Git了. &lt;/p&gt;
 &lt;h2 id="pycharm"&gt;在Pycharm中的使用&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;在远端拷贝项目链接 &lt;code&gt;[克隆]  --&amp;gt; [使用HTTP克隆]&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;克隆项目到本地 &lt;code&gt;[File] --&amp;gt; [New] --&amp;gt; [Project from Version Control]&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;和远端同步刷新，在IDE的左下角 &lt;code&gt;[git] --&amp;gt; [Fetch All Remotes]&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;创建分支，在IDE的右下角 &lt;code&gt;[main] --&amp;gt; [Remote Branches] --&amp;gt; [选择分支] --&amp;gt; [&amp;gt;] --&amp;gt; [New Branch from '...']&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;切换分支，在IDE的右下角 &lt;code&gt;[main] --&amp;gt; [选择分支] --&amp;gt; [Checkout]&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;提交，在IDE左侧边栏 &lt;code&gt;[Commit] --&amp;gt; [勾选提交文件] --&amp;gt; [填写提交信息] --&amp;gt; [Commit and Push]&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;和远端同步刷新, 在IDE的左下角 &lt;code&gt;[git] --&amp;gt; [Fetch All Remotes]&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;创建分支, 在IDE的右下角 &lt;code&gt;[main] --&amp;gt; [Remote Branches] --&amp;gt; [选择分支] --&amp;gt; [&amp;gt;] --&amp;gt; [New Branch from '...']&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;切换分支, 在IDE的右下角 &lt;code&gt;[main] --&amp;gt; [选择分支] --&amp;gt; [Checkout]&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;提交, 在IDE左侧边栏 &lt;code&gt;[Commit] --&amp;gt; [勾选提交文件] --&amp;gt; [填写提交信息] --&amp;gt; [Commit and Push]&lt;/code&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2 id="_8"&gt;上传代码到远程新分支&lt;/h2&gt;
 &lt;p&gt;查看远程分支&lt;/p&gt;

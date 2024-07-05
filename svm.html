@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="chinese (simplified)">
+
+<head>
+            <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+        <title>支持向量机的理解和推导</title>
+
+            <link href="https://zeng-yan.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Zeng Yan's Blog Full Atom Feed" />
+            <link href="https://zeng-yan.github.io/feeds/{slug}.atom.xml" type="application/atom+xml" rel="alternate" title="Zeng Yan's Blog Categories Atom Feed" />
+        <!-- Bootstrap Core CSS -->
+        <link href="https://zeng-yan.github.io/theme/css/bootstrap.min.css" rel="stylesheet">
+
+        <!-- Custom CSS -->
+        <link href="https://zeng-yan.github.io/theme/css/clean-blog.min.css" rel="stylesheet">
+
+        <!-- Code highlight color scheme -->
+            <link href="https://zeng-yan.github.io/theme/css/code_blocks/monokai.css" rel="stylesheet">
+
+
+        <!-- Custom Fonts -->
+        <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+        <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+        <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+
+
+        <meta name="description" content="支持向量机(Support Vector Machines, SVM) 一些概念 超平面（hyperplane）：决策面，分类的决策边界，如图中黑色直线 支持向量（support vector）：距离超平面距离最近的 …">
+
+        <meta name="author" content="Zengyan">
+
+        <meta name="tags" content="算法">
+
+	                <meta property="og:locale" content="">
+		<meta property="og:site_name" content="Zeng Yan's Blog">
+
+	<meta property="og:type" content="article">
+            <meta property="article:author" content="https://zeng-yan.github.io/author/zengyan.html">
+	<meta property="og:url" content="https://zeng-yan.github.io/svm.html">
+	<meta property="og:title" content="支持向量机的理解和推导">
+	<meta property="article:published_time" content="2021-09-10 00:00:00+08:00">
+            <meta property="og:description" content="支持向量机(Support Vector Machines, SVM) 一些概念 超平面（hyperplane）：决策面，分类的决策边界，如图中黑色直线 支持向量（support vector）：距离超平面距离最近的 …">
+
+            <meta property="og:image" content="https://zeng-yan.github.io/images/andreas-rocha-pinecastle01.jpg">
+    <link rel="icon" href="/images/favicon.ico">
+</head>
+
+<body class="article-svm">
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header page-scroll">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="https://zeng-yan.github.io/">Zeng Yan's Blog</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <!-- Page Header -->
+        <header class="intro-header" style="background-image: url('https://zeng-yan.github.io//images/andreas-rocha-pinecastle01.jpg')">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <div class="post-heading">
+                        <h1>支持向量机的理解和推导</h1>
+                        <span class="meta">Posted by
+                                <a href="https://zeng-yan.github.io/author/zengyan.html">Zengyan</a>
+                             on 周五 10 九月 2021
+                        </span>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+    <!-- Post Content -->
+    <article>
+        <p>支持向量机(Support Vector Machines, SVM)</p>
+<h2 id="_1">一些概念</h2>
+<ul>
+<li>
+<p>超平面（hyperplane）：决策面，分类的决策边界，如图中黑色直线</p>
+</li>
+<li>
+<p>支持向量（support vector）：距离超平面距离最近的样本点，如图中红色点</p>
+</li>
+<li>
+<p>间隔（margin）：样本点到超平面的距离</p>
+</li>
+</ul>
+<p>下面这张图和本文并不对应，但可以辅助理解：</p>
+<p><img alt="一张不是那么精确的图" src="essayimages/svm.png"></p>
+<h2 id="_2">线性分类器</h2>
+<p>现有一个二分类问题，样本的类别标签为-1和1，一个线性分类模型可以表示如下（N个样本，省略了下标i）：</p>
+<div class="math">$$
+y = sgn(w^Tx+b) 
+\tag{1}
+$$</div>
+<p>在线性分类器中，我们的任务是找到由 <span class="math">\(w\)</span> 和 <span class="math">\(b\)</span> 决定的合适的决策面，它可以很好的区分标签不同的两类样本点，分布在决策面一侧的样本点属于一个类别。显然，在两种不同类别的样本点之间的空隙中可以有很多的超平面，但这些超平面的表现并不总是让人满意。那么如何得到最佳的超平面呢</p>
+<h2 id="_3">目标函数</h2>
+<p>如何得到最佳的决策面呢？我们引入支持向量和间隔的概念，最佳的决策面是支持向量到超平面的间隔尽可能大。</p>
+<p>所以现在的我们的任务有两点（1）正确地区分各样本点（2）最大化间隔。</p>
+<p>正确区分样本点用数学语言描述就是：</p>
+<div class="math">$$
+y(w^Tx+b) \geq 0, \quad i=1,2,..,N 
+$$</div>
+<p>当标签为+1时，若满足上式，<span class="math">\(wx+b&gt;0 \quad sgn(wx+b)=+1\)</span>，模型输出和标签匹配。当标签为-1时，若满足上式，<span class="math">\(wx+b&lt;0 \quad sgn(wx+b)=-1\)</span>，模型输出同样和标签匹配。</p>
+<p>在这种情况下，可能会出现支持向量十分接近，甚至刚好在决策面上的情形，而我们希望支持向量和决策面保有一定距离，故做简单调整为：</p>
+<div class="math">$$
+y(w^Tx+b) \geq 1, \quad i=1,2,..,N
+\tag{2}
+$$</div>
+<p>此时，决策面到支持向量必然存在一定距离，该距离即间隔。我们来求一下这个间隔，如图中所示，这一间隔是 <span class="math">\(wx+b=1\)</span> 或 <span class="math">\(wx+b=-1\)</span> 到决策面的距离，利用点到平面的距离公式，求决策面上的点到另一条直线的距离，可以解得间隔为 <span class="math">\(\frac{1}{||w||}\)</span>。</p>
+<div class="math">$$
+\frac{|w^Tx+b|}{||w||} = \frac{1}{||w||}
+$$</div>
+<p>最大化间隔，即最大化 <span class="math">\(\frac{1}{||w||}\)</span>，也即最小化 <span class="math">\(||w||\)</span>。</p>
+<p>优化问题中，比较便于求解的形式是凸函数的最小化，我们转变求解的形式，将最小化 <span class="math">\(||w||\)</span> 转变为最小化 <span class="math">\(||w||^2\)</span>。</p>
+<p>所以我们的问题是一个约束优化问题，在正确地区分各样本点的前提下最大化间隔，用数学公式描述为：</p>
+<div class="math">$$
+\arg \min_{w,b} \frac{1}{2} ||w||^2 \\
+s.t. \quad y(w^Tx+b)-1 \geq 0, \quad i=1,2,..,N
+$$</div>
+<h2 id="_4">软间隔</h2>
+<p>回过头来看式2，它用于描述正确地区分各样本点的情形，但这种情形是非常理想化的，大多数情况下，我们无法找到一个完美的决策面来严格地区分正负样本点，从而让约束永远无法满足。空间中可能会有些点在另一个类别中，形成一种你中有我我中有你的样子。这时我们引入松弛向量 <span class="math">\(\xi\)</span>，称为soft margin，来放宽限制。</p>
+<div class="math">$$
+\arg \min_{w,b} \frac{1}{2} ||w||^2 \\
+s.t. \quad y(w^Tx+b) \geq 1 - \xi, \quad \xi \geq 0, \quad i=1,2,..,N
+$$</div>
+<p>但这时 <span class="math">\(\xi\)</span> 的取值显然成了问题，<span class="math">\(\xi\)</span> 可以取无穷大从而让所有所有样本点都能满足约束条件。基于此，我们给目标函数加上一个 <span class="math">\(\xi\)</span> 的惩罚项 <span class="math">\(C\)</span> 来限制 <span class="math">\(\xi\)</span> 的大小，这里的 <span class="math">\(C\)</span> 平衡 <span class="math">\(\xi\)</span> 增大时，优化倾向哪边。约束优化问题被完善为：</p>
+<div class="math">$$
+\arg \min_{w,b} \frac{1}{2} ||w||^2 + C\sum^{N}_{i=1}\xi 
+\\
+s.t. \quad y(w^Tx+b) \geq 1 - \xi \quad \&amp; \quad \xi \geq 0 
+\tag{3}
+$$</div>
+<h2 id="_5">优化问题求解</h2>
+<p>可以使用拉格朗日乘子法求解上述约束优化问题，将有约束的原始目标函数转换为无约束的新构造的拉格朗日目标函数（这里没有写 <span class="math">\(x, y, \xi, \alpha, \beta\)</span>的下标），然后最大化 <span class="math">\(\alpha\)</span> 和 <span class="math">\(\beta\)</span>，最小化 <span class="math">\(w\)</span> 和 <span class="math">\(\xi\)</span>。</p>
+<div class="math">$$
+L(w,v,\xi,\alpha,\beta) = 
+\frac{1}{2}{||w||}^2
++ C \sum_{i=1}^{N}\xi 
+- \sum_{i=1}^{N}\alpha[y(w^Tx+b) -1 + \xi]
+- \sum_{i=1}^{N}\beta\xi
+\\ 
+\alpha, \beta \geq 0
+\tag{4}
+$$</div>
+<p>求导数为零的点，令</p>
+<div class="math">$$
+\begin{cases}
+ \frac{\partial L}{\partial w} = w - \sum^{N}_{i=1} \alpha y x = 0 \\
+ \frac{\partial L}{\partial b} = - \sum^{N}_{i=1} \alpha y  = 0 \\
+ \frac{\partial L}{\partial \xi} = C - \alpha - \beta  = 0
+\end{cases}
+$$</div>
+<p>得</p>
+<div class="math">$$
+\begin{cases}
+ w = \sum^{N}_{i=1} \alpha y x \\
+ \sum^{N}_{i=1} \alpha y  = 0 \\
+ \alpha = C - \beta \\
+ \beta = C - \alpha \\
+\end{cases}
+$$</div>
+<p>带入L化简得</p>
+<div class="math">$$
+L = \sum^{N}_{i=1} \alpha - \frac{1}{2} \sum^{N}_{i=1}\sum^{N}_{j=1} \alpha^T y^Tx^Txy \alpha \\
+L = \sum^{N}_{i=1} \alpha - \frac{1}{2} \alpha^T H \alpha \\
+where \quad H_{i,j} = y_iy_jx_ix_j
+$$</div>
+<p>最终问题为</p>
+<div class="math">$$
+\max (\sum^{N}_{i=1} \alpha - \frac{1}{2} \alpha^T H \alpha) \\
+s.t. \quad \alpha, \beta \geq 0, \quad \alpha = C - \beta, \quad \sum^{N}_{i=1} \alpha y  = 0
+$$</div>
+<p>继续化简约束条件并变为最小化问题，最终我们的问题转换为下面这个优化问题：</p>
+<div class="math">$$
+\min (\frac{1}{2} \alpha^T H \alpha - \sum^{N}_{i=1} \alpha)  \\
+s.t. \quad \alpha \in [0,C], \quad  \sum^{N}_{i=1} \alpha y  = 0 
+\tag{5}
+$$</div>
+<p>这时我们只用求解出最优的 <span class="math">\(\alpha\)</span> 即可，此时 <span class="math">\(w\)</span> 和 <span class="math">\(b\)</span> 的解为式6：</p>
+<div class="math">$$
+\begin{cases}
+ w = \sum^{N}_{i=1} \alpha y x \\
+ b = y - \sum^{N}_{j=1} \alpha_j y_j x^T_j x_j \\
+\end{cases}
+\tag{6}
+$$</div>
+<h2 id="_6">非线性和核技巧</h2>
+<p>我们构建的分类函数是 <span class="math">\(f(x)=wx+b\)</span>，现在我们把式6带入得：</p>
+<div class="math">$$
+f(x) = w^T x + b = \sum^{N}_{i=1} \alpha y x^Tx + b
+$$</div>
+<p>观察式5，6以及现在的分类函数，这是现在我们求解需要的全部式子了，在它们里面有关 <span class="math">\(x\)</span> 的项全部都是 <span class="math">\(x^Tx\)</span> 这种内积的形式。这一特殊形式，让我们在处理非线性问题时，可以把这种内积的形式替换为核函数。<br>
+核函数是内积的一般化的形式，可以视作是另一个空间的内积：</p>
+<div class="math">$$
+K(x_i,x_j) := \Phi(x_i)^T \Phi(x_j) \quad \Phi:\mathcal{X} \rightarrow \mathcal{Z}
+$$</div>
+<blockquote>
+<p>REFERS<br>
+* 机器学习实战. Peter harrington. 人民邮电出版社. p89<br>
+* <a href="https://zhuanlan.zhihu.com/p/31886934">支持向量机（SVM）——原理篇</a><br>
+* <a href="https://www.bilibili.com/video/av75953274/">猫都能看懂的SVM</a></p>
+</blockquote>
+<script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var align = "center",
+        indent = "0em",
+        linebreak = "false";
+
+    if (false) {
+        align = (screen.width < 768) ? "left" : align;
+        indent = (screen.width < 768) ? "0em" : indent;
+        linebreak = (screen.width < 768) ? 'true' : linebreak;
+    }
+
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.3/latest.js?config=TeX-AMS-MML_HTMLorMML';
+
+    var configscript = document.createElement('script');
+    configscript.type = 'text/x-mathjax-config';
+    configscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'none' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: '"+ align +"'," +
+        "    displayIndent: '"+ indent +"'," +
+        "    showMathMenu: true," +
+        "    messageStyle: 'normal'," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        "        availableFonts: ['STIX', 'TeX']," +
+        "        preferredFont: 'STIX'," +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
+        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
+        "    }, " +
+        "}); " +
+        "if ('default' !== 'default') {" +
+            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+        "}";
+
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(configscript);
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+</script>
+    </article>
+
+        <div class="tags">
+            <p>tags: <a href="https://zeng-yan.github.io/tag/suan-fa.html">算法</a></p>
+        </div>
+
+    <hr>
+
+            </div>
+        </div>
+    </div>
+
+    <hr>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <ul class="list-inline text-center">
+                            <li>
+                                <a href="https://github.com/Zeng-Yan">
+                                    <span class="fa-stack fa-lg">
+                                        <i class="fa fa-circle fa-stack-2x"></i>
+                                        <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                    </span>
+                                </a>
+                            </li>
+                    </ul>
+<p class="copyright text-muted">
+    Blog powered by <a href="http://getpelican.com">Pelican</a>,
+    which takes great advantage of <a href="http://python.org">Python</a>. <br />        &copy;  Zengyan
+</p>                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- jQuery -->
+    <script src="https://zeng-yan.github.io/theme/js/jquery.min.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="https://zeng-yan.github.io/theme/js/bootstrap.min.js"></script>
+
+        <!-- Custom Theme JavaScript -->
+        <script src="https://zeng-yan.github.io/theme/js/clean-blog.min.js"></script>
+
+</body>
+
+</html>

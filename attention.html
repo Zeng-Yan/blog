@@ -7,7 +7,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
 
-        <title>路径规划算法之RRT</title>
+        <title>理解Attention机制</title>
 
             <link href="https://zeng-yan.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Zeng Yan's Blog Full Atom Feed" />
             <link href="https://zeng-yan.github.io/feeds/{slug}.atom.xml" type="application/atom+xml" rel="alternate" title="Zeng Yan's Blog Categories Atom Feed" />
@@ -35,7 +35,7 @@
 
 
 
-        <meta name="description" content="算法简介 快速随机搜索树算法 (Rapidly-exploring Random Tree), 是一种采用增量方式增长的随机采样算法. 优势在于无需对系统进行建模, 无需对 …">
+        <meta name="description" content="在Seq2Seq结构中, 编码器输出语义向量c作为解码器的输入. 在早期模型中, 编码器只输出一个c, 它可以是编码器最后一个时间步的h, 也可以是全部时 …">
 
         <meta name="author" content="Zengyan">
 
@@ -46,16 +46,16 @@
 
 	<meta property="og:type" content="article">
             <meta property="article:author" content="https://zeng-yan.github.io/author/zengyan.html">
-	<meta property="og:url" content="https://zeng-yan.github.io/drafts/alg-rrt.html">
-	<meta property="og:title" content="路径规划算法之RRT">
-	<meta property="article:published_time" content="2023-03-07 00:00:00+08:00">
-            <meta property="og:description" content="算法简介 快速随机搜索树算法 (Rapidly-exploring Random Tree), 是一种采用增量方式增长的随机采样算法. 优势在于无需对系统进行建模, 无需对 …">
+	<meta property="og:url" content="https://zeng-yan.github.io/attention.html">
+	<meta property="og:title" content="理解Attention机制">
+	<meta property="article:published_time" content="2023-03-01 00:00:00+08:00">
+            <meta property="og:description" content="在Seq2Seq结构中, 编码器输出语义向量c作为解码器的输入. 在早期模型中, 编码器只输出一个c, 它可以是编码器最后一个时间步的h, 也可以是全部时 …">
 
-            <meta property="og:image" content="https://zeng-yan.github.io/images/tyler-edlin-fantasy-landscape1.jpg">
+            <meta property="og:image" content="https://zeng-yan.github.io/images/andreas-rocha-pinecastle01.jpg">
     <link rel="icon" href="/images/favicon.ico">
 </head>
 
-<body class="article-alg-rrt">
+<body class="article-attention">
 
     <!-- Navigation -->
     <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
@@ -83,15 +83,15 @@
     </nav>
 
     <!-- Page Header -->
-        <header class="intro-header" style="background-image: url('https://zeng-yan.github.io//images/tyler-edlin-fantasy-landscape1.jpg')">
+        <header class="intro-header" style="background-image: url('https://zeng-yan.github.io//images/andreas-rocha-pinecastle01.jpg')">
         <div class="container">
             <div class="row">
                 <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
                     <div class="post-heading">
-                        <h1>路径规划算法之RRT</h1>
+                        <h1>理解Attention机制</h1>
                         <span class="meta">Posted by
                                 <a href="https://zeng-yan.github.io/author/zengyan.html">Zengyan</a>
-                             on 周二 07 三月 2023
+                             on 周三 01 三月 2023
                         </span>
                         
                     </div>
@@ -106,60 +106,78 @@
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
     <!-- Post Content -->
     <article>
-        <h2 id="_1">算法简介</h2>
-<p>快速随机搜索树算法 (Rapidly-exploring Random Tree), 是一种采用增量方式增长的随机采样算法.</p>
-<p>优势在于无需对系统进行建模, 无需对搜索区域进行几何划分, 在搜索空间的覆盖率高; 可以有效地将非完整约束考虑在算法内部, 从而避免复杂的运动学约束, 使得路径规划问题简单化.</p>
-<h2 id="_2">算法流程</h2>
+        <p>在Seq2Seq结构中, 编码器输出语义向量c作为解码器的输入. <br>
+在早期模型中, 编码器只输出一个c, 它可以是编码器最后一个时间步的h, 也可以是全部时间步的h汇总后经过变换的结果. </p>
+<p><img alt="seq2seq" src="essayimages/seq2seq.drawio.svg"></p>
+<p>这样只有一个语义向量的问题有两点：</p>
 <ol>
-<li>以<span class="math">\(X\)</span>表示整体状态空间，以<span class="math">\(X_{obs}\)</span>表示障碍空间，以<span class="math">\(X_{free}\)</span>表示可达空间，首先定义起始节点<span class="math">\(x_{init}\)</span>和目标节点<span class="math">\(x_{goal}\)</span>属于<span class="math">\(X_{free}\)</span>，将<span class="math">\(x_{init}\)</span>加入空随机树<span class="math">\(T\)</span>；</li>
-<li>产生一个随机点<span class="math">\(x_{rand}\)</span>，随机点的生成是任意的，即可以在整个状态空间<span class="math">\(X\)</span>内；</li>
-<li>在产生随机点后，遍历随机树<span class="math">\(T\)</span>中的每一个节点，计算它们与<span class="math">\(x_{rand}\)</span>之间的距离，找出距离此随机点最近的节点，记为<span class="math">\(x_{near}\)</span>；</li>
-<li>定义一个步长<span class="math">\(EPS\)</span>，当找到<span class="math">\(x_{near}\)</span>时，<span class="math">\(x_{near}\)</span>向<span class="math">\(x_{near}\)</span>与<span class="math">\(x_{rand}\)</span>连线方向扩展<span class="math">\(EPS\)</span>的距离产生新的节点<span class="math">\(x_{new}\)</span>。</li>
-<li>判断<span class="math">\(x_{new}\)</span>是否满足（非完整微分）约束，如果不满足，舍弃<span class="math">\(x_{new}\)</span>，回退到步骤2，如果满足则保留<span class="math">\(x_{new}\)</span>，并在<span class="math">\(x_{rand}\)</span>到<span class="math">\(x_{new}\)</span>之间加上一条边；</li>
-<li>判断<span class="math">\(x_{near}\)</span>、<span class="math">\(x_{new}\)</span>和<span class="math">\(x_{near}\)</span>到<span class="math">\(x_{new}\)</span>之间的边任意一个是否位于<span class="math">\(X_{obs}\)</span>中或者与<span class="math">\(X_{obs}\)</span>相交，若满足，舍弃<span class="math">\(x_{new}\)</span>，回退到步骤2，如果属于<span class="math">\(X_{free}\)</span>，则保留新节点。</li>
-<li>将<span class="math">\(x_{new}\)</span>加入<span class="math">\(T\)</span>；</li>
-<li>重复步骤2-8直到<span class="math">\(x_{new}\)</span>到<span class="math">\(x_{goal}\)</span>的距离小于设定的阈值<span class="math">\(Thresh\)</span>；</li>
-<li>从最后一个<span class="math">\(x_{new}\)</span>回溯到<span class="math">\(x_{init}\)</span>得到路径。</li>
+<li>输入序列太长时表现不理想. 一是只压缩到一个向量信息损失太大, 二是长程依赖. </li>
+<li>解码器每个时间步接收的语义向量都是一致的. 而实际中解码器每个时间步关注的重点并不一致. </li>
 </ol>
-<div class="mermaid">
-flowchart TD
-
-subgraph init[init]
-x1[X_obs]
-x2["X_free"]
-x3["x_init ∈ X_free"]
-x4["x_goal ∈ X_free"]
-x5["T: {x_init}"]
-
-x2 --- x3
-x2 --- x4
-x5 --- x3
-end
-
-1[gen x_rand in X]
-2[find x_near in T]
-3[x_new = x_near + EPS]
-4{judge}
-5[T.add x_new]
-
-5[dis=T.last]
-6{dis < Thresh}
-
-7[end]
-8(( ))
-
-init --> 1 --> 2 --> 3 --> 4 -->|yes| 5 --> 6 -->|yes| 7
-4 ---|NO| 8
-6 ---|NO| 8
-8 --> 1
-</div>
-
-<h2 id="python">Python实现</h2>
-<div class="highlight"><pre><span></span><code>
-</code></pre></div>
-
-<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
-
+<p>那么解决方法就是让编码器输出多个语义向量, 在每个时间步解码器使用不同的语义向量. 这时我们的架构是这样的</p>
+<ol>
+<li>
+<p>Encoder:<br>
+<div class="math">$$
+h_i = encoder(x_i, h_{i-1})
+$$</div>
+</p>
+</li>
+<li>
+<p>Decoder:<br>
+<div class="math">$$
+s_i = decoder(y_i,s_{i-1},c_i)
+$$</div>
+</p>
+</li>
+</ol>
+<p>具体的, 语义向量都是由编码器的全部h汇总计算的, 但在不同时间步, 计算一个向量 <span class="math">\(\alpha\)</span> 为不同的h赋予不同的权重, 从而得到不同的语义向量. </p>
+<div class="math">$$
+c_j = \sum_{i=1}^{m} \alpha_{ij} h_{i} \tag{1}
+$$</div>
+<p>这里的关键就是 <span class="math">\(\alpha\)</span> 的计算, 也就是注意力是如何分配的. <span class="math">\(\alpha\)</span> 代表了一种模型的理解, 即在特定时间步的解码过程中, 结合历史信息 (s) , 模型认为输入的哪些部分 (x编码后的h) 是更重要的. </p>
+<p>换句话讲, 对于解码的第j个时间步, <span class="math">\(\alpha_i\)</span> 是解码器当前获得隐藏状态 <span class="math">\(s_{j-1}\)</span> 和编码器输出的全部隐藏状态的相关性. </p>
+<div class="math">$$
+\alpha_i = align(h_i, s_{j-1}) \quad i=1,\cdots,m
+$$</div>
+<p><img alt="Attention in Transformer" src="essayimages/attention.drawio.svg"></p>
+<p>而函数align有多种实现方式</p>
+<p>方法一 (原始论文) ：<br>
+</p>
+<div class="math">$$
+\tilde{\alpha}_i = v^T \cdot tanh(w \begin{bmatrix} h_i \\ s_{j-1} \end{bmatrix})
+$$</div>
+<div class="math">$$
+(\alpha_1, \alpha_2, \cdots, \alpha_m) = softmax(\tilde{\alpha}_1, \tilde{\alpha}_2, \cdots, \tilde{\alpha}_m)
+$$</div>
+<p>方法二 (Transformer) ：</p>
+<ol>
+<li>线性映射：</li>
+</ol>
+<div class="math">$$
+k_i = W_K \cdot h_i \\
+q_{j-1} = W_Q \cdot s_{j-1} \\
+i = 1, 2, \cdots, m \quad j = 1, 2, \cdots, n 
+$$</div>
+<ol start="2">
+<li>内积：</li>
+</ol>
+<div class="math">$$
+\tilde{\alpha}_i = k_i^T q_{j-1}
+$$</div>
+<ol start="3">
+<li>归一化：</li>
+</ol>
+<div class="math">$$
+(\alpha_1, \alpha_2, \cdots, \alpha_m) = softmax(\tilde{\alpha}_1, \tilde{\alpha}_2, \cdots, \tilde{\alpha}_m)
+$$</div>
+<p>完成了的计算后, 让我们回到式(1), 最终得到了语义向量. </p>
+<blockquote>
+<p>REFER:</p>
+<p><a href="https://arxiv.org/pdf/1409.0473.pdf">(2014) Neural Machine Translation by Jointly Learning to Align and Translate</a></p>
+<p><a href="https://sebastianraschka.com/blog/2023/llm-reading-list.html">Understanding Large Language Models &ndash; A Transformative Reading List</a><br>
+<a href="https://kexue.fm/archives/4765"></a></p>
+</blockquote>
 <script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
     var align = "center",
         indent = "0em",
