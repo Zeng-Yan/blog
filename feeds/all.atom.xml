@@ -7,7 +7,7 @@
 * 最大化最小角特性: 在点集的所有可能的三角剖分中, 该剖分形成三角形的最小角最大.&lt;br&gt;
 * 空圆特性: 任意一个三角形的外接圆中都不能包含另外的顶点, 这种形式的剖分产生的最小角最大.&lt;/p&gt;
 &lt;p&gt;Voronoi 图和 Delaunay 三角剖分是对偶的, 两者可以相互转换&lt;/p&gt;
-&lt;p&gt;&lt;img alt="Voronoi图和Delaunay三角剖分" src="essayimages/Voronoi图和Delaunay三角剖分.png"&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="Voronoi图和Delaunay三角剖分" src="https://zeng-yan.github.io/essayimages/Voronoi图和Delaunay三角剖分.png"&gt;&lt;/p&gt;
 &lt;h2 id="_1"&gt;实现原理&lt;/h2&gt;
 &lt;p&gt;可以使用 Bowyer-Wstson 算法来实现 Delaunay 三角剖分, 其核心是新插入一个顶点到现有的三角剖分中的更新策略:&lt;/p&gt;
 &lt;ul&gt;
@@ -230,10 +230,10 @@
 &lt;span class="n"&gt;d&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get_triangulation&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;vertexes&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="n"&gt;d&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;plot&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
 &lt;span class="n"&gt;d&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;to_voronoi&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</content><category term="算法"></category><category term="算法"></category></entry><entry><title>栅格地图 (二) DEM高程地图处理</title><link href="https://zeng-yan.github.io/dem.html" rel="alternate"></link><published>2024-06-27T00:00:00+08:00</published><updated>2024-06-27T00:00:00+08:00</updated><author><name>Zengyan</name></author><id>tag:zeng-yan.github.io,2024-06-27:/dem.html</id><summary type="html">&lt;p&gt;&lt;img alt="结果示例" src="essayimages/dem-tw.png"&gt;&lt;/p&gt;
-&lt;p&gt;要使用 &lt;code&gt;gdal-python&lt;/code&gt; 来读取和处理 &lt;code&gt;tif&lt;/code&gt; 格式的高程地图, 其核心在于理解 gdal 中的 &lt;code&gt;GetGeoTransform&lt;/code&gt; 方法并使用它来进行坐标转换. 下面我绘制了一张 …&lt;/p&gt;</summary><content type="html">&lt;p&gt;&lt;img alt="结果示例" src="essayimages/dem-tw.png"&gt;&lt;/p&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</content><category term="算法"></category><category term="算法"></category></entry><entry><title>栅格地图 (二) DEM高程地图处理</title><link href="https://zeng-yan.github.io/dem.html" rel="alternate"></link><published>2024-06-27T00:00:00+08:00</published><updated>2024-06-27T00:00:00+08:00</updated><author><name>Zengyan</name></author><id>tag:zeng-yan.github.io,2024-06-27:/dem.html</id><summary type="html">&lt;p&gt;&lt;img alt="结果示例" src="https://zeng-yan.github.io/essayimages/dem-tw.png"&gt;&lt;/p&gt;
+&lt;p&gt;要使用 &lt;code&gt;gdal-python&lt;/code&gt; 来读取和处理 &lt;code&gt;tif&lt;/code&gt; 格式的高程地图, 其核心在于理解 gdal 中的 &lt;code&gt;GetGeoTransform&lt;/code&gt; 方法并使用它来进行坐标转换. 下面我绘制了一张 …&lt;/p&gt;</summary><content type="html">&lt;p&gt;&lt;img alt="结果示例" src="https://zeng-yan.github.io/essayimages/dem-tw.png"&gt;&lt;/p&gt;
 &lt;p&gt;要使用 &lt;code&gt;gdal-python&lt;/code&gt; 来读取和处理 &lt;code&gt;tif&lt;/code&gt; 格式的高程地图, 其核心在于理解 gdal 中的 &lt;code&gt;GetGeoTransform&lt;/code&gt; 方法并使用它来进行坐标转换. 下面我绘制了一张图片来帮助理解 &lt;code&gt;GetGeoTransform&lt;/code&gt; 方法返回结果的含义: 对于读取的方形区域图像, &lt;span class="math"&gt;\(GT[0]\)&lt;/span&gt; 和 &lt;span class="math"&gt;\(GT[3]\)&lt;/span&gt; 标识了区域的左上角顶点的经纬度, &lt;span class="math"&gt;\(GT[1]\)&lt;/span&gt; 和 &lt;span class="math"&gt;\(GT[5]\)&lt;/span&gt; 表示该图像每个像素对应经纬度的大小, 以 &lt;span class="math"&gt;\(\theta\)&lt;/span&gt; 表示区域相对正北方向的偏移角度, &lt;span class="math"&gt;\(GT[2]\)&lt;/span&gt; 和 &lt;span class="math"&gt;\(GT[4]\)&lt;/span&gt; 表示 &lt;span class="math"&gt;\(-\tanh\theta\)&lt;/span&gt; 的值.&lt;/p&gt;
-&lt;p&gt;&lt;img alt="GetGeoTransform" src="essayimages/gdal%20transform.svg"&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="GetGeoTransform" src="https://zeng-yan.github.io/essayimages/gdal%20transform.svg"&gt;&lt;/p&gt;
 &lt;p&gt;这里使用到了第一部分光栅化 &lt;code&gt;src.raster_utils&lt;/code&gt; 中的部分函数.&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;numpy&lt;/span&gt; &lt;span class="k"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;np&lt;/span&gt;
 &lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;loguru&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;logger&lt;/span&gt;
@@ -648,9 +648,9 @@
     (document.body || document.getElementsByTagName('head')[0]).appendChild(configscript);
     (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
 }
-&lt;/script&gt;</content><category term="算法"></category><category term="算法"></category></entry><entry><title>栅格地图 (一) 直线光栅化</title><link href="https://zeng-yan.github.io/rasterization.html" rel="alternate"></link><published>2024-06-27T00:00:00+08:00</published><updated>2024-06-27T00:00:00+08:00</updated><author><name>Zengyan</name></author><id>tag:zeng-yan.github.io,2024-06-27:/rasterization.html</id><summary type="html">&lt;p&gt;&lt;img alt="alt text" src="essayimages/rasterization.png"&gt;&lt;/p&gt;
+&lt;/script&gt;</content><category term="算法"></category><category term="算法"></category></entry><entry><title>栅格地图 (一) 直线光栅化</title><link href="https://zeng-yan.github.io/rasterization.html" rel="alternate"></link><published>2024-06-27T00:00:00+08:00</published><updated>2024-06-27T00:00:00+08:00</updated><author><name>Zengyan</name></author><id>tag:zeng-yan.github.io,2024-06-27:/rasterization.html</id><summary type="html">&lt;p&gt;&lt;img alt="alt text" src="https://zeng-yan.github.io/essayimages/rasterization.png"&gt;&lt;/p&gt;
 &lt;p&gt;在工作中频繁涉及对栅格地图的处理, 所以写一些笔记来进行归纳总结.&lt;/p&gt;
-&lt;p&gt;在栅格地图中做直线的光栅化主要有两个目的 …&lt;/p&gt;</summary><content type="html">&lt;p&gt;&lt;img alt="alt text" src="essayimages/rasterization.png"&gt;&lt;/p&gt;
+&lt;p&gt;在栅格地图中做直线的光栅化主要有两个目的 …&lt;/p&gt;</summary><content type="html">&lt;p&gt;&lt;img alt="alt text" src="https://zeng-yan.github.io/essayimages/rasterization.png"&gt;&lt;/p&gt;
 &lt;p&gt;在工作中频繁涉及对栅格地图的处理, 所以写一些笔记来进行归纳总结.&lt;/p&gt;
 &lt;p&gt;在栅格地图中做直线的光栅化主要有两个目的, 一个是标识区域, 一个是用于碰撞检测.&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;numpy&lt;/span&gt; &lt;span class="k"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;np&lt;/span&gt;
@@ -964,9 +964,9 @@
     &lt;span class="n"&gt;imgpainter&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;show&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</content><category term="算法"></category><category term="算法"></category></entry><entry><title>程序化生成 一种地牢生成算法</title><link href="https://zeng-yan.github.io/dungeon-generator.html" rel="alternate"></link><published>2024-06-26T00:00:00+08:00</published><updated>2024-06-26T00:00:00+08:00</updated><author><name>Zengyan</name></author><id>tag:zeng-yan.github.io,2024-06-26:/dungeon-generator.html</id><summary type="html">&lt;p&gt;地牢是 Rouge-like 游戏中常见的一种地形设计, 一个地牢通常包含很多房间, 房间之间通过蜿蜒曲折的通道连接起来. 在我一开始 …&lt;/p&gt;</summary><content type="html">&lt;p&gt;地牢是 Rouge-like 游戏中常见的一种地形设计, 一个地牢通常包含很多房间, 房间之间通过蜿蜒曲折的通道连接起来. 在我一开始接触 Rouge-like 游戏时, 就为千奇百怪的地牢和其背后的程序生成 (Procedural generation) 算法所着迷. 这里我简单复刻一下 &lt;a href="https://indienova.com/indie-game-development/rooms-and-mazes-a-procedural-dungeon-generator/"&gt;房间和迷宫：一个地牢生成算法&lt;/a&gt; 这篇文章中提出的地牢生成算法. (我没有阅读原作者的源代码, 只是按照文章中的思路进行代码实现, 因此在细节上可能会和原作者代码存在出入)&lt;/p&gt;
 &lt;p&gt;而下面的图片展示的是我使用该算法结合 Godot4 中的 Gridmap 实现的 3D 地牢原型.&lt;/p&gt;
-&lt;p&gt;&lt;img alt="Godot 地牢" src="https://github.com/Zeng-Yan/MyBlog/blob/main/content/essayimages/godot-dungeon.png"&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="Godot 地牢" src="https://zeng-yan.github.io/essayimages/godot-dungeon.png"&gt;&lt;/p&gt;
 &lt;h2 id="_1"&gt;生成步骤&lt;/h2&gt;
-&lt;p&gt;&lt;img alt="迷宫生成过程" src="https://github.com/Zeng-Yan/MyBlog/blob/main/content/essayimages/dungeon.gif"&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="迷宫生成过程" src="https://zeng-yan.github.io/essayimages/dungeon.gif"&gt;&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;设置一个有限的地图区域&lt;/li&gt;
 &lt;li&gt;在地图区域中生成多个相互不重叠的房间&lt;/li&gt;
@@ -1907,7 +1907,7 @@ HTTPS = True
 &lt;/blockquote&gt;</content><category term="Python"></category><category term="Python"></category></entry><entry><title>理解Attention机制</title><link href="https://zeng-yan.github.io/attention.html" rel="alternate"></link><published>2023-03-01T00:00:00+08:00</published><updated>2023-03-01T00:00:00+08:00</updated><author><name>Zengyan</name></author><id>tag:zeng-yan.github.io,2023-03-01:/attention.html</id><summary type="html">&lt;p&gt;在Seq2Seq结构中, 编码器输出语义向量c作为解码器的输入. &lt;br&gt;
 在早期模型中, 编码器只输出一个c, 它可以是编码器最后一个时间步的h, 也可以是全部时 …&lt;/p&gt;</summary><content type="html">&lt;p&gt;在Seq2Seq结构中, 编码器输出语义向量c作为解码器的输入. &lt;br&gt;
 在早期模型中, 编码器只输出一个c, 它可以是编码器最后一个时间步的h, 也可以是全部时间步的h汇总后经过变换的结果. &lt;/p&gt;
-&lt;p&gt;&lt;img alt="seq2seq" src="essayimages/seq2seq.drawio.svg"&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="seq2seq" src="https://zeng-yan.github.io/essayimages/seq2seq.drawio.svg"&gt;&lt;/p&gt;
 &lt;p&gt;这样只有一个语义向量的问题有两点：&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;输入序列太长时表现不理想. 一是只压缩到一个向量信息损失太大, 二是长程依赖. &lt;/li&gt;
@@ -1939,7 +1939,7 @@ $$&lt;/div&gt;
 &lt;div class="math"&gt;$$
 \alpha_i = align(h_i, s_{j-1}) \quad i=1,\cdots,m
 $$&lt;/div&gt;
-&lt;p&gt;&lt;img alt="Attention in Transformer" src="essayimages/attention.drawio.svg"&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="Attention in Transformer" src="https://zeng-yan.github.io/essayimages/attention.drawio.svg"&gt;&lt;/p&gt;
 &lt;p&gt;而函数align有多种实现方式&lt;/p&gt;
 &lt;p&gt;方法一 (原始论文) ：&lt;br&gt;
 &lt;/p&gt;
@@ -2701,7 +2701,7 @@ git add .
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;示例:&lt;/p&gt;
-&lt;p&gt;&lt;img alt="weights" src="essayimages/weights-distribution.png"&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="weights" src="https://zeng-yan.github.io/essayimages/weights-distribution.png"&gt;&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;torch&lt;/span&gt;
 &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;torchvision.models&lt;/span&gt; &lt;span class="k"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;models&lt;/span&gt;
 &lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;torchvision.models&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;ResNet18_Weights&lt;/span&gt;
@@ -2832,7 +2832,7 @@ y_t = sigmoid(W h_t + b)
 \end{cases}
 $$&lt;/div&gt;
 &lt;p&gt;同样的，h到y的映射不是必须的，有的实现中直接用h作为y，Pytorch中就是如此。Pytorch中LSTM的具体计算实现如下：&lt;/p&gt;
-&lt;p&gt;&lt;img alt="Pytorch的RNN" src="essayimages/torch-rnn.png"&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="Pytorch的RNN" src="https://zeng-yan.github.io/essayimages/torch-rnn.png"&gt;&lt;/p&gt;
 &lt;p&gt;这里x和h分别和对应的w相乘在相加，实际上和上面写的x和h拼接后再乘w的形式是一样的，但注意Pytorch每个状态的计算用了两个偏置项。所以如下形式LSTM的参数量为：&lt;/p&gt;
 &lt;div class="math"&gt;$$
 5376 = 第一层LSTM参数量3200 + 第二层LSTM参数量2176 \\
@@ -2862,7 +2862,7 @@ $$&lt;/div&gt;
 
 &lt;h3 id="rnn_1"&gt;双向RNN&lt;/h3&gt;
 &lt;p&gt;我们可以分别构建两个RNN分别从左向右，和从右向左，各自输出自己的状态向量，然后拼接起来：&lt;/p&gt;
-&lt;p&gt;&lt;img alt="双向RNN" src="essayimages/bi-rnn.png"&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="双向RNN" src="https://zeng-yan.github.io/essayimages/bi-rnn.png"&gt;&lt;/p&gt;
 &lt;p&gt;双向RNN比单向RNN表现好的原因：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;
@@ -2982,7 +2982,7 @@ $$&lt;/div&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;下面这张图和本文并不对应，但可以辅助理解：&lt;/p&gt;
-&lt;p&gt;&lt;img alt="一张不是那么精确的图" src="essayimages/svm.png"&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="一张不是那么精确的图" src="https://zeng-yan.github.io/essayimages/svm.png"&gt;&lt;/p&gt;
 &lt;h2 id="_2"&gt;线性分类器&lt;/h2&gt;
 &lt;p&gt;现有一个二分类问题，样本的类别标签为-1和1，一个线性分类模型可以表示如下（N个样本，省略了下标i）：&lt;/p&gt;
 &lt;div class="math"&gt;$$

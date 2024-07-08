@@ -106,9 +106,9 @@
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
     <!-- Post Content -->
     <article>
-        <p><img alt="结果示例" src="essayimages/dem-tw.png"></p>
+        <p><img alt="结果示例" src="https://zeng-yan.github.io/essayimages/dem-tw.png"></p>
 <p>要使用 <code>gdal-python</code> 来读取和处理 <code>tif</code> 格式的高程地图, 其核心在于理解 gdal 中的 <code>GetGeoTransform</code> 方法并使用它来进行坐标转换. 下面我绘制了一张图片来帮助理解 <code>GetGeoTransform</code> 方法返回结果的含义: 对于读取的方形区域图像, <span class="math">\(GT[0]\)</span> 和 <span class="math">\(GT[3]\)</span> 标识了区域的左上角顶点的经纬度, <span class="math">\(GT[1]\)</span> 和 <span class="math">\(GT[5]\)</span> 表示该图像每个像素对应经纬度的大小, 以 <span class="math">\(\theta\)</span> 表示区域相对正北方向的偏移角度, <span class="math">\(GT[2]\)</span> 和 <span class="math">\(GT[4]\)</span> 表示 <span class="math">\(-\tanh\theta\)</span> 的值.</p>
-<p><img alt="GetGeoTransform" src="essayimages/gdal%20transform.svg"></p>
+<p><img alt="GetGeoTransform" src="https://zeng-yan.github.io/essayimages/gdal%20transform.svg"></p>
 <p>这里使用到了第一部分光栅化 <code>src.raster_utils</code> 中的部分函数.</p>
 <div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">loguru</span> <span class="kn">import</span> <span class="n">logger</span>

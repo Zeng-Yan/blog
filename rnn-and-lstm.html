@@ -163,7 +163,7 @@ y_t = sigmoid(W h_t + b)
 \end{cases}
 $$</div>
 <p>同样的，h到y的映射不是必须的，有的实现中直接用h作为y，Pytorch中就是如此。Pytorch中LSTM的具体计算实现如下：</p>
-<p><img alt="Pytorch的RNN" src="essayimages/torch-rnn.png"></p>
+<p><img alt="Pytorch的RNN" src="https://zeng-yan.github.io/essayimages/torch-rnn.png"></p>
 <p>这里x和h分别和对应的w相乘在相加，实际上和上面写的x和h拼接后再乘w的形式是一样的，但注意Pytorch每个状态的计算用了两个偏置项。所以如下形式LSTM的参数量为：</p>
 <div class="math">$$
 5376 = 第一层LSTM参数量3200 + 第二层LSTM参数量2176 \\
@@ -193,7 +193,7 @@ $$</div>
 
 <h3 id="rnn_1">双向RNN</h3>
 <p>我们可以分别构建两个RNN分别从左向右，和从右向左，各自输出自己的状态向量，然后拼接起来：</p>
-<p><img alt="双向RNN" src="essayimages/bi-rnn.png"></p>
+<p><img alt="双向RNN" src="https://zeng-yan.github.io/essayimages/bi-rnn.png"></p>
 <p>双向RNN比单向RNN表现好的原因：</p>
 <ul>
 <li>

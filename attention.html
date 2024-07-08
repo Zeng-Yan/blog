@@ -108,7 +108,7 @@
     <article>
         <p>在Seq2Seq结构中, 编码器输出语义向量c作为解码器的输入. <br>
 在早期模型中, 编码器只输出一个c, 它可以是编码器最后一个时间步的h, 也可以是全部时间步的h汇总后经过变换的结果. </p>
-<p><img alt="seq2seq" src="essayimages/seq2seq.drawio.svg"></p>
+<p><img alt="seq2seq" src="https://zeng-yan.github.io/essayimages/seq2seq.drawio.svg"></p>
 <p>这样只有一个语义向量的问题有两点：</p>
 <ol>
 <li>输入序列太长时表现不理想. 一是只压缩到一个向量信息损失太大, 二是长程依赖. </li>
@@ -140,7 +140,7 @@ $$</div>
 <div class="math">$$
 \alpha_i = align(h_i, s_{j-1}) \quad i=1,\cdots,m
 $$</div>
-<p><img alt="Attention in Transformer" src="essayimages/attention.drawio.svg"></p>
+<p><img alt="Attention in Transformer" src="https://zeng-yan.github.io/essayimages/attention.drawio.svg"></p>
 <p>而函数align有多种实现方式</p>
 <p>方法一 (原始论文) ：<br>
 </p>
