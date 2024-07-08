@@ -964,9 +964,9 @@
     &lt;span class="n"&gt;imgpainter&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;show&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</content><category term="算法"></category><category term="算法"></category></entry><entry><title>程序化生成 一种地牢生成算法</title><link href="https://zeng-yan.github.io/dungeon-generator.html" rel="alternate"></link><published>2024-06-26T00:00:00+08:00</published><updated>2024-06-26T00:00:00+08:00</updated><author><name>Zengyan</name></author><id>tag:zeng-yan.github.io,2024-06-26:/dungeon-generator.html</id><summary type="html">&lt;p&gt;地牢是 Rouge-like 游戏中常见的一种地形设计, 一个地牢通常包含很多房间, 房间之间通过蜿蜒曲折的通道连接起来. 在我一开始 …&lt;/p&gt;</summary><content type="html">&lt;p&gt;地牢是 Rouge-like 游戏中常见的一种地形设计, 一个地牢通常包含很多房间, 房间之间通过蜿蜒曲折的通道连接起来. 在我一开始接触 Rouge-like 游戏时, 就为千奇百怪的地牢和其背后的程序生成 (Procedural generation) 算法所着迷. 这里我简单复刻一下 &lt;a href="https://indienova.com/indie-game-development/rooms-and-mazes-a-procedural-dungeon-generator/"&gt;房间和迷宫：一个地牢生成算法&lt;/a&gt; 这篇文章中提出的地牢生成算法. (我没有阅读原作者的源代码, 只是按照文章中的思路进行代码实现, 因此在细节上可能会和原作者代码存在出入)&lt;/p&gt;
 &lt;p&gt;而下面的图片展示的是我使用该算法结合 Godot4 中的 Gridmap 实现的 3D 地牢原型.&lt;/p&gt;
-&lt;p&gt;&lt;img alt="Godot 地牢" src="essayimages/godot-dungeon.png"&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="Godot 地牢" src="https://github.com/Zeng-Yan/MyBlog/blob/main/content/essayimages/godot-dungeon.png"&gt;&lt;/p&gt;
 &lt;h2 id="_1"&gt;生成步骤&lt;/h2&gt;
-&lt;p&gt;&lt;img alt="迷宫生成过程" src="essayimages/dungeon.gif"&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="迷宫生成过程" src="https://github.com/Zeng-Yan/MyBlog/blob/main/content/essayimages/dungeon.gif"&gt;&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;设置一个有限的地图区域&lt;/li&gt;
 &lt;li&gt;在地图区域中生成多个相互不重叠的房间&lt;/li&gt;
