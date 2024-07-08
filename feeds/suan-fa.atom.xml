@@ -1743,8 +1743,8 @@ $$&lt;/div&gt;
 (\alpha_1, \alpha_2, \cdots, \alpha_m) = softmax(\tilde{\alpha}_1, \tilde{\alpha}_2, \cdots, \tilde{\alpha}_m)
 $$&lt;/div&gt;
 &lt;p&gt;完成了的计算后, 让我们回到式(1), 最终得到了语义向量. &lt;/p&gt;
+&lt;h2 id="refer"&gt;REFER&lt;/h2&gt;
 &lt;blockquote&gt;
-&lt;p&gt;REFER:&lt;/p&gt;
 &lt;p&gt;&lt;a href="https://arxiv.org/pdf/1409.0473.pdf"&gt;(2014) Neural Machine Translation by Jointly Learning to Align and Translate&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a href="https://sebastianraschka.com/blog/2023/llm-reading-list.html"&gt;Understanding Large Language Models &amp;ndash; A Transformative Reading List&lt;/a&gt;&lt;br&gt;
 &lt;a href="https://kexue.fm/archives/4765"&gt;&lt;/a&gt;&lt;/p&gt;
@@ -2039,8 +2039,8 @@ $$&lt;/div&gt;
 12800 = 第一层LSTM参数量6400 + 第二层LSTM参数量6400 \\
 = (16*32+16+16*16+16)*4*2 + (16*32+16+16*16+16)*4*2
 $$&lt;/div&gt;
+&lt;h2 id="refer"&gt;REFER&lt;/h2&gt;
 &lt;blockquote&gt;
-&lt;p&gt;REFER&lt;/p&gt;
 &lt;p&gt;&lt;a href="https://www.jianshu.com/p/4b4701beba92"&gt;人人都能看懂的LSTM&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a href="https://space.bilibili.com/1369507485?spm_id_from=333.788.b_765f7570696e666f.1"&gt;RNN模型与NLP应用&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a href="https://pytorch.org/docs/stable/generated/torch.nn.LSTM.html"&gt;torch.nn.LSTM&lt;/a&gt;&lt;/p&gt;
@@ -2236,11 +2236,11 @@ $$&lt;/div&gt;
 &lt;div class="math"&gt;$$
 K(x_i,x_j) := \Phi(x_i)^T \Phi(x_j) \quad \Phi:\mathcal{X} \rightarrow \mathcal{Z}
 $$&lt;/div&gt;
+&lt;h2 id="refer"&gt;REFER&lt;/h2&gt;
 &lt;blockquote&gt;
-&lt;p&gt;REFERS&lt;br&gt;
-* 机器学习实战. Peter harrington. 人民邮电出版社. p89&lt;br&gt;
-* &lt;a href="https://zhuanlan.zhihu.com/p/31886934"&gt;支持向量机（SVM）——原理篇&lt;/a&gt;&lt;br&gt;
-* &lt;a href="https://www.bilibili.com/video/av75953274/"&gt;猫都能看懂的SVM&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;机器学习实战. Peter harrington. 人民邮电出版社. p89&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://zhuanlan.zhihu.com/p/31886934"&gt;支持向量机（SVM）——原理篇&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://www.bilibili.com/video/av75953274/"&gt;猫都能看懂的SVM&lt;/a&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;script type="text/javascript"&gt;if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
     var align = "center",

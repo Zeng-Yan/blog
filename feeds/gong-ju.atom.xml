@@ -274,9 +274,9 @@ b &lt;--&gt; bs64[base64]
     &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;bs4_img&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
+&lt;h2 id="refer"&gt;REFER&lt;/h2&gt;
 &lt;blockquote&gt;
-&lt;p&gt;REFER:&lt;br&gt;
-* https://zhuanlan.zhihu.com/p/383156319&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://zhuanlan.zhihu.com/p/383156319"&gt;python 图像数据互转（numpy,bytes,base64,file）&lt;/a&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"&gt;&lt;/script&gt;</content><category term="工具"></category><category term="工具"></category></entry><entry><title>Docker简明笔记</title><link href="https://zeng-yan.github.io/note-of-docker.html" rel="alternate"></link><published>2022-12-09T00:00:00+08:00</published><updated>2022-12-09T00:00:00+08:00</updated><author><name>Zengyan</name></author><id>tag:zeng-yan.github.io,2022-12-09:/note-of-docker.html</id><summary type="html">&lt;h2 id="1"&gt;1 简介&lt;/h2&gt;
 &lt;p&gt;虚拟机是完整的os, Linux 容器不是模拟完整的os, 而是对进程进行隔离, docker是对Linux容器的封装. &lt;/p&gt;
