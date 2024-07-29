@@ -135,7 +135,7 @@
 &lt;h2 id="refer"&gt;REFER&lt;/h2&gt;
 &lt;blockquote&gt;
 &lt;p&gt;&lt;a href="https://gameidea.org/2024/03/17/simulating-boids/"&gt;Simulating Boids&lt;/a&gt;&lt;/p&gt;
-&lt;/blockquote&gt;</content><category term="算法"></category><category term="算法"></category></entry><entry><title>程序化生成 使用 Diamond-Square 算法生成分形地形</title><link href="https://zeng-yan.github.io/diamond-square.html" rel="alternate"></link><published>2024-07-12T00:00:00+08:00</published><updated>2024-07-12T00:00:00+08:00</updated><author><name>Zengyan</name></author><id>tag:zeng-yan.github.io,2024-07-12:/diamond-square.html</id><summary type="html">&lt;p&gt;&lt;img alt="Terrain made by diamond-square" src="https://zeng-yan.github.io/essayimages/diamond%20square%20terrain.png"&gt;&lt;/p&gt;
+&lt;/blockquote&gt;</content><category term="算法"></category><category term="算法"></category><category term="GOFAI"></category><category term="Godot"></category></entry><entry><title>程序化生成 使用 Diamond-Square 算法生成分形地形</title><link href="https://zeng-yan.github.io/diamond-square.html" rel="alternate"></link><published>2024-07-12T00:00:00+08:00</published><updated>2024-07-12T00:00:00+08:00</updated><author><name>Zengyan</name></author><id>tag:zeng-yan.github.io,2024-07-12:/diamond-square.html</id><summary type="html">&lt;p&gt;&lt;img alt="Terrain made by diamond-square" src="https://zeng-yan.github.io/essayimages/diamond%20square%20terrain.png"&gt;&lt;/p&gt;
 &lt;h2 id="_1"&gt;分形地形&lt;/h2&gt;
 &lt;p&gt;对于地形生成, 首先的问题是如何在计算机中表征地形, 通常是使用高度图, 也就是一个二维矩阵或者说是像素 …&lt;/p&gt;</summary><content type="html">&lt;p&gt;&lt;img alt="Terrain made by diamond-square" src="https://zeng-yan.github.io/essayimages/diamond%20square%20terrain.png"&gt;&lt;/p&gt;
 &lt;h2 id="_1"&gt;分形地形&lt;/h2&gt;
@@ -251,7 +251,7 @@
 &lt;h2 id="refer"&gt;REFER&lt;/h2&gt;
 &lt;blockquote&gt;
 &lt;p&gt;&lt;a href="https://janert.org/blog/2022/the-diamond-square-algorithm-for-terrain-generation/"&gt;The Diamond-Square Algorithm for Terrain Generation&lt;/a&gt;&lt;/p&gt;
-&lt;/blockquote&gt;</content><category term="算法"></category><category term="算法"></category></entry><entry><title>程序化生成 快速泊松盘采样</title><link href="https://zeng-yan.github.io/fast-poisson-disc-sampling.html" rel="alternate"></link><published>2024-07-12T00:00:00+08:00</published><updated>2024-07-12T00:00:00+08:00</updated><author><name>Zengyan</name></author><id>tag:zeng-yan.github.io,2024-07-12:/fast-poisson-disc-sampling.html</id><summary type="html">&lt;p&gt;&lt;img alt="fast poisson disc sampling" src="https://zeng-yan.github.io/essayimages/fast%20poisson%20disc%20sampling.png"&gt;&lt;/p&gt;
+&lt;/blockquote&gt;</content><category term="算法"></category><category term="算法"></category><category term="程序化生成"></category></entry><entry><title>程序化生成 快速泊松盘采样</title><link href="https://zeng-yan.github.io/fast-poisson-disc-sampling.html" rel="alternate"></link><published>2024-07-12T00:00:00+08:00</published><updated>2024-07-12T00:00:00+08:00</updated><author><name>Zengyan</name></author><id>tag:zeng-yan.github.io,2024-07-12:/fast-poisson-disc-sampling.html</id><summary type="html">&lt;p&gt;&lt;img alt="fast poisson disc sampling" src="https://zeng-yan.github.io/essayimages/fast%20poisson%20disc%20sampling.png"&gt;&lt;/p&gt;
 &lt;h2 id="_1"&gt;原理&lt;/h2&gt;
 &lt;p&gt;快速泊松盘采样 (fast poisson disc sampling) 是一种在给定范围的空间中, 逐个生成随机点的算法, 这些点会较为均匀地覆盖整个空间 …&lt;/p&gt;</summary><content type="html">&lt;p&gt;&lt;img alt="fast poisson disc sampling" src="https://zeng-yan.github.io/essayimages/fast%20poisson%20disc%20sampling.png"&gt;&lt;/p&gt;
 &lt;h2 id="_1"&gt;原理&lt;/h2&gt;
@@ -260,11 +260,13 @@
 若这个新的生成点周边 &lt;code&gt;r&lt;/code&gt; 范围的圆内没有其他点, 则认为该点是有效的.&lt;br&gt;
 可以注意到, 该算法主要的计算开销在于每次生成新点判断网格范围内有无其他点时, 需要和全部已经生成的点都计算距离.&lt;br&gt;
 而快速泊松盘采样的核心就是每次判断只和自身周边的点计算距离, 而不必和全部已经生成的点计算距离.&lt;/p&gt;
-&lt;p&gt;为此具体实现时, 需要定义三个数据结构记录历史信息:&lt;br&gt;
-* 生成点列表: 该列表记录了全部生成的随机点&lt;br&gt;
-* 活动列表: 该列表是生成点列表的子集, 每次生成新随机点时, 会随机从该列表中选择一个点作为中心点&lt;br&gt;
-* 网格: 构建该网格主要是为了快速判断每次新生成的随机点是否有效, 网格的大小要恰到好处使得每个网格中只能有一个点, &lt;br&gt;
-这样新生成点判断网格范围内有无其他点时, 只需要选择周边网格中的点, 而无需和全部已生成的点计算距离.&lt;/p&gt;
+&lt;p&gt;为此具体实现时, 需要定义三个数据结构记录历史信息:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;生成点列表: 该列表记录了全部生成的随机点&lt;/li&gt;
+&lt;li&gt;活动列表: 该列表是生成点列表的子集, 每次生成新随机点时, 会随机从该列表中选择一个点作为中心点&lt;/li&gt;
+&lt;li&gt;网格: 构建该网格主要是为了快速判断每次新生成的随机点是否有效, 网格的大小要恰到好处使得每个网格中只能有一个点, &lt;br&gt;
+这样新生成点判断网格范围内有无其他点时, 只需要选择周边网格中的点, 而无需和全部已生成的点计算距离.&lt;/li&gt;
+&lt;/ul&gt;
 &lt;h2 id="python"&gt;Python 实现&lt;/h2&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;math&lt;/span&gt;
 &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;random&lt;/span&gt;
@@ -380,7 +382,7 @@
 &lt;p&gt;&lt;a href="https://gameidea.org/2023/12/27/poisson-disk-sampling/"&gt;Poisson Disk Sampling&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a href="https://blog.csdn.net/qq_29523119/article/details/115844924"&gt;程序化物件放置(procedural placement)之泊松硬盘采样(poisson disk sampling)&lt;/a&gt;&lt;br&gt;
 &lt;/p&gt;
-&lt;/blockquote&gt;</content><category term="算法"></category><category term="算法"></category></entry><entry><title>Voronoi 图和 Delaunay 三角剖分</title><link href="https://zeng-yan.github.io/voronoi-and-delaunay.html" rel="alternate"></link><published>2024-07-04T00:00:00+08:00</published><updated>2024-07-04T00:00:00+08:00</updated><author><name>Zengyan</name></author><id>tag:zeng-yan.github.io,2024-07-04:/voronoi-and-delaunay.html</id><summary type="html">&lt;h2 id="voronoi-delaunay"&gt;Voronoi 图和 Delaunay 三角剖分&lt;/h2&gt;
+&lt;/blockquote&gt;</content><category term="算法"></category><category term="算法"></category><category term="程序化生成"></category></entry><entry><title>Voronoi 图和 Delaunay 三角剖分</title><link href="https://zeng-yan.github.io/voronoi-and-delaunay.html" rel="alternate"></link><published>2024-07-04T00:00:00+08:00</published><updated>2024-07-04T00:00:00+08:00</updated><author><name>Zengyan</name></author><id>tag:zeng-yan.github.io,2024-07-04:/voronoi-and-delaunay.html</id><summary type="html">&lt;h2 id="voronoi-delaunay"&gt;Voronoi 图和 Delaunay 三角剖分&lt;/h2&gt;
 &lt;p&gt;Voronoi 图和 Delaunay 三角剖分均是图形处理等多个领域中的重要技术.&lt;/p&gt;
 &lt;p&gt;Delaunay 三角剖分是一种点集的三角剖分标准 …&lt;/p&gt;</summary><content type="html">&lt;h2 id="voronoi-delaunay"&gt;Voronoi 图和 Delaunay 三角剖分&lt;/h2&gt;
 &lt;p&gt;Voronoi 图和 Delaunay 三角剖分均是图形处理等多个领域中的重要技术.&lt;/p&gt;
@@ -614,7 +616,7 @@
 &lt;span class="n"&gt;d&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get_triangulation&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;vertexes&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="n"&gt;d&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;plot&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
 &lt;span class="n"&gt;d&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;to_voronoi&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</content><category term="算法"></category><category term="算法"></category></entry><entry><title>元胞自动机</title><link href="https://zeng-yan.github.io/cellular-automata.html" rel="alternate"></link><published>2024-06-26T00:00:00+08:00</published><updated>2024-06-26T00:00:00+08:00</updated><author><name>Zengyan</name></author><id>tag:zeng-yan.github.io,2024-06-26:/cellular-automata.html</id><summary type="html">&lt;p&gt;元胞自动机是一种用于模拟的数学模型, 有着极多变种, 他的基本思想包含下面这些概念:&lt;/p&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</content><category term="算法"></category><category term="算法"></category><category term="程序化生成"></category></entry><entry><title>[GOFAI] 元胞自动机</title><link href="https://zeng-yan.github.io/cellular-automata.html" rel="alternate"></link><published>2024-06-26T00:00:00+08:00</published><updated>2024-06-26T00:00:00+08:00</updated><author><name>Zengyan</name></author><id>tag:zeng-yan.github.io,2024-06-26:/cellular-automata.html</id><summary type="html">&lt;p&gt;元胞自动机是一种用于模拟的数学模型, 有着极多变种, 他的基本思想包含下面这些概念:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;元胞: 元胞是元胞自动机最基本 …&lt;/li&gt;&lt;/ul&gt;</summary><content type="html">&lt;p&gt;元胞自动机是一种用于模拟的数学模型, 有着极多变种, 他的基本思想包含下面这些概念:&lt;/p&gt;
 &lt;ul&gt;
@@ -699,7 +701,7 @@
 &lt;h2 id="refer"&gt;REFER&lt;/h2&gt;
 &lt;blockquote&gt;
 &lt;p&gt;Procedural Content Generation in Games. p42&lt;/p&gt;
-&lt;/blockquote&gt;</content><category term="算法"></category><category term="算法"></category></entry><entry><title>程序化生成 一种地牢生成算法</title><link href="https://zeng-yan.github.io/dungeon-generator.html" rel="alternate"></link><published>2024-06-26T00:00:00+08:00</published><updated>2024-06-26T00:00:00+08:00</updated><author><name>Zengyan</name></author><id>tag:zeng-yan.github.io,2024-06-26:/dungeon-generator.html</id><summary type="html">&lt;p&gt;地牢是 Rouge-like 游戏中常见的一种地形设计, 一个地牢通常包含很多房间, 房间之间通过蜿蜒曲折的通道连接起来. 在我一开始 …&lt;/p&gt;</summary><content type="html">&lt;p&gt;地牢是 Rouge-like 游戏中常见的一种地形设计, 一个地牢通常包含很多房间, 房间之间通过蜿蜒曲折的通道连接起来. 在我一开始接触 Rouge-like 游戏时, 就为千奇百怪的地牢和其背后的程序生成 (Procedural generation) 算法所着迷. 这里我简单复刻一下 &lt;a href="https://indienova.com/indie-game-development/rooms-and-mazes-a-procedural-dungeon-generator/"&gt;房间和迷宫：一个地牢生成算法&lt;/a&gt; 这篇文章中提出的地牢生成算法. (我没有阅读原作者的源代码, 只是按照文章中的思路进行代码实现, 因此在细节上可能会和原作者代码存在出入)&lt;/p&gt;
+&lt;/blockquote&gt;</content><category term="算法"></category><category term="算法"></category><category term="GOFAI"></category></entry><entry><title>程序化生成 一种地牢生成算法</title><link href="https://zeng-yan.github.io/dungeon-generator.html" rel="alternate"></link><published>2024-06-26T00:00:00+08:00</published><updated>2024-06-26T00:00:00+08:00</updated><author><name>Zengyan</name></author><id>tag:zeng-yan.github.io,2024-06-26:/dungeon-generator.html</id><summary type="html">&lt;p&gt;地牢是 Rouge-like 游戏中常见的一种地形设计, 一个地牢通常包含很多房间, 房间之间通过蜿蜒曲折的通道连接起来. 在我一开始 …&lt;/p&gt;</summary><content type="html">&lt;p&gt;地牢是 Rouge-like 游戏中常见的一种地形设计, 一个地牢通常包含很多房间, 房间之间通过蜿蜒曲折的通道连接起来. 在我一开始接触 Rouge-like 游戏时, 就为千奇百怪的地牢和其背后的程序生成 (Procedural generation) 算法所着迷. 这里我简单复刻一下 &lt;a href="https://indienova.com/indie-game-development/rooms-and-mazes-a-procedural-dungeon-generator/"&gt;房间和迷宫：一个地牢生成算法&lt;/a&gt; 这篇文章中提出的地牢生成算法. (我没有阅读原作者的源代码, 只是按照文章中的思路进行代码实现, 因此在细节上可能会和原作者代码存在出入)&lt;/p&gt;
 &lt;p&gt;而下面的图片展示的是我使用该算法结合 Godot4 中的 Gridmap 实现的 3D 地牢原型.&lt;/p&gt;
 &lt;p&gt;&lt;img alt="Godot 地牢" src="https://zeng-yan.github.io/essayimages/godot-dungeon.png"&gt;&lt;/p&gt;
 &lt;h2 id="_1"&gt;生成步骤&lt;/h2&gt;
@@ -1136,7 +1138,7 @@
 &lt;blockquote&gt;
 &lt;p&gt;&lt;a href="https://indienova.com/indie-game-development/rooms-and-mazes-a-procedural-dungeon-generator/"&gt;房间和迷宫：一个地牢生成算法&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a href="https://journal.stuffwithstuff.com/2014/12/21/rooms-and-mazes/"&gt;Rooms and Mazes: A Procedural Dungeon Generator&lt;/a&gt;&lt;/p&gt;
-&lt;/blockquote&gt;</content><category term="算法"></category><category term="算法"></category></entry><entry><title>Godot 旋转物体朝向目标</title><link href="https://zeng-yan.github.io/godot-rotate.html" rel="alternate"></link><published>2024-01-29T00:00:00+08:00</published><updated>2024-01-29T00:00:00+08:00</updated><author><name>Zengyan</name></author><id>tag:zeng-yan.github.io,2024-01-29:/godot-rotate.html</id><summary type="html">&lt;p&gt;旋转物体 &lt;code&gt;self&lt;/code&gt; 朝向目标 &lt;code&gt;target&lt;/code&gt;, 最快捷的方式是使用 &lt;code&gt;self.look_at()&lt;/code&gt; 方法, 但是这个方法会立即让物体转向目标, 很多时候显得不自然.&lt;/p&gt;
+&lt;/blockquote&gt;</content><category term="算法"></category><category term="算法"></category><category term="程序化生成"></category></entry><entry><title>Godot 旋转物体朝向目标</title><link href="https://zeng-yan.github.io/godot-rotate.html" rel="alternate"></link><published>2024-01-29T00:00:00+08:00</published><updated>2024-01-29T00:00:00+08:00</updated><author><name>Zengyan</name></author><id>tag:zeng-yan.github.io,2024-01-29:/godot-rotate.html</id><summary type="html">&lt;p&gt;旋转物体 &lt;code&gt;self&lt;/code&gt; 朝向目标 &lt;code&gt;target&lt;/code&gt;, 最快捷的方式是使用 &lt;code&gt;self.look_at()&lt;/code&gt; 方法, 但是这个方法会立即让物体转向目标, 很多时候显得不自然.&lt;/p&gt;
 &lt;p&gt;下面 …&lt;/p&gt;</summary><content type="html">&lt;p&gt;旋转物体 &lt;code&gt;self&lt;/code&gt; 朝向目标 &lt;code&gt;target&lt;/code&gt;, 最快捷的方式是使用 &lt;code&gt;self.look_at()&lt;/code&gt; 方法, 但是这个方法会立即让物体转向目标, 很多时候显得不自然.&lt;/p&gt;
 &lt;p&gt;下面来实现逐帧转向目标的功能: &lt;/p&gt;
 &lt;p&gt;首先定义旋转速度 &lt;code&gt;speed&lt;/code&gt; 和目标 &lt;code&gt;target&lt;/code&gt;, 然后在 &lt;code&gt;_process(delta)&lt;/code&gt; 中编写代码&lt;/p&gt;
@@ -1717,7 +1719,7 @@
         &lt;span class="n"&gt;prefix&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;tt&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; 
         &lt;span class="n"&gt;batchsize&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;3000&lt;/span&gt;
         &lt;span class="p"&gt;)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</content><category term="算法"></category><category term="算法"></category></entry><entry><title>栅格地图 (二) DEM高程地图处理</title><link href="https://zeng-yan.github.io/dem.html" rel="alternate"></link><published>2023-06-27T00:00:00+08:00</published><updated>2023-06-27T00:00:00+08:00</updated><author><name>Zengyan</name></author><id>tag:zeng-yan.github.io,2023-06-27:/dem.html</id><summary type="html">&lt;p&gt;&lt;img alt="结果示例" src="https://zeng-yan.github.io/essayimages/dem-tw.png"&gt;&lt;/p&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</content><category term="算法"></category><category term="算法"></category><category term="神经网络"></category><category term="Python"></category></entry><entry><title>栅格地图 (二) DEM高程地图处理</title><link href="https://zeng-yan.github.io/dem.html" rel="alternate"></link><published>2023-06-27T00:00:00+08:00</published><updated>2023-06-27T00:00:00+08:00</updated><author><name>Zengyan</name></author><id>tag:zeng-yan.github.io,2023-06-27:/dem.html</id><summary type="html">&lt;p&gt;&lt;img alt="结果示例" src="https://zeng-yan.github.io/essayimages/dem-tw.png"&gt;&lt;/p&gt;
 &lt;p&gt;要使用 &lt;code&gt;gdal-python&lt;/code&gt; 来读取和处理 &lt;code&gt;tif&lt;/code&gt; 格式的高程地图, 其核心在于理解 gdal 中的 &lt;code&gt;GetGeoTransform&lt;/code&gt; 方法并使用它来进行坐标转换. 下面我绘制了一张 …&lt;/p&gt;</summary><content type="html">&lt;p&gt;&lt;img alt="结果示例" src="https://zeng-yan.github.io/essayimages/dem-tw.png"&gt;&lt;/p&gt;
 &lt;p&gt;要使用 &lt;code&gt;gdal-python&lt;/code&gt; 来读取和处理 &lt;code&gt;tif&lt;/code&gt; 格式的高程地图, 其核心在于理解 gdal 中的 &lt;code&gt;GetGeoTransform&lt;/code&gt; 方法并使用它来进行坐标转换. 下面我绘制了一张图片来帮助理解 &lt;code&gt;GetGeoTransform&lt;/code&gt; 方法返回结果的含义: 对于读取的方形区域图像, &lt;span class="math"&gt;\(GT[0]\)&lt;/span&gt; 和 &lt;span class="math"&gt;\(GT[3]\)&lt;/span&gt; 标识了区域的左上角顶点的经纬度, &lt;span class="math"&gt;\(GT[1]\)&lt;/span&gt; 和 &lt;span class="math"&gt;\(GT[5]\)&lt;/span&gt; 表示该图像每个像素对应经纬度的大小, 以 &lt;span class="math"&gt;\(\theta\)&lt;/span&gt; 表示区域相对正北方向的偏移角度, &lt;span class="math"&gt;\(GT[2]\)&lt;/span&gt; 和 &lt;span class="math"&gt;\(GT[4]\)&lt;/span&gt; 表示 &lt;span class="math"&gt;\(-\tanh\theta\)&lt;/span&gt; 的值.&lt;/p&gt;
 &lt;p&gt;&lt;img alt="GetGeoTransform" src="https://zeng-yan.github.io/essayimages/gdal%20transform.svg"&gt;&lt;/p&gt;
@@ -2135,7 +2137,7 @@
     (document.body || document.getElementsByTagName('head')[0]).appendChild(configscript);
     (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
 }
-&lt;/script&gt;</content><category term="算法"></category><category term="算法"></category></entry><entry><title>栅格地图 (一) 直线光栅化</title><link href="https://zeng-yan.github.io/rasterization.html" rel="alternate"></link><published>2023-06-27T00:00:00+08:00</published><updated>2023-06-27T00:00:00+08:00</updated><author><name>Zengyan</name></author><id>tag:zeng-yan.github.io,2023-06-27:/rasterization.html</id><summary type="html">&lt;p&gt;&lt;img alt="alt text" src="https://zeng-yan.github.io/essayimages/rasterization.png"&gt;&lt;/p&gt;
+&lt;/script&gt;</content><category term="算法"></category><category term="算法"></category><category term="Python"></category></entry><entry><title>栅格地图 (一) 直线光栅化</title><link href="https://zeng-yan.github.io/rasterization.html" rel="alternate"></link><published>2023-06-27T00:00:00+08:00</published><updated>2023-06-27T00:00:00+08:00</updated><author><name>Zengyan</name></author><id>tag:zeng-yan.github.io,2023-06-27:/rasterization.html</id><summary type="html">&lt;p&gt;&lt;img alt="alt text" src="https://zeng-yan.github.io/essayimages/rasterization.png"&gt;&lt;/p&gt;
 &lt;p&gt;在工作中频繁涉及对栅格地图的处理, 所以写一些笔记来进行归纳总结.&lt;/p&gt;
 &lt;p&gt;在栅格地图中做直线的光栅化主要有两个目的 …&lt;/p&gt;</summary><content type="html">&lt;p&gt;&lt;img alt="alt text" src="https://zeng-yan.github.io/essayimages/rasterization.png"&gt;&lt;/p&gt;
 &lt;p&gt;在工作中频繁涉及对栅格地图的处理, 所以写一些笔记来进行归纳总结.&lt;/p&gt;
@@ -2449,7 +2451,7 @@
     &lt;span class="p"&gt;)&lt;/span&gt;
 
     &lt;span class="n"&gt;imgpainter&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;show&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</content><category term="算法"></category><category term="算法"></category></entry><entry><title>使用Python的Pelican来搭建简易个人博客</title><link href="https://zeng-yan.github.io/build-blog-using-python-pelican.html" rel="alternate"></link><published>2023-06-20T00:00:00+08:00</published><updated>2023-06-20T00:00:00+08:00</updated><author><name>Zengyan</name></author><id>tag:zeng-yan.github.io,2023-06-20:/build-blog-using-python-pelican.html</id><summary type="html">&lt;h2 id="pelican"&gt;Pelican的安装与使用&lt;/h2&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</content><category term="算法"></category><category term="算法"></category><category term="Python"></category></entry><entry><title>使用Python的Pelican来搭建简易个人博客</title><link href="https://zeng-yan.github.io/build-blog-using-python-pelican.html" rel="alternate"></link><published>2023-06-20T00:00:00+08:00</published><updated>2023-06-20T00:00:00+08:00</updated><author><name>Zengyan</name></author><id>tag:zeng-yan.github.io,2023-06-20:/build-blog-using-python-pelican.html</id><summary type="html">&lt;h2 id="pelican"&gt;Pelican的安装与使用&lt;/h2&gt;
 &lt;p&gt;首先安装 Pelican&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;pip install pelican invoke markdown
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
@@ -2621,7 +2623,7 @@ HTTPS = True
 &lt;p&gt;&lt;a href="https://github.com/pelican-plugins/render-math"&gt;Render Math Plugin for Pelican&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a href="https://github.com/oruelle/md_mermaid"&gt;md_mermaid&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a href="https://sammirabyan.github.io/build-with-pelican.html"&gt;Build a static site with Pelican and GitHub Pages the easy way&lt;/a&gt;&lt;/p&gt;
-&lt;/blockquote&gt;</content><category term="工具"></category><category term="工具"></category></entry><entry><title>一行命令部署Wiki系统: 用Docker部署Wiki.js</title><link href="https://zeng-yan.github.io/deploy-wikijs-simply.html" rel="alternate"></link><published>2023-06-20T00:00:00+08:00</published><updated>2023-06-20T00:00:00+08:00</updated><author><name>Zengyan</name></author><id>tag:zeng-yan.github.io,2023-06-20:/deploy-wikijs-simply.html</id><summary type="html">&lt;p&gt;&lt;a href="https://js.wiki/"&gt;Wiki.js&lt;/a&gt; 是一个轻量且牛逼的, 该有的功能都有的开源知识库系统.&lt;/p&gt;
+&lt;/blockquote&gt;</content><category term="工具"></category><category term="工具"></category><category term="Python"></category></entry><entry><title>一行命令部署Wiki系统: 用Docker部署Wiki.js</title><link href="https://zeng-yan.github.io/deploy-wikijs-simply.html" rel="alternate"></link><published>2023-06-20T00:00:00+08:00</published><updated>2023-06-20T00:00:00+08:00</updated><author><name>Zengyan</name></author><id>tag:zeng-yan.github.io,2023-06-20:/deploy-wikijs-simply.html</id><summary type="html">&lt;p&gt;&lt;a href="https://js.wiki/"&gt;Wiki.js&lt;/a&gt; 是一个轻量且牛逼的, 该有的功能都有的开源知识库系统.&lt;/p&gt;
 &lt;h2 id="1-docker"&gt;1 安装Docker&lt;/h2&gt;
 &lt;p&gt;在 Linux 下安装 Docker , Ubuntu 使用命令 &lt;code&gt;apt install docker&lt;/code&gt; , CentOS 使用命令 &lt;code&gt;dnf …&lt;/code&gt;&lt;/p&gt;</summary><content type="html">&lt;p&gt;&lt;a href="https://js.wiki/"&gt;Wiki.js&lt;/a&gt; 是一个轻量且牛逼的, 该有的功能都有的开源知识库系统.&lt;/p&gt;
 &lt;h2 id="1-docker"&gt;1 安装Docker&lt;/h2&gt;
@@ -2811,7 +2813,7 @@ $$&lt;/div&gt;
     (document.body || document.getElementsByTagName('head')[0]).appendChild(configscript);
     (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
 }
-&lt;/script&gt;</content><category term="算法"></category><category term="算法"></category></entry><entry><title>Base64 与 ndarray 相互转换</title><link href="https://zeng-yan.github.io/base64-and-ndarray.html" rel="alternate"></link><published>2023-02-06T00:00:00+08:00</published><updated>2023-02-06T00:00:00+08:00</updated><author><name>Zengyan</name></author><id>tag:zeng-yan.github.io,2023-02-06:/base64-and-ndarray.html</id><summary type="html">&lt;p&gt;一个base64图片编码示例&lt;/p&gt;
+&lt;/script&gt;</content><category term="算法"></category><category term="算法"></category><category term="神经网络"></category></entry><entry><title>Base64 与 ndarray 相互转换</title><link href="https://zeng-yan.github.io/base64-and-ndarray.html" rel="alternate"></link><published>2023-02-06T00:00:00+08:00</published><updated>2023-02-06T00:00:00+08:00</updated><author><name>Zengyan</name></author><id>tag:zeng-yan.github.io,2023-02-06:/base64-and-ndarray.html</id><summary type="html">&lt;p&gt;一个base64图片编码示例&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="n"&gt;image&lt;/span&gt;&lt;span class="sr"&gt;/jpeg;base64,/9j/4AAQSkZJRgABAQEAYABgAAD/2wBDAAMCAgMCAgMDAwMEAwMEBQgFBQQEBQoHBwYIDAoMDAsKCwsNDhIQDQ4RDgsLEBYQERMUFRUVDA8XGBYUGBIUFRT/2wBDAQMEBAUEBQkFBQkUDQsNFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBT/wAARCAAYABgDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD9M/HHihPCvhvU7uOW2bUorOaaztJ5VQ3EqoSqDJGctgfjXw/4y/aY+L/hTWo2fXZI7KbbJFFc6bZqGwql0+QMcBiR97JGDxmrXx+8J33xK/a3uvDc141pbzLbpFPIpZYbdbRZZCq98ESnHc5rXj/ZR8IJMpfXdaljB5AihQsP1x+td+IzbI+HY0/7WrRTqK6Ti27fK54EqOY5pOawUHaDtdStr+B9feAvFS+MPB+g6rIYY7y/062vZraJs+WZYlfGM5A+bjNFcN4Ahih8SabBYwNb2NrbrbRRA7tkMcPloCe/Cr+NFfGZHnUM9pVsTSjaEakox84qzT12unt3Pq8ThZYRwpzd3ypv16noGueE9L1qb7dNptlLq8UEkFtqE1ujTQB1ZSFcjcoO45we5rh9P8Ia/Y3BAtSI24YpLHz1weSf5UUVlnHDuFzqtSxFec4yp6JxaWj9U/03Lw2MnhYyhBJqW9z0fTbIWVnCjKhmWNVkkVQNzAcn86KKK+kpU40YKnDZHFKTk7s//&lt;/span&gt;&lt;span class="mi"&gt;9&lt;/span&gt;&lt;span class="n"&gt;k&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
@@ -2896,7 +2898,7 @@ b &lt;--&gt; bs64[base64]
 &lt;blockquote&gt;
 &lt;p&gt;&lt;a href="https://zhuanlan.zhihu.com/p/383156319"&gt;python 图像数据互转（numpy,bytes,base64,file）&lt;/a&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"&gt;&lt;/script&gt;</content><category term="工具"></category><category term="工具"></category></entry><entry><title>Docker简明笔记</title><link href="https://zeng-yan.github.io/note-of-docker.html" rel="alternate"></link><published>2022-12-09T00:00:00+08:00</published><updated>2022-12-09T00:00:00+08:00</updated><author><name>Zengyan</name></author><id>tag:zeng-yan.github.io,2022-12-09:/note-of-docker.html</id><summary type="html">&lt;h2 id="1"&gt;1 简介&lt;/h2&gt;
+&lt;script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"&gt;&lt;/script&gt;</content><category term="工具"></category><category term="工具"></category><category term="Python"></category></entry><entry><title>Docker简明笔记</title><link href="https://zeng-yan.github.io/note-of-docker.html" rel="alternate"></link><published>2022-12-09T00:00:00+08:00</published><updated>2022-12-09T00:00:00+08:00</updated><author><name>Zengyan</name></author><id>tag:zeng-yan.github.io,2022-12-09:/note-of-docker.html</id><summary type="html">&lt;h2 id="1"&gt;1 简介&lt;/h2&gt;
 &lt;p&gt;虚拟机是完整的os, Linux 容器不是模拟完整的os, 而是对进程进行隔离, docker是对Linux容器的封装. &lt;/p&gt;
 &lt;p&gt;Docker的三个核心概念: &lt;br&gt;
 -   Image 镜像 (只读模板) : 一个文件系统, 提供运行 …&lt;/p&gt;</summary><content type="html">&lt;h2 id="1"&gt;1 简介&lt;/h2&gt;
@@ -3482,7 +3484,7 @@ git add .
 
 &lt;span class="n"&gt;resnet18&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;models&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;resnet18&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;weights&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;ResNet18_Weights&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;DEFAULT&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;to&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;DEVICE&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="n"&gt;plot_module_weights&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;resnet18&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;bias&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;bn&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;downsample&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</content><category term="算法"></category><category term="算法"></category></entry><entry><title>RNN和LSTM的理解</title><link href="https://zeng-yan.github.io/rnn-and-lstm.html" rel="alternate"></link><published>2021-09-13T00:00:00+08:00</published><updated>2021-09-13T00:00:00+08:00</updated><author><name>Zengyan</name></author><id>tag:zeng-yan.github.io,2021-09-13:/rnn-and-lstm.html</id><summary type="html">&lt;h3 id="rnn"&gt;RNN&lt;/h3&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</content><category term="算法"></category><category term="算法"></category><category term="神经网络"></category><category term="Python"></category></entry><entry><title>RNN和LSTM的理解</title><link href="https://zeng-yan.github.io/rnn-and-lstm.html" rel="alternate"></link><published>2021-09-13T00:00:00+08:00</published><updated>2021-09-13T00:00:00+08:00</updated><author><name>Zengyan</name></author><id>tag:zeng-yan.github.io,2021-09-13:/rnn-and-lstm.html</id><summary type="html">&lt;h3 id="rnn"&gt;RNN&lt;/h3&gt;
 &lt;p&gt;现在我们的数据样本是这样的序列的形式：&lt;/p&gt;
 &lt;div class="math"&gt;$$
 [x_1,x_2,...,x_t,..., x_n]
@@ -3734,7 +3736,7 @@ $$&lt;/div&gt;
     (document.body || document.getElementsByTagName('head')[0]).appendChild(configscript);
     (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
 }
-&lt;/script&gt;</content><category term="算法"></category><category term="算法"></category></entry><entry><title>支持向量机的理解和推导</title><link href="https://zeng-yan.github.io/svm.html" rel="alternate"></link><published>2021-09-10T00:00:00+08:00</published><updated>2021-09-10T00:00:00+08:00</updated><author><name>Zengyan</name></author><id>tag:zeng-yan.github.io,2021-09-10:/svm.html</id><summary type="html">&lt;p&gt;支持向量机(Support Vector Machines, SVM)&lt;/p&gt;
+&lt;/script&gt;</content><category term="算法"></category><category term="算法"></category><category term="神经网络"></category><category term="Python"></category></entry><entry><title>支持向量机的理解和推导</title><link href="https://zeng-yan.github.io/svm.html" rel="alternate"></link><published>2021-09-10T00:00:00+08:00</published><updated>2021-09-10T00:00:00+08:00</updated><author><name>Zengyan</name></author><id>tag:zeng-yan.github.io,2021-09-10:/svm.html</id><summary type="html">&lt;p&gt;支持向量机(Support Vector Machines, SVM)&lt;/p&gt;
 &lt;h2 id="_1"&gt;一些概念&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;

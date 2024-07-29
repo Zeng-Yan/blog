@@ -7,7 +7,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
 
-        <title>Zeng Yan's Blog - Tag Godot</title>
+        <title>Zeng Yan's Blog - Tag 神经网络</title>
 
             <link href="https://zeng-yan.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Zeng Yan's Blog Full Atom Feed" />
         <!-- Bootstrap Core CSS -->
@@ -37,7 +37,7 @@
     <link rel="icon" href="/images/favicon.ico">
 </head>
 
-<body class="tag-godot">
+<body class="tag-shen-jing-wang-luo">
 
     <!-- Navigation -->
     <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
@@ -69,7 +69,7 @@
             <div class="row">
                 <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
                     <div class="page-heading">
-                        <h1>Tag Godot</h1>
+                        <h1>Tag 神经网络</h1>
                     </div>
                 </div>
             </div>
@@ -81,45 +81,59 @@
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
         <div class="post-preview">
-            <a href="https://zeng-yan.github.io/boids.html" rel="bookmark" title="Permalink to Boids 群聚算法">
+            <a href="https://zeng-yan.github.io/image-similarity-and-deduplicate.html" rel="bookmark" title="Permalink to 使用神经网络寻找相似图像和图像去重">
                 <h2 class="post-title">
-                    Boids 群聚算法
+                    使用神经网络寻找相似图像和图像去重
                 </h2>
             </a>
                 <p class="article-summary">
-                    Boids (Bird-oid objects) 是一种模拟鸟群, 鱼群等动物群体的群聚算法. 在 Boids 中, 单个个体自身仅表现出简单的行为, 但个体和个体之间, 个体 …
+                    使用神经网络计算图像图像相似度 这里 Resnet18 用作图像的特征提取器, 即模型隐藏层的输出被视为输入图像的特征. 然后, 通 …
                 </p>
             <p class="post-meta">Posted by
                     <a href="https://zeng-yan.github.io/author/zengyan.html">Zengyan</a>
-                 on 周六 27 七月 2024
+                 on 周三 26 七月 2023
             </p>
         </div>
         <div class="post-preview">
-            <a href="https://zeng-yan.github.io/godot-rotate.html" rel="bookmark" title="Permalink to Godot 旋转物体朝向目标">
+            <a href="https://zeng-yan.github.io/attention.html" rel="bookmark" title="Permalink to 理解Attention机制">
                 <h2 class="post-title">
-                    Godot 旋转物体朝向目标
+                    理解Attention机制
                 </h2>
             </a>
                 <p class="article-summary">
-                    旋转物体 self 朝向目标 target, 最快捷的方式是使用 self.look_at() 方法, 但是这个方法会立即让物体转向目标, 很多时候显得不自然. 下面 …
+                    在Seq2Seq结构中, 编码器输出语义向量c作为解码器的输入. 在早期模型中, 编码器只输出一个c, 它可以是编码器最后一个时间步的h, 也可以是全部时 …
                 </p>
             <p class="post-meta">Posted by
                     <a href="https://zeng-yan.github.io/author/zengyan.html">Zengyan</a>
-                 on 周一 29 一月 2024
+                 on 周三 01 三月 2023
             </p>
         </div>
         <div class="post-preview">
-            <a href="https://zeng-yan.github.io/projectile-motion.html" rel="bookmark" title="Permalink to Godot 抛体运动">
+            <a href="https://zeng-yan.github.io/draw-nn-weight-distribution.html" rel="bookmark" title="Permalink to 绘制神经网络层的权值分布">
                 <h2 class="post-title">
-                    Godot 抛体运动
+                    绘制神经网络层的权值分布
                 </h2>
             </a>
                 <p class="article-summary">
-                    已知目标位置, 固定速度求发射角度 记发射速度 \(v\) , 水平距离 \(d\) , 垂直距离 \(h\) , 求发射角 \(\theta\) 将弹头的移动分解为水平和垂直 …if...
+                    def plot_module_weights(module, excludes=['bias']): import math import matplotlib.pyplot as plt def get_flatten_weight(weight): w =...
                 </p>
             <p class="post-meta">Posted by
                     <a href="https://zeng-yan.github.io/author/zengyan.html">Zengyan</a>
-                 on 周一 29 一月 2024
+                 on 周三 05 十月 2022
+            </p>
+        </div>
+        <div class="post-preview">
+            <a href="https://zeng-yan.github.io/rnn-and-lstm.html" rel="bookmark" title="Permalink to RNN和LSTM的理解">
+                <h2 class="post-title">
+                    RNN和LSTM的理解
+                </h2>
+            </a>
+                <p class="article-summary">
+                    RNN 现在我们的数据样本是这样的序列的形式： $$ [x_1,x_2,...,x_t,..., x_n] $$ 序列中的每个元素都不是独立的，而是和其他元素存在着一定联 …if...
+                </p>
+            <p class="post-meta">Posted by
+                    <a href="https://zeng-yan.github.io/author/zengyan.html">Zengyan</a>
+                 on 周一 13 九月 2021
             </p>
         </div>
 

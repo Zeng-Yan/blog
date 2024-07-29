@@ -40,6 +40,7 @@
         <meta name="author" content="Zengyan">
 
         <meta name="tags" content="算法">
+        <meta name="tags" content="程序化生成">
 
 	                <meta property="og:locale" content="">
 		<meta property="og:site_name" content="Zeng Yan's Blog">
@@ -113,11 +114,13 @@
 若这个新的生成点周边 <code>r</code> 范围的圆内没有其他点, 则认为该点是有效的.<br>
 可以注意到, 该算法主要的计算开销在于每次生成新点判断网格范围内有无其他点时, 需要和全部已经生成的点都计算距离.<br>
 而快速泊松盘采样的核心就是每次判断只和自身周边的点计算距离, 而不必和全部已经生成的点计算距离.</p>
-<p>为此具体实现时, 需要定义三个数据结构记录历史信息:<br>
-* 生成点列表: 该列表记录了全部生成的随机点<br>
-* 活动列表: 该列表是生成点列表的子集, 每次生成新随机点时, 会随机从该列表中选择一个点作为中心点<br>
-* 网格: 构建该网格主要是为了快速判断每次新生成的随机点是否有效, 网格的大小要恰到好处使得每个网格中只能有一个点, <br>
-这样新生成点判断网格范围内有无其他点时, 只需要选择周边网格中的点, 而无需和全部已生成的点计算距离.</p>
+<p>为此具体实现时, 需要定义三个数据结构记录历史信息:</p>
+<ul>
+<li>生成点列表: 该列表记录了全部生成的随机点</li>
+<li>活动列表: 该列表是生成点列表的子集, 每次生成新随机点时, 会随机从该列表中选择一个点作为中心点</li>
+<li>网格: 构建该网格主要是为了快速判断每次新生成的随机点是否有效, 网格的大小要恰到好处使得每个网格中只能有一个点, <br>
+这样新生成点判断网格范围内有无其他点时, 只需要选择周边网格中的点, 而无需和全部已生成的点计算距离.</li>
+</ul>
 <h2 id="python">Python 实现</h2>
 <div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">math</span>
 <span class="kn">import</span> <span class="nn">random</span>
@@ -237,7 +240,7 @@
     </article>
 
         <div class="tags">
-            <p>tags: <a href="https://zeng-yan.github.io/tag/suan-fa.html">算法</a></p>
+            <p>tags: <a href="https://zeng-yan.github.io/tag/suan-fa.html">算法</a>, <a href="https://zeng-yan.github.io/tag/cheng-xu-hua-sheng-cheng.html">程序化生成</a></p>
         </div>
 
     <hr>

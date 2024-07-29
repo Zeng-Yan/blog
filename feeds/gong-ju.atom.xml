@@ -171,7 +171,7 @@ HTTPS = True
 &lt;p&gt;&lt;a href="https://github.com/pelican-plugins/render-math"&gt;Render Math Plugin for Pelican&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a href="https://github.com/oruelle/md_mermaid"&gt;md_mermaid&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a href="https://sammirabyan.github.io/build-with-pelican.html"&gt;Build a static site with Pelican and GitHub Pages the easy way&lt;/a&gt;&lt;/p&gt;
-&lt;/blockquote&gt;</content><category term="工具"></category><category term="工具"></category></entry><entry><title>一行命令部署Wiki系统: 用Docker部署Wiki.js</title><link href="https://zeng-yan.github.io/deploy-wikijs-simply.html" rel="alternate"></link><published>2023-06-20T00:00:00+08:00</published><updated>2023-06-20T00:00:00+08:00</updated><author><name>Zengyan</name></author><id>tag:zeng-yan.github.io,2023-06-20:/deploy-wikijs-simply.html</id><summary type="html">&lt;p&gt;&lt;a href="https://js.wiki/"&gt;Wiki.js&lt;/a&gt; 是一个轻量且牛逼的, 该有的功能都有的开源知识库系统.&lt;/p&gt;
+&lt;/blockquote&gt;</content><category term="工具"></category><category term="工具"></category><category term="Python"></category></entry><entry><title>一行命令部署Wiki系统: 用Docker部署Wiki.js</title><link href="https://zeng-yan.github.io/deploy-wikijs-simply.html" rel="alternate"></link><published>2023-06-20T00:00:00+08:00</published><updated>2023-06-20T00:00:00+08:00</updated><author><name>Zengyan</name></author><id>tag:zeng-yan.github.io,2023-06-20:/deploy-wikijs-simply.html</id><summary type="html">&lt;p&gt;&lt;a href="https://js.wiki/"&gt;Wiki.js&lt;/a&gt; 是一个轻量且牛逼的, 该有的功能都有的开源知识库系统.&lt;/p&gt;
 &lt;h2 id="1-docker"&gt;1 安装Docker&lt;/h2&gt;
 &lt;p&gt;在 Linux 下安装 Docker , Ubuntu 使用命令 &lt;code&gt;apt install docker&lt;/code&gt; , CentOS 使用命令 &lt;code&gt;dnf …&lt;/code&gt;&lt;/p&gt;</summary><content type="html">&lt;p&gt;&lt;a href="https://js.wiki/"&gt;Wiki.js&lt;/a&gt; 是一个轻量且牛逼的, 该有的功能都有的开源知识库系统.&lt;/p&gt;
 &lt;h2 id="1-docker"&gt;1 安装Docker&lt;/h2&gt;
@@ -278,7 +278,7 @@ b &lt;--&gt; bs64[base64]
 &lt;blockquote&gt;
 &lt;p&gt;&lt;a href="https://zhuanlan.zhihu.com/p/383156319"&gt;python 图像数据互转（numpy,bytes,base64,file）&lt;/a&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"&gt;&lt;/script&gt;</content><category term="工具"></category><category term="工具"></category></entry><entry><title>Docker简明笔记</title><link href="https://zeng-yan.github.io/note-of-docker.html" rel="alternate"></link><published>2022-12-09T00:00:00+08:00</published><updated>2022-12-09T00:00:00+08:00</updated><author><name>Zengyan</name></author><id>tag:zeng-yan.github.io,2022-12-09:/note-of-docker.html</id><summary type="html">&lt;h2 id="1"&gt;1 简介&lt;/h2&gt;
+&lt;script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"&gt;&lt;/script&gt;</content><category term="工具"></category><category term="工具"></category><category term="Python"></category></entry><entry><title>Docker简明笔记</title><link href="https://zeng-yan.github.io/note-of-docker.html" rel="alternate"></link><published>2022-12-09T00:00:00+08:00</published><updated>2022-12-09T00:00:00+08:00</updated><author><name>Zengyan</name></author><id>tag:zeng-yan.github.io,2022-12-09:/note-of-docker.html</id><summary type="html">&lt;h2 id="1"&gt;1 简介&lt;/h2&gt;
 &lt;p&gt;虚拟机是完整的os, Linux 容器不是模拟完整的os, 而是对进程进行隔离, docker是对Linux容器的封装. &lt;/p&gt;
 &lt;p&gt;Docker的三个核心概念: &lt;br&gt;
 -   Image 镜像 (只读模板) : 一个文件系统, 提供运行 …&lt;/p&gt;</summary><content type="html">&lt;h2 id="1"&gt;1 简介&lt;/h2&gt;
