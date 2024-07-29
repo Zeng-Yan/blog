@@ -7,9 +7,10 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
 
-        <title>Zeng Yan's Blog - Authors</title>
+        <title>Zeng Yan's Blog - Articles in the 算法 category</title>
 
             <link href="https://zeng-yan.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Zeng Yan's Blog Full Atom Feed" />
+            <link href="https://zeng-yan.github.io/feeds/{slug}.atom.xml" type="application/atom+xml" rel="alternate" title="Zeng Yan's Blog Categories Atom Feed" />
         <!-- Bootstrap Core CSS -->
         <link href="https://zeng-yan.github.io/theme/css/bootstrap.min.css" rel="stylesheet">
 
@@ -37,6 +38,7 @@
     <link rel="icon" href="/images/favicon.ico">
 </head>
 
+<body class="category-suan-fa">
 
     <!-- Navigation -->
     <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
@@ -69,7 +71,7 @@
             <div class="row">
                 <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
                     <div class="post-heading">
-                        <h1>Articles by </h1>
+                        <h1>Articles in the 算法 category</h1>
                     </div>
                 </div>
             </div>
@@ -81,13 +83,57 @@
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
         <div class="post-preview">
-            <a href="https://zeng-yan.github.io/author/zengyan.html" rel="bookmark">
+            <a href="https://zeng-yan.github.io/draw-nn-weight-distribution.html" rel="bookmark" title="Permalink to 绘制神经网络层的权值分布">
                 <h2 class="post-title">
-                    Zengyan (22)
+                    绘制神经网络层的权值分布
                 </h2>
             </a>
+                <p class="article-summary">
+                    def plot_module_weights(module, excludes=['bias']): import math import matplotlib.pyplot as plt def get_flatten_weight(weight): w =...
+                </p>
+            <p class="post-meta">Posted by
+                    <a href="https://zeng-yan.github.io/author/zengyan.html">Zengyan</a>
+                 on 周三 05 十月 2022
+            </p>
         </div>
-        <hr>
+        <div class="post-preview">
+            <a href="https://zeng-yan.github.io/rnn-and-lstm.html" rel="bookmark" title="Permalink to RNN和LSTM的理解">
+                <h2 class="post-title">
+                    RNN和LSTM的理解
+                </h2>
+            </a>
+                <p class="article-summary">
+                    RNN 现在我们的数据样本是这样的序列的形式： $$ [x_1,x_2,...,x_t,..., x_n] $$ 序列中的每个元素都不是独立的，而是和其他元素存在着一定联 …if...
+                </p>
+            <p class="post-meta">Posted by
+                    <a href="https://zeng-yan.github.io/author/zengyan.html">Zengyan</a>
+                 on 周一 13 九月 2021
+            </p>
+        </div>
+        <div class="post-preview">
+            <a href="https://zeng-yan.github.io/svm.html" rel="bookmark" title="Permalink to 支持向量机的理解和推导">
+                <h2 class="post-title">
+                    支持向量机的理解和推导
+                </h2>
+            </a>
+                <p class="article-summary">
+                    支持向量机(Support Vector Machines, SVM) 一些概念 超平面（hyperplane）：决策面，分类的决策边界，如图中黑色直线 支持向量（support vector）：距离超平面距离最近的 …
+                </p>
+            <p class="post-meta">Posted by
+                    <a href="https://zeng-yan.github.io/author/zengyan.html">Zengyan</a>
+                 on 周五 10 九月 2021
+            </p>
+        </div>
+
+    <hr>
+    <!-- Pager -->
+    <ul class="pager">
+        <li class="next">
+                <a href="https://zeng-yan.github.io/category/suan-fa.html"> &larr; Newest Posts</a>
+        </li>
+    </ul>
+    Page 2 / 2
+    <hr>
             </div>
         </div>
     </div>

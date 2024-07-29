@@ -110,7 +110,6 @@
 <p>而下面的图片展示的是我使用该算法结合 Godot4 中的 Gridmap 实现的 3D 地牢原型.</p>
 <p><img alt="Godot 地牢" src="https://zeng-yan.github.io/essayimages/godot-dungeon.png"></p>
 <h2 id="_1">生成步骤</h2>
-<p><img alt="迷宫生成过程" src="https://zeng-yan.github.io/essayimages/dungeon.gif"></p>
 <ul>
 <li>设置一个有限的地图区域</li>
 <li>在地图区域中生成多个相互不重叠的房间</li>
@@ -119,6 +118,7 @@
 <li>从一个初始房间开始, 不断选择连接位置, 来将通道和房间连接起来</li>
 <li>消解地牢中的死胡同</li>
 </ul>
+<p><img alt="迷宫生成过程" src="https://zeng-yan.github.io/essayimages/dungeon.gif"></p>
 <h2 id="python">Python 实现</h2>
 <p>代码里的连接部分有一点问题, 偶尔会有区域没能和其他区域连接上, 不过问题不大.</p>
 <div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
@@ -538,6 +538,12 @@
 <span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">maker</span><span class="o">.</span><span class="n">doors</span><span class="p">:</span><span class="w">  </span><span class="c1"># 设置门</span>
 <span class="w">        </span><span class="n">set_cell_item</span><span class="p">(</span><span class="nb nb-Type">Vector3</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="n">k</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">k</span><span class="p">),</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span>
 </code></pre></div>
+
+<h2 id="refer">REFER</h2>
+<blockquote>
+<p><a href="https://indienova.com/indie-game-development/rooms-and-mazes-a-procedural-dungeon-generator/">房间和迷宫：一个地牢生成算法</a></p>
+<p><a href="https://journal.stuffwithstuff.com/2014/12/21/rooms-and-mazes/">Rooms and Mazes: A Procedural Dungeon Generator</a></p>
+</blockquote>
     </article>
 
         <div class="tags">

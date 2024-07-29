@@ -1,11 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0"><channel><title>Zeng Yan's Blog - Zengyan</title><link>https://zeng-yan.github.io/</link><description>If dreams can't come true, then why not pretend?</description><lastBuildDate>Thu, 04 Jul 2024 00:00:00 +0800</lastBuildDate><item><title>Voronoi 图和 Delaunay 三角剖分及相关代码实现</title><link>https://zeng-yan.github.io/voronoi-and-delaunay.html</link><description>&lt;h2 id="voronoi-delaunay"&gt;Voronoi 图和 Delaunay 三角剖分&lt;/h2&gt;
+<rss version="2.0"><channel><title>Zeng Yan's Blog - Zengyan</title><link>https://zeng-yan.github.io/</link><description>If dreams can't come true, then why not pretend?</description><lastBuildDate>Sat, 27 Jul 2024 00:00:00 +0800</lastBuildDate><item><title>Boids 群聚算法</title><link>https://zeng-yan.github.io/boids.html</link><description>&lt;p&gt;Boids (Bird-oid objects) 是一种模拟鸟群, 鱼群等动物群体的群聚算法. 在 Boids 中, 单个个体自身仅表现出简单的行为, 但个体和个体之间, 个体 …&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Zengyan</dc:creator><pubDate>Sat, 27 Jul 2024 00:00:00 +0800</pubDate><guid isPermaLink="false">tag:zeng-yan.github.io,2024-07-27:/boids.html</guid><category>算法</category><category>算法</category></item><item><title>程序化生成 使用 Diamond-Square 算法生成分形地形</title><link>https://zeng-yan.github.io/diamond-square.html</link><description>&lt;p&gt;&lt;img alt="Terrain made by diamond-square" src="https://zeng-yan.github.io/essayimages/diamond%20square%20terrain.png"&gt;&lt;/p&gt;
+&lt;h2 id="_1"&gt;分形地形&lt;/h2&gt;
+&lt;p&gt;对于地形生成, 首先的问题是如何在计算机中表征地形, 通常是使用高度图, 也就是一个二维矩阵或者说是像素 …&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Zengyan</dc:creator><pubDate>Fri, 12 Jul 2024 00:00:00 +0800</pubDate><guid isPermaLink="false">tag:zeng-yan.github.io,2024-07-12:/diamond-square.html</guid><category>算法</category><category>算法</category></item><item><title>程序化生成 快速泊松盘采样</title><link>https://zeng-yan.github.io/fast-poisson-disc-sampling.html</link><description>&lt;p&gt;&lt;img alt="fast poisson disc sampling" src="https://zeng-yan.github.io/essayimages/fast%20poisson%20disc%20sampling.png"&gt;&lt;/p&gt;
+&lt;h2 id="_1"&gt;原理&lt;/h2&gt;
+&lt;p&gt;快速泊松盘采样 (fast poisson disc sampling) 是一种在给定范围的空间中, 逐个生成随机点的算法, 这些点会较为均匀地覆盖整个空间 …&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Zengyan</dc:creator><pubDate>Fri, 12 Jul 2024 00:00:00 +0800</pubDate><guid isPermaLink="false">tag:zeng-yan.github.io,2024-07-12:/fast-poisson-disc-sampling.html</guid><category>算法</category><category>算法</category></item><item><title>Voronoi 图和 Delaunay 三角剖分</title><link>https://zeng-yan.github.io/voronoi-and-delaunay.html</link><description>&lt;h2 id="voronoi-delaunay"&gt;Voronoi 图和 Delaunay 三角剖分&lt;/h2&gt;
 &lt;p&gt;Voronoi 图和 Delaunay 三角剖分均是图形处理等多个领域中的重要技术.&lt;/p&gt;
-&lt;p&gt;Delaunay 三角剖分是一种点集的三角剖分标准 …&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Zengyan</dc:creator><pubDate>Thu, 04 Jul 2024 00:00:00 +0800</pubDate><guid isPermaLink="false">tag:zeng-yan.github.io,2024-07-04:/voronoi-and-delaunay.html</guid><category>算法</category><category>算法</category></item><item><title>栅格地图 (二) DEM高程地图处理</title><link>https://zeng-yan.github.io/dem.html</link><description>&lt;p&gt;&lt;img alt="结果示例" src="https://zeng-yan.github.io/essayimages/dem-tw.png"&gt;&lt;/p&gt;
-&lt;p&gt;要使用 &lt;code&gt;gdal-python&lt;/code&gt; 来读取和处理 &lt;code&gt;tif&lt;/code&gt; 格式的高程地图, 其核心在于理解 gdal 中的 &lt;code&gt;GetGeoTransform&lt;/code&gt; 方法并使用它来进行坐标转换. 下面我绘制了一张 …&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Zengyan</dc:creator><pubDate>Thu, 27 Jun 2024 00:00:00 +0800</pubDate><guid isPermaLink="false">tag:zeng-yan.github.io,2024-06-27:/dem.html</guid><category>算法</category><category>算法</category></item><item><title>栅格地图 (一) 直线光栅化</title><link>https://zeng-yan.github.io/rasterization.html</link><description>&lt;p&gt;&lt;img alt="alt text" src="https://zeng-yan.github.io/essayimages/rasterization.png"&gt;&lt;/p&gt;
+&lt;p&gt;Delaunay 三角剖分是一种点集的三角剖分标准 …&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Zengyan</dc:creator><pubDate>Thu, 04 Jul 2024 00:00:00 +0800</pubDate><guid isPermaLink="false">tag:zeng-yan.github.io,2024-07-04:/voronoi-and-delaunay.html</guid><category>算法</category><category>算法</category></item><item><title>元胞自动机</title><link>https://zeng-yan.github.io/cellular-automata.html</link><description>&lt;p&gt;元胞自动机是一种用于模拟的数学模型, 有着极多变种, 他的基本思想包含下面这些概念:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;元胞: 元胞是元胞自动机最基本 …&lt;/li&gt;&lt;/ul&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Zengyan</dc:creator><pubDate>Wed, 26 Jun 2024 00:00:00 +0800</pubDate><guid isPermaLink="false">tag:zeng-yan.github.io,2024-06-26:/cellular-automata.html</guid><category>算法</category><category>算法</category></item><item><title>程序化生成 一种地牢生成算法</title><link>https://zeng-yan.github.io/dungeon-generator.html</link><description>&lt;p&gt;地牢是 Rouge-like 游戏中常见的一种地形设计, 一个地牢通常包含很多房间, 房间之间通过蜿蜒曲折的通道连接起来. 在我一开始 …&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Zengyan</dc:creator><pubDate>Wed, 26 Jun 2024 00:00:00 +0800</pubDate><guid isPermaLink="false">tag:zeng-yan.github.io,2024-06-26:/dungeon-generator.html</guid><category>算法</category><category>算法</category></item><item><title>Godot 旋转物体朝向目标</title><link>https://zeng-yan.github.io/godot-rotate.html</link><description>&lt;p&gt;旋转物体 &lt;code&gt;self&lt;/code&gt; 朝向目标 &lt;code&gt;target&lt;/code&gt;, 最快捷的方式是使用 &lt;code&gt;self.look_at()&lt;/code&gt; 方法, 但是这个方法会立即让物体转向目标, 很多时候显得不自然.&lt;/p&gt;
+&lt;p&gt;下面 …&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Zengyan</dc:creator><pubDate>Mon, 29 Jan 2024 00:00:00 +0800</pubDate><guid isPermaLink="false">tag:zeng-yan.github.io,2024-01-29:/godot-rotate.html</guid><category>Godot</category><category>Godot</category></item><item><title>Godot 抛体运动</title><link>https://zeng-yan.github.io/projectile-motion.html</link><description>&lt;h2 id="_1"&gt;已知目标位置, 固定速度求发射角度&lt;/h2&gt;
+&lt;p&gt;记发射速度 &lt;span class="math"&gt;\(v\)&lt;/span&gt; , 水平距离 &lt;span class="math"&gt;\(d\)&lt;/span&gt; , 垂直距离 &lt;span class="math"&gt;\(h\)&lt;/span&gt; , 求发射角 &lt;span class="math"&gt;\(\theta\)&lt;/span&gt; &lt;/p&gt;
+&lt;p&gt;将弹头的移动分解为水平和垂直 …&lt;/p&gt;&lt;script type='text/javascript'&gt;if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var align = "center",
+        indent = "0em",
+        linebreak = "false";
+
+    if (false) {
+        align = (screen.width &lt; 768) ? "left" : align;
+        indent = (screen.width &lt; 768) ? "0em" : indent;
+        linebreak = (screen.width &lt; 768) ? 'true' : linebreak;
+    }
+
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.3/latest.js?config=TeX-AMS-MML_HTMLorMML';
+
+    var configscript = document.createElement('script');
+    configscript.type = 'text/x-mathjax-config';
+    configscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'none' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: '"+ align +"'," +
+        "    displayIndent: '"+ indent +"'," +
+        "    showMathMenu: true," +
+        "    messageStyle: 'normal'," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        "        availableFonts: ['STIX', 'TeX']," +
+        "        preferredFont: 'STIX'," +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
+        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
+        "    }, " +
+        "}); " +
+        "if ('default' !== 'default') {" +
+            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+        "}";
+
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(configscript);
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+&lt;/script&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Zengyan</dc:creator><pubDate>Mon, 29 Jan 2024 00:00:00 +0800</pubDate><guid isPermaLink="false">tag:zeng-yan.github.io,2024-01-29:/projectile-motion.html</guid><category>Godot</category><category>Godot</category></item><item><title>使用神经网络寻找相似图像和图像去重</title><link>https://zeng-yan.github.io/image-similarity-and-deduplicate.html</link><description>&lt;h1 id="_1"&gt;使用神经网络计算图像图像相似度&lt;/h1&gt;
+&lt;p&gt;这里 Resnet18 用作图像的特征提取器, 即模型隐藏层的输出被视为输入图像的特征. 然后, 通 …&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Zengyan</dc:creator><pubDate>Wed, 26 Jul 2023 00:00:00 +0800</pubDate><guid isPermaLink="false">tag:zeng-yan.github.io,2023-07-26:/image-similarity-and-deduplicate.html</guid><category>算法</category><category>算法</category></item><item><title>栅格地图 (二) DEM高程地图处理</title><link>https://zeng-yan.github.io/dem.html</link><description>&lt;p&gt;&lt;img alt="结果示例" src="https://zeng-yan.github.io/essayimages/dem-tw.png"&gt;&lt;/p&gt;
+&lt;p&gt;要使用 &lt;code&gt;gdal-python&lt;/code&gt; 来读取和处理 &lt;code&gt;tif&lt;/code&gt; 格式的高程地图, 其核心在于理解 gdal 中的 &lt;code&gt;GetGeoTransform&lt;/code&gt; 方法并使用它来进行坐标转换. 下面我绘制了一张 …&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Zengyan</dc:creator><pubDate>Tue, 27 Jun 2023 00:00:00 +0800</pubDate><guid isPermaLink="false">tag:zeng-yan.github.io,2023-06-27:/dem.html</guid><category>算法</category><category>算法</category></item><item><title>栅格地图 (一) 直线光栅化</title><link>https://zeng-yan.github.io/rasterization.html</link><description>&lt;p&gt;&lt;img alt="alt text" src="https://zeng-yan.github.io/essayimages/rasterization.png"&gt;&lt;/p&gt;
 &lt;p&gt;在工作中频繁涉及对栅格地图的处理, 所以写一些笔记来进行归纳总结.&lt;/p&gt;
-&lt;p&gt;在栅格地图中做直线的光栅化主要有两个目的 …&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Zengyan</dc:creator><pubDate>Thu, 27 Jun 2024 00:00:00 +0800</pubDate><guid isPermaLink="false">tag:zeng-yan.github.io,2024-06-27:/rasterization.html</guid><category>算法</category><category>算法</category></item><item><title>程序化生成 一种地牢生成算法</title><link>https://zeng-yan.github.io/dungeon-generator.html</link><description>&lt;p&gt;地牢是 Rouge-like 游戏中常见的一种地形设计, 一个地牢通常包含很多房间, 房间之间通过蜿蜒曲折的通道连接起来. 在我一开始 …&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Zengyan</dc:creator><pubDate>Wed, 26 Jun 2024 00:00:00 +0800</pubDate><guid isPermaLink="false">tag:zeng-yan.github.io,2024-06-26:/dungeon-generator.html</guid><category>算法</category><category>算法</category></item><item><title>使用神经网络寻找相似图像和图像去重</title><link>https://zeng-yan.github.io/image-similarity-and-deduplicate.html</link><description>&lt;h1 id="_1"&gt;使用神经网络计算图像图像相似度&lt;/h1&gt;
-&lt;p&gt;这里 Resnet18 用作图像的特征提取器, 即模型隐藏层的输出被视为输入图像的特征. 然后, 通 …&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Zengyan</dc:creator><pubDate>Wed, 26 Jul 2023 00:00:00 +0800</pubDate><guid isPermaLink="false">tag:zeng-yan.github.io,2023-07-26:/image-similarity-and-deduplicate.html</guid><category>算法</category><category>算法</category></item><item><title>使用Python的Pelican来搭建简易个人博客</title><link>https://zeng-yan.github.io/build-blog-using-python-pelican.html</link><description>&lt;h2 id="pelican"&gt;Pelican的安装与使用&lt;/h2&gt;
+&lt;p&gt;在栅格地图中做直线的光栅化主要有两个目的 …&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Zengyan</dc:creator><pubDate>Tue, 27 Jun 2023 00:00:00 +0800</pubDate><guid isPermaLink="false">tag:zeng-yan.github.io,2023-06-27:/rasterization.html</guid><category>算法</category><category>算法</category></item><item><title>使用Python的Pelican来搭建简易个人博客</title><link>https://zeng-yan.github.io/build-blog-using-python-pelican.html</link><description>&lt;h2 id="pelican"&gt;Pelican的安装与使用&lt;/h2&gt;
 &lt;p&gt;首先安装 Pelican&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;pip install pelican invoke markdown
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
@@ -117,4 +187,13 @@ $$&lt;/div&gt;
 &lt;p&gt;超平面（hyperplane）：决策面，分类的决策边界，如图中黑色直线&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;支持向量（support vector）：距离超平面距离最近的 …&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Zengyan</dc:creator><pubDate>Fri, 10 Sep 2021 00:00:00 +0800</pubDate><guid isPermaLink="false">tag:zeng-yan.github.io,2021-09-10:/svm.html</guid><category>算法</category><category>算法</category></item></channel></rss>
+&lt;p&gt;支持向量（support vector）：距离超平面距离最近的 …&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Zengyan</dc:creator><pubDate>Fri, 10 Sep 2021 00:00:00 +0800</pubDate><guid isPermaLink="false">tag:zeng-yan.github.io,2021-09-10:/svm.html</guid><category>算法</category><category>算法</category></item><item><title>日常中突发奇想和尚未整理的代码与材料</title><link>https://zeng-yan.github.io/messy-stuff.html</link><description>&lt;blockquote&gt;
+&lt;p&gt;不要为了学习而学习，而是为了解决需求而学习&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;# 统计代码行数&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;pathlib&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;Path&lt;/span&gt;
+
+&lt;span class="n"&gt;folder&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Path&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;D:/Projects/Godot/isolatown&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;gd_files&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;f&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;f&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;folder&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;rglob&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;*.gd&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)]&lt;/span&gt;
+&lt;span class="n"&gt;count&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;
+&lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;gd&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;gd_files …&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Zengyan</dc:creator><pubDate>Wed, 01 Oct 1997 00:00:00 +0800</pubDate><guid isPermaLink="false">tag:zeng-yan.github.io,1997-10-01:/messy-stuff.html</guid><category>Python</category><category>Python</category></item></channel></rss>

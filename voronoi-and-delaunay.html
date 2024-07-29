@@ -7,7 +7,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
 
-        <title>Voronoi 图和 Delaunay 三角剖分及相关代码实现</title>
+        <title>Voronoi 图和 Delaunay 三角剖分</title>
 
             <link href="https://zeng-yan.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Zeng Yan's Blog Full Atom Feed" />
             <link href="https://zeng-yan.github.io/feeds/{slug}.atom.xml" type="application/atom+xml" rel="alternate" title="Zeng Yan's Blog Categories Atom Feed" />
@@ -47,7 +47,7 @@
 	<meta property="og:type" content="article">
             <meta property="article:author" content="https://zeng-yan.github.io/author/zengyan.html">
 	<meta property="og:url" content="https://zeng-yan.github.io/voronoi-and-delaunay.html">
-	<meta property="og:title" content="Voronoi 图和 Delaunay 三角剖分及相关代码实现">
+	<meta property="og:title" content="Voronoi 图和 Delaunay 三角剖分">
 	<meta property="article:published_time" content="2024-07-04 00:00:00+08:00">
             <meta property="og:description" content="Voronoi 图和 Delaunay 三角剖分 Voronoi 图和 Delaunay 三角剖分均是图形处理等多个领域中的重要技术. Delaunay 三角剖分是一种点集的三角剖分标准 …">
 
@@ -88,7 +88,7 @@
             <div class="row">
                 <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
                     <div class="post-heading">
-                        <h1>Voronoi 图和 Delaunay 三角剖分及相关代码实现</h1>
+                        <h1>Voronoi 图和 Delaunay 三角剖分</h1>
                         <span class="meta">Posted by
                                 <a href="https://zeng-yan.github.io/author/zengyan.html">Zengyan</a>
                              on 周四 04 七月 2024
@@ -121,6 +121,9 @@
 </ul>
 <p>为了能进行这一个更新策略, 需要构造一个初始环境, 即是创建一个能够将全部顶点包含在内部的所谓超级三角形作为初始剖分, 随后按上诉更新策略将点集中的点逐个插入, 最后去除和超级三角形相关的三角形便得到了最终的三角剖分结果.</p>
 <p>而在构造了 Delaunay 三角剖分后, 三角形的外心和中垂线便构成 Voronoi 图的边.</p>
+<blockquote>
+<p>TODO: 下面的实现绘制出了 Voronoi 图, 但没有实现存储 Voronoi 图的数据结构, 有待补充.</p>
+</blockquote>
 <p>迭代过程<br>
 按 站点 计算 Voronoi 图<br>
 计算 Voronoi 图每个单元格的质心<br>

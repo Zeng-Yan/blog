@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="chinese (simplified)">
+
+<head>
+            <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+        <title>Boids 群聚算法</title>
+
+            <link href="https://zeng-yan.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Zeng Yan's Blog Full Atom Feed" />
+            <link href="https://zeng-yan.github.io/feeds/{slug}.atom.xml" type="application/atom+xml" rel="alternate" title="Zeng Yan's Blog Categories Atom Feed" />
+        <!-- Bootstrap Core CSS -->
+        <link href="https://zeng-yan.github.io/theme/css/bootstrap.min.css" rel="stylesheet">
+
+        <!-- Custom CSS -->
+        <link href="https://zeng-yan.github.io/theme/css/clean-blog.min.css" rel="stylesheet">
+
+        <!-- Code highlight color scheme -->
+            <link href="https://zeng-yan.github.io/theme/css/code_blocks/monokai.css" rel="stylesheet">
+
+
+        <!-- Custom Fonts -->
+        <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+        <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+        <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+
+
+        <meta name="description" content="Boids (Bird-oid objects) 是一种模拟鸟群, 鱼群等动物群体的群聚算法. 在 Boids 中, 单个个体自身仅表现出简单的行为, 但个体和个体之间, 个体 …">
+
+        <meta name="author" content="Zengyan">
+
+        <meta name="tags" content="算法">
+
+	                <meta property="og:locale" content="">
+		<meta property="og:site_name" content="Zeng Yan's Blog">
+
+	<meta property="og:type" content="article">
+            <meta property="article:author" content="https://zeng-yan.github.io/author/zengyan.html">
+	<meta property="og:url" content="https://zeng-yan.github.io/boids.html">
+	<meta property="og:title" content="Boids 群聚算法">
+	<meta property="article:published_time" content="2024-07-27 00:00:00+08:00">
+            <meta property="og:description" content="Boids (Bird-oid objects) 是一种模拟鸟群, 鱼群等动物群体的群聚算法. 在 Boids 中, 单个个体自身仅表现出简单的行为, 但个体和个体之间, 个体 …">
+
+            <meta property="og:image" content="https://zeng-yan.github.io/images/andreas-rocha-pinecastle01.jpg">
+    <link rel="icon" href="/images/favicon.ico">
+</head>
+
+<body class="article-boids">
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header page-scroll">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="https://zeng-yan.github.io/">Zeng Yan's Blog</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <!-- Page Header -->
+        <header class="intro-header" style="background-image: url('https://zeng-yan.github.io//images/andreas-rocha-pinecastle01.jpg')">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <div class="post-heading">
+                        <h1>Boids 群聚算法</h1>
+                        <span class="meta">Posted by
+                                <a href="https://zeng-yan.github.io/author/zengyan.html">Zengyan</a>
+                             on 周六 27 七月 2024
+                        </span>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+    <!-- Post Content -->
+    <article>
+        <p>Boids (Bird-oid objects) 是一种模拟鸟群, 鱼群等动物群体的群聚算法. 在 Boids 中, 单个个体自身仅表现出简单的行为, 但个体和个体之间, 个体和环境之间的交互共同创造了复杂的全局性的运动或模式.</p>
+<p>Boids 的核心思想有三点:</p>
+<ul>
+<li>分离 (Separation): 个体倾向远离临近个体避免碰撞</li>
+<li>聚集 (Cohesion): 个体倾向靠近周围个体的中心</li>
+<li>对齐 (Alignment): 个体速度向周围个体的平均速度对齐</li>
+</ul>
+<p>聚集的感知范围通常大于分离的感知范围, 这样实现整体聚集而局部分离的效果, 从而不至于互相矛盾.</p>
+<h2 id="boids">Boids 的改进</h2>
+<p>Boids 的核心思想非常简单, 但可以通过各种不同的扩展来达成更复杂的目标:</p>
+<ul>
+<li>修改聚集感知的区域范围和形状来控制群聚的队形</li>
+<li>增加头领使得集群的行进更有目的性</li>
+<li>增加对环境的感知实现避障</li>
+<li>&hellip;</li>
+</ul>
+<h2 id="godot-boids">在 Godot 中实现 Boids</h2>
+<p>首先实现一个集群个体的代码:</p>
+<div class="highlight"><pre><span></span><code><span class="k">class_name</span><span class="w"> </span><span class="n">Boid</span><span class="w"> </span><span class="k">extends</span><span class="w"> </span><span class="n">Node3D</span>
+
+<span class="err">@</span><span class="k">export</span><span class="w"> </span><span class="k">var</span><span class="w"> </span><span class="n">max_v</span><span class="p">:</span><span class="w"> </span><span class="nb nb-Type">float</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">3.</span>
+
+<span class="err">@</span><span class="k">export</span><span class="w"> </span><span class="k">var</span><span class="w"> </span><span class="n">detect_dis</span><span class="p">:</span><span class="w"> </span><span class="nb nb-Type">float</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">10.0</span><span class="w">  </span><span class="c1"># 聚集感知距离</span>
+<span class="err">@</span><span class="k">export</span><span class="w"> </span><span class="k">var</span><span class="w"> </span><span class="n">separate_dis</span><span class="p">:</span><span class="w"> </span><span class="nb nb-Type">float</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">3.0</span><span class="w">  </span><span class="c1"># 分离距离小于检测距离以保证会聚集起来 实现整体聚集 局部分离</span>
+
+<span class="err">@</span><span class="k">export</span><span class="w"> </span><span class="k">var</span><span class="w"> </span><span class="n">cohesion_weight</span><span class="p">:</span><span class="w"> </span><span class="nb nb-Type">float</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.2</span><span class="w">  </span><span class="c1"># 聚集 权重</span>
+<span class="err">@</span><span class="k">export</span><span class="w"> </span><span class="k">var</span><span class="w"> </span><span class="n">separation_weight</span><span class="p">:</span><span class="w"> </span><span class="nb nb-Type">float</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.5</span><span class="w">  </span><span class="c1"># 分离 权重</span>
+<span class="err">@</span><span class="k">export</span><span class="w"> </span><span class="k">var</span><span class="w"> </span><span class="n">alignment_weight</span><span class="p">:</span><span class="w"> </span><span class="nb nb-Type">float</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.1</span><span class="w">  </span><span class="c1"># 对齐 权重</span>
+
+
+<span class="k">var</span><span class="w"> </span><span class="n">velocity</span><span class="p">:</span><span class="w"> </span><span class="nb nb-Type">Vector3</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb nb-Type">Vector3</span><span class="o">.</span><span class="n">ZERO</span>
+
+<span class="k">var</span><span class="w"> </span><span class="n">flock</span><span class="p">:</span><span class="w"> </span><span class="nb nb-Type">Array</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[]</span>
+<span class="k">var</span><span class="w"> </span><span class="n">neighbors</span><span class="p">:</span><span class="w"> </span><span class="nb nb-Type">Array</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[]</span>
+
+
+<span class="k">func</span><span class="w"> </span><span class="n">limit_in_area</span><span class="p">():</span>
+<span class="w">    </span><span class="k">var</span><span class="w"> </span><span class="n">pos</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">global_position</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">pos</span><span class="o">.</span><span class="n">x</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">25</span><span class="p">:</span>
+<span class="w">        </span><span class="n">pos</span><span class="o">.</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="mi">24</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">pos</span><span class="o">.</span><span class="n">x</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">25</span><span class="p">:</span>
+<span class="w">        </span><span class="n">pos</span><span class="o">.</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">24</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">pos</span><span class="o">.</span><span class="n">z</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">25</span><span class="p">:</span>
+<span class="w">        </span><span class="n">pos</span><span class="o">.</span><span class="n">z</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="mi">24</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">pos</span><span class="o">.</span><span class="n">z</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">25</span><span class="p">:</span>
+<span class="w">        </span><span class="n">pos</span><span class="o">.</span><span class="n">z</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">24</span>
+
+<span class="w">    </span><span class="bp">self</span><span class="o">.</span><span class="n">global_position</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pos</span>
+
+
+<span class="k">func</span><span class="w"> </span><span class="n">_physics_process</span><span class="p">(</span><span class="n">delta</span><span class="p">):</span>
+<span class="w">    </span><span class="n">update_v</span><span class="p">()</span>
+<span class="w">    </span><span class="bp">self</span><span class="o">.</span><span class="n">global_position</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">velocity</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">delta</span>
+<span class="w">    </span><span class="n">look_at</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">global_position</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">velocity</span><span class="p">)</span>
+<span class="w">    </span><span class="n">limit_in_area</span><span class="p">()</span>
+
+
+<span class="k">func</span><span class="w"> </span><span class="n">update_v</span><span class="p">():</span>
+<span class="w">    </span><span class="n">_detect_neighbors</span><span class="p">()</span>
+<span class="w">    </span><span class="k">var</span><span class="w"> </span><span class="n">v1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">_cohesion</span><span class="p">()</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">cohesion_weight</span>
+<span class="w">    </span><span class="k">var</span><span class="w"> </span><span class="n">v2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">_separation</span><span class="p">()</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">separation_weight</span>
+<span class="w">    </span><span class="k">var</span><span class="w"> </span><span class="n">v3</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">_alignment</span><span class="p">()</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">alignment_weight</span>
+
+<span class="w">    </span><span class="k">var</span><span class="w"> </span><span class="n">v</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">v1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">v2</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">v3</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">velocity</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">v</span><span class="o">.</span><span class="n">length</span><span class="p">()</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">max_v</span><span class="p">:</span>
+<span class="w">        </span><span class="n">v</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">v</span><span class="o">.</span><span class="n">normalized</span><span class="p">()</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">max_v</span>
+<span class="w">    </span><span class="n">velocity</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb nb-Type">Vector3</span><span class="p">(</span><span class="n">v</span><span class="o">.</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">v</span><span class="o">.</span><span class="n">z</span><span class="p">)</span>
+
+
+<span class="k">func</span><span class="w"> </span><span class="n">_detect_neighbors</span><span class="p">():</span>
+<span class="w">    </span><span class="c1">## 从flock中寻找临近的个体作为邻居</span>
+<span class="w">    </span><span class="k">var</span><span class="w"> </span><span class="n">no_self_flock</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">flock</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="k">func</span><span class="w"> </span><span class="p">(</span><span class="n">n</span><span class="p">:</span><span class="w"> </span><span class="n">Boid</span><span class="p">):</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="n">is_same</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="w"> </span><span class="bp">self</span><span class="p">))</span>
+<span class="w">    </span><span class="n">neighbors</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">no_self_flock</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="k">func</span><span class="w"> </span><span class="p">(</span><span class="n">n</span><span class="p">:</span><span class="w"> </span><span class="n">Boid</span><span class="p">):</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">n</span><span class="o">.</span><span class="n">global_position</span><span class="o">.</span><span class="n">distance_to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">global_position</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">detect_dis</span><span class="p">)</span>
+
+
+<span class="k">func</span><span class="w"> </span><span class="n">_cohesion</span><span class="p">():</span><span class="w">  </span><span class="c1"># 聚集</span>
+<span class="w">    </span><span class="c1">## 类鸟检测某个范围内（与分离规则的范围不同）的所有类鸟的位置，计算出质心，然后产生一个指向质心的速度</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">neighbors</span><span class="o">.</span><span class="n">is_empty</span><span class="p">():</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nb nb-Type">Vector3</span><span class="o">.</span><span class="n">ZERO</span>
+
+<span class="w">    </span><span class="k">var</span><span class="w"> </span><span class="n">sum_pos</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">neighbors</span><span class="o">.</span><span class="n">reduce</span><span class="p">(</span><span class="k">func</span><span class="w"> </span><span class="p">(</span><span class="n">accum</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">:</span><span class="w"> </span><span class="n">Boid</span><span class="p">):</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">accum</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">b</span><span class="o">.</span><span class="n">global_position</span><span class="p">,</span><span class="w"> </span><span class="nb nb-Type">Vector3</span><span class="o">.</span><span class="n">ZERO</span><span class="p">)</span>
+<span class="w">    </span><span class="k">var</span><span class="w"> </span><span class="n">avg_pos</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sum_pos</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">neighbors</span><span class="o">.</span><span class="n">size</span><span class="p">()</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">global_position</span><span class="o">.</span><span class="n">direction_to</span><span class="p">(</span><span class="n">avg_pos</span><span class="p">)</span>
+
+
+<span class="k">func</span><span class="w"> </span><span class="n">_separation</span><span class="p">():</span><span class="w">  </span><span class="c1"># 分离</span>
+<span class="w">    </span><span class="c1">## 个体有远离周围个体的趋势，防止相互碰撞</span>
+<span class="w">    </span><span class="k">var</span><span class="w"> </span><span class="n">nears</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">neighbors</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="k">func</span><span class="w"> </span><span class="p">(</span><span class="n">n</span><span class="p">:</span><span class="w"> </span><span class="n">Boid</span><span class="p">):</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">n</span><span class="o">.</span><span class="n">global_position</span><span class="o">.</span><span class="n">distance_to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">global_position</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">separate_dis</span><span class="p">)</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">nears</span><span class="o">.</span><span class="n">is_empty</span><span class="p">():</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nb nb-Type">Vector3</span><span class="o">.</span><span class="n">ZERO</span>
+
+<span class="w">    </span><span class="k">var</span><span class="w"> </span><span class="n">f</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">func</span><span class="w"> </span><span class="p">(</span><span class="n">a</span><span class="p">:</span><span class="nb nb-Type">Vector3</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">:</span><span class="nb nb-Type">Vector3</span><span class="p">):</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">b</span><span class="o">.</span><span class="n">direction_to</span><span class="p">(</span><span class="n">a</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">distance_to</span><span class="p">(</span><span class="n">a</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mf">1e-5</span><span class="p">)</span>
+<span class="w">    </span><span class="k">var</span><span class="w"> </span><span class="n">sum_vec</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nears</span><span class="o">.</span><span class="n">reduce</span><span class="p">(</span><span class="k">func</span><span class="w"> </span><span class="p">(</span><span class="n">accum</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">:</span><span class="w"> </span><span class="n">Boid</span><span class="p">):</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">accum</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">f</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">global_position</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="o">.</span><span class="n">global_position</span><span class="p">),</span><span class="w"> </span><span class="nb nb-Type">Vector3</span><span class="o">.</span><span class="n">ZERO</span><span class="p">)</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">sum_vec</span><span class="o">.</span><span class="n">normalized</span><span class="p">()</span>
+
+
+<span class="k">func</span><span class="w"> </span><span class="n">_alignment</span><span class="p">():</span><span class="w">  </span><span class="c1"># 对齐</span>
+<span class="w">    </span><span class="c1">## 个体速度与群体倾向一致 计算出平均速度，然后产生一个与平均速度方向一致的速度</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">neighbors</span><span class="o">.</span><span class="n">is_empty</span><span class="p">():</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nb nb-Type">Vector3</span><span class="o">.</span><span class="n">ZERO</span>
+
+<span class="w">    </span><span class="k">var</span><span class="w"> </span><span class="n">sum_vel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">neighbors</span><span class="o">.</span><span class="n">reduce</span><span class="p">(</span><span class="k">func</span><span class="w"> </span><span class="p">(</span><span class="n">accum</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">:</span><span class="w"> </span><span class="n">Boid</span><span class="p">):</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">accum</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">b</span><span class="o">.</span><span class="n">velocity</span><span class="p">,</span><span class="w"> </span><span class="nb nb-Type">Vector3</span><span class="o">.</span><span class="n">ZERO</span><span class="p">)</span>
+<span class="w">    </span><span class="k">var</span><span class="w"> </span><span class="n">avg_vel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sum_vel</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">neighbors</span><span class="o">.</span><span class="n">size</span><span class="p">()</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">avg_vel</span><span class="o">.</span><span class="n">normalized</span><span class="p">()</span>
+</code></pre></div>
+
+<p>然后搭建环境, 新建一个 <code>Node3D</code> 场景, 增加一个摄像头 <code>Camera3D</code>, 调整 <code>Position.y=40</code> 和 <code>Rotate.x=-90</code> 让摄像头置于高空并面向下方.<br>
+为场景增加世界环境 <code>WorldEnvironment</code> 和一个 <code>MeshInstance3D</code> 来作为地面背景. 最后为场景 <code>Node3D</code> 添加如下代码, 最后运行场景即可.</p>
+<div class="highlight"><pre><span></span><code><span class="k">extends</span><span class="w"> </span><span class="n">Node3D</span>
+
+<span class="err">@</span><span class="k">onready</span><span class="w"> </span><span class="k">var</span><span class="w"> </span><span class="n">unit</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">preload</span><span class="p">(</span><span class="s2">&quot;res://Boids/boid.tscn&quot;</span><span class="p">)</span>
+
+<span class="k">var</span><span class="w"> </span><span class="n">h</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">40</span>
+<span class="k">var</span><span class="w"> </span><span class="n">v</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">40</span>
+
+
+<span class="k">func</span><span class="w"> </span><span class="n">_ready</span><span class="p">():</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="nb">range</span><span class="p">(</span><span class="mi">30</span><span class="p">):</span>
+<span class="w">        </span><span class="k">var</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">unit</span><span class="o">.</span><span class="n">instantiate</span><span class="p">()</span>
+<span class="w">        </span><span class="bp">self</span><span class="o">.</span><span class="n">add_child</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+<span class="w">        </span><span class="k">var</span><span class="w"> </span><span class="n">pos</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb nb-Type">Vector3</span><span class="p">(</span><span class="nb">randf</span><span class="p">()</span><span class="o">*</span><span class="n">h</span><span class="o">-</span><span class="mi">20</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="nb">randf</span><span class="p">()</span><span class="o">*</span><span class="n">h</span><span class="o">-</span><span class="mi">20</span><span class="p">)</span>
+<span class="w">        </span><span class="n">b</span><span class="o">.</span><span class="n">global_position</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pos</span>
+
+<span class="w">    </span><span class="n">_init_flock</span><span class="p">()</span>
+
+
+<span class="k">func</span><span class="w"> </span><span class="n">_init_flock</span><span class="p">():</span>
+<span class="w">    </span><span class="k">var</span><span class="w"> </span><span class="n">flock</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_children</span><span class="p">()</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="k">func</span><span class="w"> </span><span class="p">(</span><span class="n">node</span><span class="p">):</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">is_instance_of</span><span class="p">(</span><span class="n">node</span><span class="p">,</span><span class="w"> </span><span class="n">Boid</span><span class="p">))</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">flock</span><span class="p">:</span>
+<span class="w">        </span><span class="n">n</span><span class="o">.</span><span class="n">flock</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">flock</span>
+</code></pre></div>
+
+<h2 id="refer">REFER</h2>
+<blockquote>
+<p><a href="https://gameidea.org/2024/03/17/simulating-boids/">Simulating Boids</a></p>
+</blockquote>
+    </article>
+
+        <div class="tags">
+            <p>tags: <a href="https://zeng-yan.github.io/tag/suan-fa.html">算法</a></p>
+        </div>
+
+    <hr>
+
+            </div>
+        </div>
+    </div>
+
+    <hr>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <ul class="list-inline text-center">
+                            <li>
+                                <a href="https://github.com/Zeng-Yan">
+                                    <span class="fa-stack fa-lg">
+                                        <i class="fa fa-circle fa-stack-2x"></i>
+                                        <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                    </span>
+                                </a>
+                            </li>
+                    </ul>
+<p class="copyright text-muted">
+    Blog powered by <a href="http://getpelican.com">Pelican</a>,
+    which takes great advantage of <a href="http://python.org">Python</a>. <br />        &copy;  Zengyan
+</p>                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- jQuery -->
+    <script src="https://zeng-yan.github.io/theme/js/jquery.min.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="https://zeng-yan.github.io/theme/js/bootstrap.min.js"></script>
+
+        <!-- Custom Theme JavaScript -->
+        <script src="https://zeng-yan.github.io/theme/js/clean-blog.min.js"></script>
+
+</body>
+
+</html>

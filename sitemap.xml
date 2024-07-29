@@ -5,8 +5,29 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://zeng-yan.github.io/</loc>
-<lastmod>2024-07-08T11:07:47-00:00</lastmod>
+<lastmod>2024-07-29T19:05:17-00:00</lastmod>
 <changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://zeng-yan.github.io/boids.html</loc>
+<lastmod>2024-07-27T00:00:00+08:00</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://zeng-yan.github.io/diamond-square.html</loc>
+<lastmod>2024-07-12T00:00:00+08:00</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://zeng-yan.github.io/fast-poisson-disc-sampling.html</loc>
+<lastmod>2024-07-12T00:00:00+08:00</lastmod>
+<changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
@@ -18,15 +39,8 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 </url>
 
 <url>
-<loc>https://zeng-yan.github.io/dem.html</loc>
-<lastmod>2024-06-27T00:00:00+08:00</lastmod>
-<changefreq>monthly</changefreq>
-<priority>0.5</priority>
-</url>
-
-<url>
-<loc>https://zeng-yan.github.io/rasterization.html</loc>
-<lastmod>2024-06-27T00:00:00+08:00</lastmod>
+<loc>https://zeng-yan.github.io/cellular-automata.html</loc>
+<lastmod>2024-06-26T00:00:00+08:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
@@ -39,8 +53,36 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 </url>
 
 <url>
+<loc>https://zeng-yan.github.io/godot-rotate.html</loc>
+<lastmod>2024-01-29T00:00:00+08:00</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://zeng-yan.github.io/projectile-motion.html</loc>
+<lastmod>2024-01-29T00:00:00+08:00</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
 <loc>https://zeng-yan.github.io/image-similarity-and-deduplicate.html</loc>
 <lastmod>2023-07-26T00:00:00+08:00</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://zeng-yan.github.io/dem.html</loc>
+<lastmod>2023-06-27T00:00:00+08:00</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://zeng-yan.github.io/rasterization.html</loc>
+<lastmod>2023-06-27T00:00:00+08:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
@@ -116,6 +158,20 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 </url>
 
 <url>
+<loc>https://zeng-yan.github.io/messy-stuff.html</loc>
+<lastmod>1997-10-01T00:00:00+08:00</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://zeng-yan.github.io/category/godot.html</loc>
+<lastmod>2024-01-29T00:00:00+08:06</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
 <loc>https://zeng-yan.github.io/category/gong-ju.html</loc>
 <lastmod>2023-06-20T00:00:00+08:06</lastmod>
 <changefreq>daily</changefreq>
@@ -131,14 +187,21 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://zeng-yan.github.io/category/suan-fa.html</loc>
-<lastmod>2024-07-04T00:00:00+08:06</lastmod>
+<lastmod>2024-07-27T00:00:00+08:06</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://zeng-yan.github.io/tag/suan-fa.html</loc>
-<lastmod>2024-07-04T00:00:00+08:06</lastmod>
+<lastmod>2024-07-27T00:00:00+08:06</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://zeng-yan.github.io/tag/godot.html</loc>
+<lastmod>2024-01-29T00:00:00+08:06</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -159,7 +222,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://zeng-yan.github.io/author/zengyan.html</loc>
-<lastmod>2024-07-04T00:00:00+08:06</lastmod>
+<lastmod>2024-07-27T00:00:00+08:06</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
