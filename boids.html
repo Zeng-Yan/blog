@@ -7,7 +7,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
 
-        <title>[GOFAI] Boids 群聚算法</title>
+        <title>[GOFAI] Boids 群聚模型</title>
 
             <link href="https://zeng-yan.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Zeng Yan's Blog Full Atom Feed" />
             <link href="https://zeng-yan.github.io/feeds/{slug}.atom.xml" type="application/atom+xml" rel="alternate" title="Zeng Yan's Blog Categories Atom Feed" />
@@ -35,7 +35,7 @@
 
 
 
-        <meta name="description" content="Boids (Bird-oid objects) 是一种模拟鸟群, 鱼群等动物群体的群聚算法. 在 Boids 中, 单个个体自身仅表现出简单的行为, 但个体和个体之间, 个体 …">
+        <meta name="description" content="Boids (Bird-oid objects) 是一种模拟鸟类, 鱼类等动物群体行为的模型. 在 Boids 中, 单个成员仅遵循极其简单的规则, 但这些个体与个体之间以 …">
 
         <meta name="author" content="Zengyan">
 
@@ -49,9 +49,9 @@
 	<meta property="og:type" content="article">
             <meta property="article:author" content="https://zeng-yan.github.io/author/zengyan.html">
 	<meta property="og:url" content="https://zeng-yan.github.io/boids.html">
-	<meta property="og:title" content="[GOFAI] Boids 群聚算法">
+	<meta property="og:title" content="[GOFAI] Boids 群聚模型">
 	<meta property="article:published_time" content="2024-07-27 00:00:00+08:00">
-            <meta property="og:description" content="Boids (Bird-oid objects) 是一种模拟鸟群, 鱼群等动物群体的群聚算法. 在 Boids 中, 单个个体自身仅表现出简单的行为, 但个体和个体之间, 个体 …">
+            <meta property="og:description" content="Boids (Bird-oid objects) 是一种模拟鸟类, 鱼类等动物群体行为的模型. 在 Boids 中, 单个成员仅遵循极其简单的规则, 但这些个体与个体之间以 …">
 
             <meta property="og:image" content="https://zeng-yan.github.io/images/andreas-rocha-pinecastle01.jpg">
     <link rel="icon" href="/images/favicon.ico">
@@ -90,7 +90,7 @@
             <div class="row">
                 <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
                     <div class="post-heading">
-                        <h1>[GOFAI] Boids 群聚算法</h1>
+                        <h1>[GOFAI] Boids 群聚模型</h1>
                         <span class="meta">Posted by
                                 <a href="https://zeng-yan.github.io/author/zengyan.html">Zengyan</a>
                              on 周六 27 七月 2024
@@ -108,27 +108,28 @@
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
     <!-- Post Content -->
     <article>
-        <p>Boids (Bird-oid objects) 是一种模拟鸟群, 鱼群等动物群体的群聚算法. 在 Boids 中, 单个个体自身仅表现出简单的行为, 但个体和个体之间, 个体和环境之间的交互共同创造了复杂的全局性的运动或模式.</p>
-<p>Boids 的核心思想有三点:</p>
+        <p>Boids (Bird-oid objects) 是一种模拟鸟类, 鱼类等动物群体行为的模型. 在 Boids 中, 单个成员仅遵循极其简单的规则, 但这些个体与个体之间以及个体与环境之间的相互作用却能够产生出复杂的集体运动模式.</p>
+<p>Boids 的核心可以归纳为三个基本行为准则：</p>
 <ul>
-<li>分离 (Separation): 个体倾向远离临近个体避免碰撞</li>
-<li>聚集 (Cohesion): 个体倾向靠近周围个体的中心</li>
-<li>对齐 (Alignment): 个体速度向周围个体的平均速度对齐</li>
+<li>分离 (Separation): 个体倾向于与邻近的其他个体保持一定的距离以避免碰撞.</li>
+<li>聚集 (Cohesion): 个体倾向于向周围个体的质心移动从而保持群体的整体性.</li>
+<li>对齐 (Alignment): 个体调整自己的速度以匹配周围个体的速度方向和大小.</li>
 </ul>
-<p>聚集的感知范围通常大于分离的感知范围, 这样实现整体聚集而局部分离的效果, 从而不至于互相矛盾.</p>
+<p>通常, 聚集的感知范围会设计得比分离的感知范围更大. 这样做的目的是确保个体能够在保持群体聚集的同时避免过于密集而导致的碰撞, 从而实现整体聚集与局部分离之间的和谐.</p>
 <h2 id="boids">Boids 的改进</h2>
-<p>Boids 的核心思想非常简单, 但可以通过各种不同的扩展来达成更复杂的目标:</p>
+<p>尽管 Boids 的基本思想十分简洁, 但通过对其进行不同方面的扩展和改进, 可以实现更为复杂和逼真的群体行为模拟.</p>
 <ul>
-<li>修改聚集感知的区域范围和形状来控制群聚的队形</li>
-<li>增加头领使得集群的行进更有目的性</li>
-<li>增加对环境的感知实现避障</li>
-<li>&hellip;</li>
+<li>修改聚集感知区域的范围和形状: 通过调整个体对同伴位置感知的范围和形状, 可以控制群体的队形, 例如形成线形队列或是更加松散的圆形队形.</li>
+<li>引入领导角色: 为群体指定一个或多个领导者, 可以使整个群体朝着特定的方向前进, 增加群体行为的目的性和组织性.</li>
+<li>增强环境感知能力: 通过添加障碍物检测和避障功能, 可以让群体中的个体在遇到障碍时能够绕行, 从而模拟出更加真实的自然行为.</li>
+<li>适应环境变化: 使个体能够根据环境的变化调整其行为, 例如响应风向改变飞行方向, 或是根据食物资源的位置调整移动路径.</li>
+<li>增加社会层级结构: 引入更复杂的社会层级结构, 如支配等级, 可以使模拟更加贴近真实世界的生物群体.</li>
 </ul>
 <h2 id="godot-boids">在 Godot 中实现 Boids</h2>
 <p>首先实现一个集群个体的代码:</p>
 <div class="highlight"><pre><span></span><code><span class="k">class_name</span><span class="w"> </span><span class="n">Boid</span><span class="w"> </span><span class="k">extends</span><span class="w"> </span><span class="n">Node3D</span>
 
-<span class="err">@</span><span class="k">export</span><span class="w"> </span><span class="k">var</span><span class="w"> </span><span class="n">max_v</span><span class="p">:</span><span class="w"> </span><span class="nb nb-Type">float</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">3.</span>
+<span class="err">@</span><span class="k">export</span><span class="w"> </span><span class="k">var</span><span class="w"> </span><span class="n">max_v</span><span class="p">:</span><span class="w"> </span><span class="nb nb-Type">float</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">3.</span><span class="w">  </span><span class="c1"># 最大速度</span>
 
 <span class="err">@</span><span class="k">export</span><span class="w"> </span><span class="k">var</span><span class="w"> </span><span class="n">detect_dis</span><span class="p">:</span><span class="w"> </span><span class="nb nb-Type">float</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">10.0</span><span class="w">  </span><span class="c1"># 聚集感知距离</span>
 <span class="err">@</span><span class="k">export</span><span class="w"> </span><span class="k">var</span><span class="w"> </span><span class="n">separate_dis</span><span class="p">:</span><span class="w"> </span><span class="nb nb-Type">float</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">3.0</span><span class="w">  </span><span class="c1"># 分离距离小于检测距离以保证会聚集起来 实现整体聚集 局部分离</span>
@@ -138,13 +139,14 @@
 <span class="err">@</span><span class="k">export</span><span class="w"> </span><span class="k">var</span><span class="w"> </span><span class="n">alignment_weight</span><span class="p">:</span><span class="w"> </span><span class="nb nb-Type">float</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.1</span><span class="w">  </span><span class="c1"># 对齐 权重</span>
 
 
-<span class="k">var</span><span class="w"> </span><span class="n">velocity</span><span class="p">:</span><span class="w"> </span><span class="nb nb-Type">Vector3</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb nb-Type">Vector3</span><span class="o">.</span><span class="n">ZERO</span>
+<span class="k">var</span><span class="w"> </span><span class="n">velocity</span><span class="p">:</span><span class="w"> </span><span class="nb nb-Type">Vector3</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb nb-Type">Vector3</span><span class="o">.</span><span class="n">ZERO</span><span class="w">  </span><span class="c1"># 速度</span>
 
-<span class="k">var</span><span class="w"> </span><span class="n">flock</span><span class="p">:</span><span class="w"> </span><span class="nb nb-Type">Array</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[]</span>
-<span class="k">var</span><span class="w"> </span><span class="n">neighbors</span><span class="p">:</span><span class="w"> </span><span class="nb nb-Type">Array</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[]</span>
+<span class="k">var</span><span class="w"> </span><span class="n">flock</span><span class="p">:</span><span class="w"> </span><span class="nb nb-Type">Array</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[]</span><span class="w">  </span><span class="c1"># 集群</span>
+<span class="k">var</span><span class="w"> </span><span class="n">neighbors</span><span class="p">:</span><span class="w"> </span><span class="nb nb-Type">Array</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[]</span><span class="w">  </span><span class="c1"># 邻居</span>
 
 
 <span class="k">func</span><span class="w"> </span><span class="n">limit_in_area</span><span class="p">():</span>
+<span class="w">    </span><span class="c1">## 限制自身在一定区域内</span>
 <span class="w">    </span><span class="k">var</span><span class="w"> </span><span class="n">pos</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">global_position</span>
 <span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">pos</span><span class="o">.</span><span class="n">x</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">25</span><span class="p">:</span>
 <span class="w">        </span><span class="n">pos</span><span class="o">.</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="mi">24</span>
@@ -167,6 +169,7 @@
 
 
 <span class="k">func</span><span class="w"> </span><span class="n">update_v</span><span class="p">():</span>
+<span class="w">    </span><span class="c1">## 更新速度</span>
 <span class="w">    </span><span class="n">_detect_neighbors</span><span class="p">()</span>
 <span class="w">    </span><span class="k">var</span><span class="w"> </span><span class="n">v1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">_cohesion</span><span class="p">()</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">cohesion_weight</span>
 <span class="w">    </span><span class="k">var</span><span class="w"> </span><span class="n">v2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">_separation</span><span class="p">()</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">separation_weight</span>
@@ -179,13 +182,13 @@
 
 
 <span class="k">func</span><span class="w"> </span><span class="n">_detect_neighbors</span><span class="p">():</span>
-<span class="w">    </span><span class="c1">## 从flock中寻找临近的个体作为邻居</span>
+<span class="w">    </span><span class="c1">## 从flock中寻找距离小于detect_dis的个体作为邻居</span>
 <span class="w">    </span><span class="k">var</span><span class="w"> </span><span class="n">no_self_flock</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">flock</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="k">func</span><span class="w"> </span><span class="p">(</span><span class="n">n</span><span class="p">:</span><span class="w"> </span><span class="n">Boid</span><span class="p">):</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="n">is_same</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="w"> </span><span class="bp">self</span><span class="p">))</span>
 <span class="w">    </span><span class="n">neighbors</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">no_self_flock</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="k">func</span><span class="w"> </span><span class="p">(</span><span class="n">n</span><span class="p">:</span><span class="w"> </span><span class="n">Boid</span><span class="p">):</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">n</span><span class="o">.</span><span class="n">global_position</span><span class="o">.</span><span class="n">distance_to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">global_position</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">detect_dis</span><span class="p">)</span>
 
 
-<span class="k">func</span><span class="w"> </span><span class="n">_cohesion</span><span class="p">():</span><span class="w">  </span><span class="c1"># 聚集</span>
-<span class="w">    </span><span class="c1">## 类鸟检测某个范围内（与分离规则的范围不同）的所有类鸟的位置，计算出质心，然后产生一个指向质心的速度</span>
+<span class="k">func</span><span class="w"> </span><span class="n">_cohesion</span><span class="p">():</span>
+<span class="w">    </span><span class="c1">## 聚集 类鸟检测某个范围内（与分离规则的范围不同）的所有类鸟的位置，计算出质心，然后产生一个指向质心的速度</span>
 <span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">neighbors</span><span class="o">.</span><span class="n">is_empty</span><span class="p">():</span>
 <span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nb nb-Type">Vector3</span><span class="o">.</span><span class="n">ZERO</span>
 
@@ -194,8 +197,8 @@
 <span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">global_position</span><span class="o">.</span><span class="n">direction_to</span><span class="p">(</span><span class="n">avg_pos</span><span class="p">)</span>
 
 
-<span class="k">func</span><span class="w"> </span><span class="n">_separation</span><span class="p">():</span><span class="w">  </span><span class="c1"># 分离</span>
-<span class="w">    </span><span class="c1">## 个体有远离周围个体的趋势，防止相互碰撞</span>
+<span class="k">func</span><span class="w"> </span><span class="n">_separation</span><span class="p">():</span>
+<span class="w">    </span><span class="c1">## 分离 个体有远离周围个体的趋势，防止相互碰撞</span>
 <span class="w">    </span><span class="k">var</span><span class="w"> </span><span class="n">nears</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">neighbors</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="k">func</span><span class="w"> </span><span class="p">(</span><span class="n">n</span><span class="p">:</span><span class="w"> </span><span class="n">Boid</span><span class="p">):</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">n</span><span class="o">.</span><span class="n">global_position</span><span class="o">.</span><span class="n">distance_to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">global_position</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">separate_dis</span><span class="p">)</span>
 <span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">nears</span><span class="o">.</span><span class="n">is_empty</span><span class="p">():</span>
 <span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nb nb-Type">Vector3</span><span class="o">.</span><span class="n">ZERO</span>
@@ -205,8 +208,8 @@
 <span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">sum_vec</span><span class="o">.</span><span class="n">normalized</span><span class="p">()</span>
 
 
-<span class="k">func</span><span class="w"> </span><span class="n">_alignment</span><span class="p">():</span><span class="w">  </span><span class="c1"># 对齐</span>
-<span class="w">    </span><span class="c1">## 个体速度与群体倾向一致 计算出平均速度，然后产生一个与平均速度方向一致的速度</span>
+<span class="k">func</span><span class="w"> </span><span class="n">_alignment</span><span class="p">():</span>
+<span class="w">    </span><span class="c1">## 对齐 个体速度与群体倾向一致 计算出平均速度，然后产生一个与平均速度方向一致的速度</span>
 <span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">neighbors</span><span class="o">.</span><span class="n">is_empty</span><span class="p">():</span>
 <span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nb nb-Type">Vector3</span><span class="o">.</span><span class="n">ZERO</span>
 

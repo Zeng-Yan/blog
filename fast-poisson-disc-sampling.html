@@ -35,12 +35,13 @@
 
 
 
-        <meta name="description" content="原理 快速泊松盘采样 (fast poisson disc sampling) 是一种在给定范围的空间中, 逐个生成随机点的算法, 这些点会较为均匀地覆盖整个空间 …">
+        <meta name="description" content="算法概述 快速泊松盘采样 (Fast Poisson Disk Sampling) 是一种在给定空间范围内生成随机点的算法, 这些点会较为均匀地分布在整个空间 …">
 
         <meta name="author" content="Zengyan">
 
         <meta name="tags" content="算法">
         <meta name="tags" content="程序化生成">
+        <meta name="tags" content="Python">
 
 	                <meta property="og:locale" content="">
 		<meta property="og:site_name" content="Zeng Yan's Blog">
@@ -50,7 +51,7 @@
 	<meta property="og:url" content="https://zeng-yan.github.io/fast-poisson-disc-sampling.html">
 	<meta property="og:title" content="[PCG] 快速泊松盘采样">
 	<meta property="article:published_time" content="2024-07-12 00:00:00+08:00">
-            <meta property="og:description" content="原理 快速泊松盘采样 (fast poisson disc sampling) 是一种在给定范围的空间中, 逐个生成随机点的算法, 这些点会较为均匀地覆盖整个空间 …">
+            <meta property="og:description" content="算法概述 快速泊松盘采样 (Fast Poisson Disk Sampling) 是一种在给定空间范围内生成随机点的算法, 这些点会较为均匀地分布在整个空间 …">
 
             <meta property="og:image" content="https://zeng-yan.github.io/images/tyler-edlin-fantasy-landscape1.jpg">
     <link rel="icon" href="/images/favicon.ico">
@@ -108,46 +109,59 @@
     <!-- Post Content -->
     <article>
         <p><img alt="fast poisson disc sampling" src="https://zeng-yan.github.io/essayimages/fast%20poisson%20disc%20sampling.png"></p>
-<h2 id="_1">原理</h2>
-<p>快速泊松盘采样 (fast poisson disc sampling) 是一种在给定范围的空间中, 逐个生成随机点的算法, 这些点会较为均匀地覆盖整个空间, 且这些点之间的间距不小于给定值 <code>r</code> .<br>
-在生成一个新的随机点时, 会随机选择一个现有的点, 在该点 <code>[r,2r)</code> 的圆环范围内生成一个随机点, <br>
-若这个新的生成点周边 <code>r</code> 范围的圆内没有其他点, 则认为该点是有效的.<br>
-可以注意到, 该算法主要的计算开销在于每次生成新点判断网格范围内有无其他点时, 需要和全部已经生成的点都计算距离.<br>
-而快速泊松盘采样的核心就是每次判断只和自身周边的点计算距离, 而不必和全部已经生成的点计算距离.</p>
-<p>为此具体实现时, 需要定义三个数据结构记录历史信息:</p>
+<h2 id="_1">算法概述</h2>
+<p>快速泊松盘采样 (Fast Poisson Disk Sampling) 是一种在给定空间范围内生成随机点的算法, <br>
+这些点会较为均匀地分布在整个空间内, 并且彼此之间的最小距离不小于给定阈值 <code>r</code>. <br>
+该算法可以有效地避免点之间的聚集现象, 同时保持分布的随机性.</p>
+<p>在快速泊松盘采样中, 新点的生成基于现有的点集. <br>
+每当生成一个新的随机点时, 都会从现有的点集中随机选择一个点作为中心点, 在该点周围半径为 <code>[r, 2r)</code> 的圆环内生成一个候选点. <br>
+如果这个候选点周围半径为 <code>r</code> 的圆内没有其他点, 则认为它是有效的, 并将其添加到点集中.</p>
+<p>可以注意到, 该算法的关键在于减少频繁的距离比较来节省计算开销. 朴素的方法需要检查候选点与所有已生成点的距离, 而快速泊松盘采样则是通过局部搜索来优化这一过程.</p>
+<h2 id="_2">数据结构设计</h2>
+<p>为了高效实现快速泊松盘采样, 需要定义三个主要的数据结构来记录历史信息:</p>
 <ul>
-<li>生成点列表: 该列表记录了全部生成的随机点</li>
-<li>活动列表: 该列表是生成点列表的子集, 每次生成新随机点时, 会随机从该列表中选择一个点作为中心点</li>
-<li>网格: 构建该网格主要是为了快速判断每次新生成的随机点是否有效, 网格的大小要恰到好处使得每个网格中只能有一个点, <br>
-这样新生成点判断网格范围内有无其他点时, 只需要选择周边网格中的点, 而无需和全部已生成的点计算距离.</li>
+<li><strong>生成点列表 (Generated Points List):</strong></li>
+<li>
+<p>这个列表记录了所有已经生成的随机点. 随着算法的进行, 这个列表会逐渐增长.</p>
+</li>
+<li>
+<p><strong>活动列表 (Active List):</strong></p>
+</li>
+<li>活动列表是生成点列表的一个子集, 其中包含可以用来生成新点的现有点. 每次生成新随机点时, 都会从这个列表中随机选择一个点作为中心点.</li>
+<li>
+<p>当一个点周围无法生成新的有效点时, 它就会从活动列表中移除. </p>
+</li>
+<li>
+<p><strong>网格 (Grid):</strong></p>
+</li>
+<li>构建网格的主要目的是为了快速判断新生成的随机点是否有效. 网格的大小应该被精心设计, 以确保每个网格单元最多只能容纳一个点. 网格的大小一般为 <span class="math">\(\frac{r}{\sqrt{2}}\)</span> .</li>
+<li>当生成新的候选点时, 只需要检查其周围的网格单元即可确定是否有其他点存在, 而无需与所有已生成的点进行距离计算.</li>
 </ul>
 <h2 id="python">Python 实现</h2>
 <div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">math</span>
 <span class="kn">import</span> <span class="nn">random</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 
 
 <span class="k">class</span> <span class="nc">FastPoissonDiscSampling</span><span class="p">:</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">h</span> <span class="o">=</span> <span class="n">h</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">v</span> <span class="o">=</span> <span class="n">v</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">r</span> <span class="o">=</span> <span class="n">r</span>  <span class="c1"># 点与点之间的距离</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">pass</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">cell_size</span> <span class="o">=</span> <span class="n">r</span> <span class="o">/</span> <span class="mf">1.414213562373</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">rows</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">h</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell_size</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">cols</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">v</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell_size</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">_get_coord_by_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>  <span class="c1"># 给定点, 返回在所在网格的行列索引</span>
+    <span class="k">def</span> <span class="nf">_get_coord_by_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;给定点, 返回在所在网格的行列索引坐标</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">r</span> <span class="o">=</span> <span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">//</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell_size</span>
         <span class="n">c</span> <span class="o">=</span> <span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">//</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell_size</span>
         <span class="k">return</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">r</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">c</span><span class="p">))</span>
 
-    <span class="k">def</span> <span class="nf">_get_point_by_coord</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">c</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>  <span class="c1"># 给定坐标, 返回坐标网格中的点</span>
+    <span class="k">def</span> <span class="nf">_get_point_by_coord</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">c</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;给定索引坐标, 返回坐标网格中的点</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">idx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">grid</span><span class="p">[</span><span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span><span class="n">c</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
 
-    <span class="k">def</span> <span class="nf">_sample_in_circle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>  <span class="c1"># 在p点的[r, 2r)范围内随机采样一个点</span>
+    <span class="k">def</span> <span class="nf">_sample_in_circle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span> 
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;在点p的[r, 2r)圆环范围内随机采样一个点</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">d_r</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">-</span> <span class="mf">0.5</span>  <span class="c1"># 方向在行方向的分量</span>
         <span class="n">d_c</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">-</span> <span class="mf">0.5</span>  <span class="c1"># 方向在列方向的分量</span>
         <span class="n">m</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">d_r</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">d_c</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>  <span class="c1"># 方向的模</span>
@@ -158,28 +172,46 @@
         <span class="k">return</span> <span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">d_r</span><span class="p">,</span> <span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">d_c</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_is_point_in_area</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-        <span class="k">if</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">h</span> <span class="ow">and</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">v</span><span class="p">:</span>  <span class="c1"># 点是否在边界范围内</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;点p是否在边界范围内</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">h</span> <span class="ow">and</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">v</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">True</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">False</span>
 
-    <span class="k">def</span> <span class="nf">_init_grid</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_init_structure</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">h</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">v</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">r</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;根据给定的水平范围(h), 垂直范围(v), 点之间最小距离(r), 计算出单元格的大小, 网格的行数和列数.</span>
+<span class="sd">        同时初始化活动列表, 已生成点列表和网格.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">h</span> <span class="o">=</span> <span class="n">h</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">v</span> <span class="o">=</span> <span class="n">v</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">r</span> <span class="o">=</span> <span class="n">r</span>  <span class="c1"># 点与点之间的距离</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">cell_size</span> <span class="o">=</span> <span class="n">r</span> <span class="o">/</span> <span class="mf">1.414213562373</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">rows</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">h</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell_size</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cols</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">v</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell_size</span><span class="p">)</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">active_list</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># 活动列表</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">points</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># 已经生成的点</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">grid</span> <span class="o">=</span> <span class="p">[[</span><span class="o">-</span><span class="mi">1</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cols</span><span class="p">)]</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rows</span><span class="p">)]</span>  <span class="c1"># 表示cell内点对应在points中的索引</span>
 
     <span class="k">def</span> <span class="nf">_get_nearby_points</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coord</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;给定一个索引坐标coord, 返回该点所在cell的周边的点列表.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">points</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">coord</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="n">coord</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="mi">3</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">coord</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="n">coord</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="mi">3</span><span class="p">):</span>  <span class="c1"># 遍历该点所在cell周边的cell</span>
             <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">coord</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="n">coord</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="mi">3</span><span class="p">):</span>
                 <span class="k">if</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">r</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">rows</span> <span class="ow">and</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">c</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">cols</span><span class="p">:</span>  <span class="c1"># 当前所在行列索引是否超出索引</span>
                     <span class="n">idx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">grid</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="n">c</span><span class="p">]</span>  
-                    <span class="k">if</span> <span class="n">idx</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">idx</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>  <span class="c1"># 当前所在cell中有点</span>
                         <span class="n">points</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="n">idx</span><span class="p">])</span>
 
         <span class="k">return</span> <span class="n">points</span>
 
-    <span class="k">def</span> <span class="nf">_is_point_isolated</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">,</span> <span class="n">nearbys</span><span class="p">:</span> <span class="nb">list</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>  <span class="c1"># p点和nearbys中的点距离是否均超过r</span>
+    <span class="k">def</span> <span class="nf">_is_point_isolated</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">,</span> <span class="n">nearbys</span><span class="p">:</span> <span class="nb">list</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;点p和nearbys中的点距离是否均超过r</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">flag</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">nearbys</span><span class="p">:</span>
             <span class="n">dis</span> <span class="o">=</span> <span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">point</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">point</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="o">**</span><span class="mi">2</span>
@@ -187,9 +219,11 @@
                 <span class="n">flag</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="k">return</span> <span class="n">flag</span>
 
-    <span class="k">def</span> <span class="nf">sample</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">sample</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">h</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">v</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">r</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">k</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;给定水平范围(h), 垂直范围(v), 点之间最小距离(r), 生成新点的采样次数(k), 进行一次快速泊松圆盘采样.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_init_grid</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_init_structure</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span>
 
         <span class="n">p</span> <span class="o">=</span> <span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">randrange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">h</span><span class="p">),</span> <span class="n">random</span><span class="o">.</span><span class="n">randrange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">v</span><span class="p">))</span>  <span class="c1"># 在边界范围中随机产生初始点</span>
         <span class="n">coord</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_coord_by_point</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>  <span class="c1"># 获取该点所在cell的索引</span>
@@ -197,13 +231,13 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">active_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">coord</span><span class="p">)</span>  <span class="c1"># 向活动列表中加入该点所在cell的索引</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">grid</span><span class="p">[</span><span class="n">coord</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span><span class="n">coord</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">points</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>   <span class="c1"># 在grid中标识该点</span>
 
-        <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">active_list</span> <span class="o">!=</span> <span class="p">[]:</span>
+        <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">active_list</span> <span class="o">!=</span> <span class="p">[]:</span>  <span class="c1"># 活动列表不为空时, 继续生成新点</span>
             <span class="n">select_idx</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randrange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">active_list</span><span class="p">))</span>
             <span class="n">coord</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">active_list</span><span class="p">[</span><span class="n">select_idx</span><span class="p">]</span>
             <span class="n">point</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_point_by_coord</span><span class="p">(</span><span class="n">coord</span><span class="p">)</span>  <span class="c1"># 从活动列表中随机选择一个点</span>
 
             <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
-            <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">k</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">k</span><span class="p">):</span>  <span class="c1"># 进行k次采样</span>
                 <span class="n">new_point</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sample_in_circle</span><span class="p">(</span><span class="n">point</span><span class="p">)</span>  <span class="c1"># 在该点周边随机选择一个点</span>
                 <span class="n">new_coord</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_coord_by_point</span><span class="p">(</span><span class="n">new_point</span><span class="p">)</span>  <span class="c1"># 该点所在cell的坐标</span>
 
@@ -219,16 +253,17 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">active_list</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">select_idx</span><span class="p">)</span>  <span class="c1"># 从活动列表中删除该点</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">points</span>
+</code></pre></div>
 
-    <span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">([</span><span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">points</span><span class="p">],</span> <span class="p">[</span><span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">points</span><span class="p">])</span>
-        <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<p>使用示例:</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">plot_samples</span><span class="p">(</span><span class="n">points</span><span class="p">):</span>
+    <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">([</span><span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">points</span><span class="p">],</span> <span class="p">[</span><span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">points</span><span class="p">])</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 
-
-
-<span class="n">fpd</span> <span class="o">=</span> <span class="n">FastPoissonDiscSampling</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
-<span class="n">fpd</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
-<span class="n">fpd</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<span class="n">fpd</span> <span class="o">=</span> <span class="n">FastPoissonDiscSampling</span><span class="p">()</span>
+<span class="n">p</span> <span class="o">=</span> <span class="n">fpd</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">30</span><span class="p">)</span>
+<span class="n">plot_samples</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
 </code></pre></div>
 
 <h2 id="refer">REFER</h2>
@@ -237,10 +272,72 @@
 <p><a href="https://blog.csdn.net/qq_29523119/article/details/115844924">程序化物件放置(procedural placement)之泊松硬盘采样(poisson disk sampling)</a><br>
 </p>
 </blockquote>
+<script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var align = "center",
+        indent = "0em",
+        linebreak = "false";
+
+    if (false) {
+        align = (screen.width < 768) ? "left" : align;
+        indent = (screen.width < 768) ? "0em" : indent;
+        linebreak = (screen.width < 768) ? 'true' : linebreak;
+    }
+
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.3/latest.js?config=TeX-AMS-MML_HTMLorMML';
+
+    var configscript = document.createElement('script');
+    configscript.type = 'text/x-mathjax-config';
+    configscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'none' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: '"+ align +"'," +
+        "    displayIndent: '"+ indent +"'," +
+        "    showMathMenu: true," +
+        "    messageStyle: 'normal'," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        "        availableFonts: ['STIX', 'TeX']," +
+        "        preferredFont: 'STIX'," +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
+        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
+        "    }, " +
+        "}); " +
+        "if ('default' !== 'default') {" +
+            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+        "}";
+
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(configscript);
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+</script>
     </article>
 
         <div class="tags">
-            <p>tags: <a href="https://zeng-yan.github.io/tag/suan-fa.html">算法</a>, <a href="https://zeng-yan.github.io/tag/cheng-xu-hua-sheng-cheng.html">程序化生成</a></p>
+            <p>tags: <a href="https://zeng-yan.github.io/tag/suan-fa.html">算法</a>, <a href="https://zeng-yan.github.io/tag/cheng-xu-hua-sheng-cheng.html">程序化生成</a>, <a href="https://zeng-yan.github.io/tag/python.html">Python</a></p>
         </div>
 
     <hr>

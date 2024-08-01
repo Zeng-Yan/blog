@@ -35,7 +35,7 @@
 
 
 
-        <meta name="description" content="Voronoi 图和 Delaunay 三角剖分 Voronoi 图和 Delaunay 三角剖分均是图形处理等多个领域中的重要技术. Delaunay 三角剖分是一种点集的三角剖分标准 …">
+        <meta name="description" content="Voronoi 图和 Delaunay 三角剖分 Voronoi 图和 Delaunay 三角剖分均是图形处理, 计算几何, 地理信息系统等多个领域中的重要技术. Delaunay 三角剖分是一 …">
 
         <meta name="author" content="Zengyan">
 
@@ -50,7 +50,7 @@
 	<meta property="og:url" content="https://zeng-yan.github.io/voronoi-and-delaunay.html">
 	<meta property="og:title" content="[PCG] Voronoi 图和 Delaunay 三角剖分">
 	<meta property="article:published_time" content="2024-07-04 00:00:00+08:00">
-            <meta property="og:description" content="Voronoi 图和 Delaunay 三角剖分 Voronoi 图和 Delaunay 三角剖分均是图形处理等多个领域中的重要技术. Delaunay 三角剖分是一种点集的三角剖分标准 …">
+            <meta property="og:description" content="Voronoi 图和 Delaunay 三角剖分 Voronoi 图和 Delaunay 三角剖分均是图形处理, 计算几何, 地理信息系统等多个领域中的重要技术. Delaunay 三角剖分是一 …">
 
             <meta property="og:image" content="https://zeng-yan.github.io/images/raphael-lacoste-boat-web.jpg">
     <link rel="icon" href="/images/favicon.ico">
@@ -108,29 +108,30 @@
     <!-- Post Content -->
     <article>
         <h2 id="voronoi-delaunay">Voronoi 图和 Delaunay 三角剖分</h2>
-<p>Voronoi 图和 Delaunay 三角剖分均是图形处理等多个领域中的重要技术.</p>
-<p>Delaunay 三角剖分是一种点集的三角剖分标准, 它满足两个核心特性:<br>
-* 最大化最小角特性: 在点集的所有可能的三角剖分中, 该剖分形成三角形的最小角最大.<br>
-* 空圆特性: 任意一个三角形的外接圆中都不能包含另外的顶点, 这种形式的剖分产生的最小角最大.</p>
-<p>Voronoi 图和 Delaunay 三角剖分是对偶的, 两者可以相互转换</p>
+<p>Voronoi 图和 Delaunay 三角剖分均是图形处理, 计算几何, 地理信息系统等多个领域中的重要技术.</p>
+<p>Delaunay 三角剖分是一种点集的三角剖分标准, 它满足两个核心特性:</p>
+<ul>
+<li>最大化最小角特性: 在点集的所有可能的三角剖分中, 该剖分形成三角形的最小内角最大. 这有助于避免出现长而窄的三角形.</li>
+<li>空圆特性: 任意一个三角形的外接圆内不得包含点集中其他的点, 这种形式的剖分产生的最小内角最大.</li>
+</ul>
+<p>Voronoi 图和 Delaunay 三角剖分是对偶的, 两者可以通过数学变换相互转换. <br>
+具体而言, Delaunay 三角剖分的顶点可以看作是 Voronoi 图的多边形中心, 而 Voronoi 多边形的边界则由 Delaunay 三角形的垂直平分线构成.</p>
 <p><img alt="Voronoi图和Delaunay三角剖分" src="https://zeng-yan.github.io/essayimages/Voronoi图和Delaunay三角剖分.png"></p>
 <h2 id="_1">实现原理</h2>
-<p>可以使用 Bowyer-Wstson 算法来实现 Delaunay 三角剖分, 其核心是新插入一个顶点到现有的三角剖分中的更新策略:</p>
+<p>Bowyer-Watson 算法是一种用于动态构建 Delaunay 三角剖分的有效方法, 其核心是新插入一个顶点到现有的三角剖分中的更新策略:</p>
 <ul>
-<li>找到所有外接圆包含该顶点的三角形</li>
-<li>找到这些三角形的全部边, 去除重合的边, 将余下的边和新插入的顶点组成三角形</li>
+<li>定位受影响三角形: 找到所有外接圆覆盖新插入顶点的三角形, 这些三角形构成了需要重新构型的区域.</li>
+<li>边缘检测与重构: 识别上述三角形集合的公共边, 去除后剩下的边将与新顶点一起构成新的三角形.</li>
 </ul>
-<p>为了能进行这一个更新策略, 需要构造一个初始环境, 即是创建一个能够将全部顶点包含在内部的所谓超级三角形作为初始剖分, 随后按上诉更新策略将点集中的点逐个插入, 最后去除和超级三角形相关的三角形便得到了最终的三角剖分结果.</p>
-<p>而在构造了 Delaunay 三角剖分后, 三角形的外心和中垂线便构成 Voronoi 图的边.</p>
+<p>为了能进行这一个更新策略, 需要构造一个初始环境, 即创建一个能够将全部顶点包含在内部的超级三角形作为初始剖分.<br>
+随后按上诉更新策略将点集中的点逐个插入, 最后删除和超级三角形相关的三角形, 如此就得到了最终的三角剖分结果.</p>
+<p>而在构造了 Delaunay 三角剖分后, 三角形的外心就是 Voronoi 图多边形的顶点, 三角形的外心和中垂线便构成 Voronoi 图多边形的边.  </p>
 <blockquote>
 <p>TODO: 下面的实现绘制出了 Voronoi 图, 但没有实现存储 Voronoi 图的数据结构, 有待补充.</p>
 </blockquote>
-<p>迭代过程<br>
-按 站点 计算 Voronoi 图<br>
-计算 Voronoi 图每个单元格的质心<br>
-将 站点 移动到其单元格的质心</p>
 <h2 id="python">Python 实现</h2>
 <div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
 
 
 <span class="k">class</span> <span class="nc">Triangle</span><span class="p">:</span>
@@ -141,20 +142,28 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_calc_circumcircle</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="nf">get_vertexes</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">get_vertexes</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;返回三角形顶点</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">v1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">v2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">v3</span><span class="p">]</span>
 
     <span class="k">def</span> <span class="nf">get_circumcircle</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;返回外接圆 [x坐标, y坐标, 半径的平方]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">r2</span><span class="p">]</span>
 
-    <span class="k">def</span> <span class="nf">is_in_circumcircle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>  <span class="c1"># 点是否在外接圆之中</span>
+    <span class="k">def</span> <span class="nf">is_in_circumcircle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;判断点p是否在三角形的外接圆内部</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">d2</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="o">-</span><span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">**</span><span class="mi">2</span><span class="o">+</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="o">-</span><span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="o">**</span><span class="mi">2</span>  <span class="c1"># 距离的平方</span>
         <span class="k">if</span> <span class="n">d2</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">r2</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">True</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">False</span>
 
-    <span class="k">def</span> <span class="nf">_calc_circumcircle</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># 计算外接圆</span>
+    <span class="k">def</span> <span class="nf">_calc_circumcircle</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;计算三角形的外接圆</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">v1</span> 
         <span class="n">x2</span><span class="p">,</span> <span class="n">y2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">v2</span>
         <span class="n">x3</span><span class="p">,</span> <span class="n">y3</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">v3</span>
@@ -165,13 +174,15 @@
         <span class="n">d</span> <span class="o">=</span> <span class="p">(</span><span class="n">x1</span><span class="o">**</span><span class="mi">2</span><span class="o">+</span><span class="n">y1</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">x3</span><span class="o">*</span><span class="n">y2</span><span class="o">-</span><span class="n">x2</span><span class="o">*</span><span class="n">y3</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">x2</span><span class="o">**</span><span class="mi">2</span><span class="o">+</span><span class="n">y2</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">x1</span><span class="o">*</span><span class="n">y3</span><span class="o">-</span><span class="n">x3</span><span class="o">*</span><span class="n">y1</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">x3</span><span class="o">**</span><span class="mi">2</span><span class="o">+</span><span class="n">y3</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">x2</span><span class="o">*</span><span class="n">y1</span><span class="o">-</span><span class="n">x1</span><span class="o">*</span><span class="n">y2</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">a</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">return</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;三角形不存在: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_vertexes</span><span class="p">()</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.5</span><span class="o">*</span><span class="n">b</span><span class="o">/</span><span class="p">(</span><span class="n">a</span> <span class="o">+</span> <span class="mf">1e-8</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.5</span><span class="o">*</span><span class="n">c</span><span class="o">/</span><span class="p">(</span><span class="n">a</span> <span class="o">+</span> <span class="mf">1e-8</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">r2</span> <span class="o">=</span> <span class="p">(</span><span class="n">b</span><span class="o">**</span><span class="mi">2</span><span class="o">+</span><span class="n">c</span><span class="o">**</span><span class="mi">2</span><span class="o">-</span><span class="mi">4</span><span class="o">*</span><span class="n">a</span><span class="o">*</span><span class="n">d</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="n">a</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="mf">1e-8</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">is_adjacent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>  <span class="c1"># 判断和另一个三角形是否有相邻边</span>
+    <span class="k">def</span> <span class="nf">is_adjacent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span> <span class="n">Triangle</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;和另一个三角形t是否有相邻边</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">vertexes1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_vertexes</span><span class="p">()</span>
         <span class="n">vertexes2</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">get_vertexes</span><span class="p">()</span>
 
@@ -180,7 +191,7 @@
             <span class="k">if</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">vertexes2</span><span class="p">:</span>
                 <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
 
-        <span class="k">if</span> <span class="n">count</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">count</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>  <span class="c1"># 有两个顶点相同</span>
             <span class="k">return</span> <span class="kc">True</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">False</span>
@@ -193,6 +204,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">super_triangle</span><span class="p">:</span> <span class="n">Triangle</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="k">def</span> <span class="nf">_create_super_triangle</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;创建一个内部包含所有顶点的超级三角形</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">vertexes_x</span> <span class="o">=</span> <span class="p">[</span><span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertexes</span><span class="p">]</span>
         <span class="n">vertexes_y</span> <span class="o">=</span> <span class="p">[</span><span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertexes</span><span class="p">]</span>
 
@@ -213,6 +226,8 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_is_same_edge</span><span class="p">(</span><span class="n">edge1</span><span class="p">,</span> <span class="n">edge2</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;判断两条边是否相同</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">edge1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">edge2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">and</span> <span class="n">edge1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">edge2</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>  <span class="c1"># 两条边是一样的</span>
             <span class="k">return</span> <span class="kc">True</span>
         <span class="k">elif</span> <span class="n">edge1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">edge2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">and</span> <span class="n">edge1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">edge2</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>  <span class="c1"># 两条边是一样的</span>
@@ -222,6 +237,8 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_get_dedup_edges</span><span class="p">(</span><span class="n">triangles</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Triangle</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;获取列表中三角形的全部边, 并且将存在重合的边排除在外</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">edges</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># 全部遍历过的边</span>
         <span class="n">dedup_edges</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># 将重合边排除在外的边, 不仅仅是不重合的边</span>
         <span class="k">for</span> <span class="n">triangle</span> <span class="ow">in</span> <span class="n">triangles</span><span class="p">:</span>
@@ -242,6 +259,8 @@
         <span class="k">return</span> <span class="n">dedup_edges</span>
 
     <span class="k">def</span> <span class="nf">_add_vertex</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;逐步添加点p到现有的三角网中</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">related_tri</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># p在其外接圆内部的三角形</span>
         <span class="n">irrelated_tri</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># p在其外接圆外部的三角形</span>
         <span class="k">for</span> <span class="n">triangle</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">triangles</span><span class="p">:</span>
@@ -257,6 +276,8 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_exclude_triangles_with_vertexes</span><span class="p">(</span><span class="n">triangles</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Triangle</span><span class="p">],</span> <span class="n">vertexes</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">]):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;从三角形列表triangles中排除与顶点列表vertexes相关的三角形</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">new_triangles</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">triangle</span> <span class="ow">in</span> <span class="n">triangles</span><span class="p">:</span>
             <span class="n">flag</span> <span class="o">=</span> <span class="kc">False</span>
@@ -268,7 +289,7 @@
                 <span class="n">new_triangles</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">triangle</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">new_triangles</span>
 
-    <span class="k">def</span> <span class="nf">get_triangulation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vertexes</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">get_triangulation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vertexes</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Triangle</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get Delaunay triangulation of given vertexes.</span>
 
 <span class="sd">        Args: vertexes: List[Tuple], list of vertexes</span>
@@ -279,7 +300,6 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_create_super_triangle</span><span class="p">()</span>  <span class="c1"># 构建超级三角形</span>
         <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertexes</span><span class="p">:</span>  <span class="c1"># 逐个点加入</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_add_vertex</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
-            <span class="c1">#self.plot()</span>
 
         <span class="n">super_triangle_vertexes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">super_triangle</span><span class="o">.</span><span class="n">get_vertexes</span><span class="p">()</span>
         <span class="n">triangulation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_exclude_triangles_with_vertexes</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">triangles</span><span class="p">,</span> <span class="n">super_triangle_vertexes</span><span class="p">)</span>  <span class="c1"># 将包含超级三角形顶点的三角形排除</span>
@@ -288,6 +308,8 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_get_adjacent_triangles</span><span class="p">(</span><span class="n">triangle</span><span class="p">:</span> <span class="n">Triangle</span><span class="p">,</span> <span class="n">triangles</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Triangle</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Triangle</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;从triangles获取三角形triangle相邻的三角形</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">adjust_triangles</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">triangles</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">t</span><span class="o">.</span><span class="n">is_adjacent</span><span class="p">(</span><span class="n">triangle</span><span class="p">):</span>
@@ -331,15 +353,22 @@
             <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </code></pre></div>
 
-<p>示例代码</p>
-<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">random</span>
-<span class="n">vertexes</span> <span class="o">=</span> <span class="p">[(</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span><span class="o">*</span><span class="mi">10</span><span class="p">,</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span><span class="o">*</span><span class="mi">10</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">20</span><span class="p">)]</span>
-<span class="n">vertexes</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mf">3.1</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mf">0.2</span><span class="p">),</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mf">1.3</span><span class="p">),</span> <span class="p">(</span><span class="mf">3.5</span><span class="p">,</span><span class="mf">0.8</span><span class="p">)]</span>
+<p>示例代码, 这里使用了之前实现的快速泊松采样算法来生成较为均匀分布的随机点, 随后使用Delaunay三角剖分算法生成三角网, 最后使用voronoi算法生成voronoi图</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">fast_poisson_disc_sampling</span> <span class="kn">import</span> <span class="n">FastPoissonDiscSampling</span>
+<span class="n">fpds</span> <span class="o">=</span> <span class="n">FastPoissonDiscSampling</span><span class="p">()</span>
+<span class="n">vertexes</span> <span class="o">=</span> <span class="n">fpds</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">30</span><span class="p">)</span>
 <span class="n">d</span> <span class="o">=</span> <span class="n">Delaunay</span><span class="p">()</span>
 <span class="n">d</span><span class="o">.</span><span class="n">get_triangulation</span><span class="p">(</span><span class="n">vertexes</span><span class="p">)</span>
 <span class="n">d</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
 <span class="n">d</span><span class="o">.</span><span class="n">to_voronoi</span><span class="p">()</span>
 </code></pre></div>
+
+<h2 id="refer">REFER</h2>
+<blockquote>
+<p><a href="http://www-cs-students.stanford.edu/~amitp/game-programming/polygon-map-generation/">Polygonal Map Generation for Games</a></p>
+<p><a href="https://www.redblobgames.com/x/2022-voronoi-maps-tutorial/">Voronoi maps tutorial</a></p>
+<p><a href="https://blog.csdn.net/axelboss/article/details/101070789">几张图看懂Delaunay三角剖分算法原理，解决通过离散点建立空间面片问题</a></p>
+</blockquote>
     </article>
 
         <div class="tags">
