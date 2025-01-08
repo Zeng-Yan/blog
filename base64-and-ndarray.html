@@ -133,7 +133,7 @@ b <--> bs64[base64]
 </code></pre></div>
 
 <h2 id="base64-ndarray">base64 -&gt; ndarray</h2>
-<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">img_bs64_to_array</span><span class="p">(</span><span class="n">bs64_img</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">url_safe</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">img_bs64_to_array</span><span class="p">(</span><span class="n">bs64_img</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">url_safe</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert an image encoded by base64 into a numpy array.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">bs64_img</span><span class="p">)</span> <span class="o">%</span> <span class="mi">3</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
@@ -153,7 +153,7 @@ b <--> bs64[base64]
 </code></pre></div>
 
 <h2 id="ndarray-base64">ndarray -&gt; base64</h2>
-<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">img_array_to_bs64</span><span class="p">(</span><span class="n">array_img</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">cfmt</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;bgr&#39;</span><span class="p">,</span> <span class="n">url_safe</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">img_array_to_bs64</span><span class="p">(</span><span class="n">array_img</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">cfmt</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;bgr&#39;</span><span class="p">,</span> <span class="n">url_safe</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Encode an image in a numpy array with base64.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -173,7 +173,7 @@ b <--> bs64[base64]
 </code></pre></div>
 
 <h2 id="plt-base64">plt -&gt; base64</h2>
-<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">img_plt_to_bs64</span><span class="p">(</span><span class="n">array_img</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">img_plt_to_bs64</span><span class="p">(</span><span class="n">array_img</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">with</span> <span class="n">BytesIO</span><span class="p">()</span> <span class="k">as</span> <span class="n">buffer</span><span class="p">:</span>

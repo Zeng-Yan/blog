@@ -112,21 +112,21 @@
 <p>这里 Resnet18 用作图像的特征提取器, 即模型隐藏层的输出被视为输入图像的特征. 然后, 通过两个图像的特征之间的余弦相似度来获得两个图像之间的相似度.</p>
 <p>下面进行分阶段实现:</p>
 <h3 id="_2">包导入</h3>
-<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">cv2</span>
-<span class="kn">from</span> <span class="nn">tqdm</span> <span class="kn">import</span> <span class="n">tqdm</span>
-<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
-<span class="kn">from</span> <span class="nn">loguru</span> <span class="kn">import</span> <span class="n">logger</span>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">cv2</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tqdm</span><span class="w"> </span><span class="kn">import</span> <span class="n">tqdm</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">loguru</span><span class="w"> </span><span class="kn">import</span> <span class="n">logger</span>
 
-<span class="kn">import</span> <span class="nn">torch</span>
-<span class="kn">import</span> <span class="nn">torchvision.models</span> <span class="k">as</span> <span class="nn">models</span>
-<span class="kn">from</span> <span class="nn">torchvision.models</span> <span class="kn">import</span> <span class="n">ResNet18_Weights</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torchvision.models</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">models</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">torchvision.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">ResNet18_Weights</span>
 
 <span class="n">DEVICE</span> <span class="o">=</span> <span class="s1">&#39;cuda&#39;</span> <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span> <span class="k">else</span> <span class="s1">&#39;cpu&#39;</span>
 </code></pre></div>
 
 <h3 id="_3">加载本地图像</h3>
 <p>编写图像加载函数, 读取位于 <code>img_path</code> 处的本地图像并进行预处理, 使其成为 resnet 可接受的输入.</p>
-<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">load_img</span><span class="p">(</span><span class="n">img_path</span><span class="p">):</span>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">load_img</span><span class="p">(</span><span class="n">img_path</span><span class="p">):</span>
     <span class="n">bgr_img</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">img_path</span><span class="p">)</span>
     <span class="n">rgb_img</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">cvtColor</span><span class="p">(</span><span class="n">bgr_img</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">COLOR_BGR2RGB</span><span class="p">)</span>
     <span class="n">rgb_img</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">rgb_img</span><span class="p">,</span> <span class="p">(</span><span class="mi">224</span><span class="p">,</span> <span class="mi">224</span><span class="p">))</span>
@@ -140,12 +140,12 @@
 </code></pre></div>
 
 <p>将图像张量输入模型, 使用钩子函数 <code>hook_feat</code> 获取模型的隐藏层输出并将其作为图像特征返回.</p>
-<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">get_img_feat</span><span class="p">(</span><span class="n">img_path</span><span class="p">):</span>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_img_feat</span><span class="p">(</span><span class="n">img_path</span><span class="p">):</span>
 
     <span class="n">feat_in</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">feat_out</span> <span class="o">=</span> <span class="p">[]</span>
 
-    <span class="k">def</span> <span class="nf">hook_feat</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="n">f_in</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">,</span> <span class="n">f_out</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">hook_feat</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="n">f_in</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">,</span> <span class="n">f_out</span><span class="p">):</span>
         <span class="n">feat_in</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">f_in</span><span class="p">)</span>
         <span class="n">feat_out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">f_out</span><span class="p">)</span>
         <span class="k">return</span> <span class="kc">None</span>
@@ -162,7 +162,7 @@
 </code></pre></div>
 
 <p>编写函数计算余弦相似度 (cosine similarity) :</p>
-<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">calc_similarity</span><span class="p">(</span><span class="n">f1</span><span class="p">,</span> <span class="n">f2</span><span class="p">):</span>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">calc_similarity</span><span class="p">(</span><span class="n">f1</span><span class="p">,</span> <span class="n">f2</span><span class="p">):</span>
     <span class="n">sim</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cosine_similarity</span><span class="p">(</span><span class="n">f1</span><span class="p">,</span> <span class="n">f2</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">sim</span><span class="p">)</span> <span class="o">/</span> <span class="n">sim</span><span class="o">.</span><span class="n">nelement</span><span class="p">()</span>
 </code></pre></div>
@@ -192,29 +192,29 @@
 
 <h1 id="_6">神经网络图像去重</h1>
 <p>基于上面的图像相似度计算, 以下实现了一个为指定文件夹中全部图片进行去重的函数 <code>find_similar_img</code>, 它可以把文件夹中不相似的图像, 各种相似的图像分门别类地整理到不同文件夹中.</p>
-<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">tqdm</span> <span class="kn">import</span> <span class="n">tqdm</span>
-<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
-<span class="kn">from</span> <span class="nn">loguru</span> <span class="kn">import</span> <span class="n">logger</span>
-<span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tqdm</span><span class="w"> </span><span class="kn">import</span> <span class="n">tqdm</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">loguru</span><span class="w"> </span><span class="kn">import</span> <span class="n">logger</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PIL</span><span class="w"> </span><span class="kn">import</span> <span class="n">Image</span>
 
-<span class="kn">import</span> <span class="nn">torch</span>
-<span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="nn">nn</span>
-<span class="kn">import</span> <span class="nn">torchvision.models</span> <span class="k">as</span> <span class="nn">models</span>
-<span class="kn">import</span> <span class="nn">torchvision.transforms</span> <span class="k">as</span> <span class="nn">T</span>
-<span class="kn">from</span> <span class="nn">torch.utils.data</span> <span class="kn">import</span> <span class="n">DataLoader</span><span class="p">,</span> <span class="n">Dataset</span>
-<span class="kn">from</span> <span class="nn">torchvision.models</span> <span class="kn">import</span> <span class="n">ResNet18_Weights</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nn</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torchvision.models</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">models</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torchvision.transforms</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">T</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">torch.utils.data</span><span class="w"> </span><span class="kn">import</span> <span class="n">DataLoader</span><span class="p">,</span> <span class="n">Dataset</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">torchvision.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">ResNet18_Weights</span>
 
 
-<span class="k">class</span> <span class="nc">ImageDataset</span><span class="p">(</span><span class="n">Dataset</span><span class="p">):</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">folder_path</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="nb">filter</span><span class="o">=</span><span class="s1">&#39;*.jpg&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">ImageDataset</span><span class="p">(</span><span class="n">Dataset</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">folder_path</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="nb">filter</span><span class="o">=</span><span class="s1">&#39;*.jpg&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">folder_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">folder_path</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">filter</span> <span class="o">=</span> <span class="nb">filter</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">img_path_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">folder_path</span><span class="o">.</span><span class="n">rglob</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filter</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">transform</span> <span class="o">=</span> <span class="n">transform</span>
 
-    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
         <span class="n">img_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">img_path_list</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
         <span class="n">img</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">img_path</span><span class="p">)</span>
         <span class="n">img_shape</span> <span class="o">=</span> <span class="p">(</span><span class="n">img</span><span class="o">.</span><span class="n">height</span><span class="p">,</span> <span class="n">img</span><span class="o">.</span><span class="n">width</span><span class="p">)</span>
@@ -225,17 +225,17 @@
             <span class="n">img</span> <span class="o">=</span> <span class="n">transform</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">img</span><span class="p">,</span> <span class="n">img_shape</span><span class="p">,</span> <span class="n">index</span>
 
-    <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">img_path_list</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">get_img_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inds</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_img_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inds</span><span class="p">):</span>
         <span class="n">img_path_list</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">img_path_list</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">inds</span><span class="p">]</span>
         <span class="n">img_class_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">p</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">img_path_list</span><span class="p">]</span>
         <span class="n">img_name_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">p</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">img_path_list</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">img_path_list</span><span class="p">,</span> <span class="n">img_class_list</span><span class="p">,</span> <span class="n">img_name_list</span>
 
 
-<span class="k">def</span> <span class="nf">get_dataloader</span><span class="p">(</span><span class="n">folder_path</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">2048</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_dataloader</span><span class="p">(</span><span class="n">folder_path</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">2048</span><span class="p">):</span>
     <span class="n">transform</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">Compose</span><span class="p">([</span>
         <span class="n">T</span><span class="o">.</span><span class="n">Resize</span><span class="p">((</span><span class="mi">224</span><span class="p">,</span> <span class="mi">224</span><span class="p">)),</span>
         <span class="n">T</span><span class="o">.</span><span class="n">ToTensor</span><span class="p">(),</span>
@@ -247,19 +247,19 @@
     <span class="k">return</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">dataloader</span>
 
 
-<span class="k">def</span> <span class="nf">calc_similarity</span><span class="p">(</span><span class="n">f1</span><span class="p">,</span> <span class="n">f2</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">calc_similarity</span><span class="p">(</span><span class="n">f1</span><span class="p">,</span> <span class="n">f2</span><span class="p">):</span>
     <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
         <span class="n">sim</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cosine_similarity</span><span class="p">(</span><span class="n">f1</span><span class="p">,</span> <span class="n">f2</span><span class="p">)</span>  <span class="c1"># [1, 14, 14] [1, 7, 7]</span>
         <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">sim</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="n">sim</span><span class="o">.</span><span class="n">nelement</span><span class="p">()</span><span class="o">/</span><span class="n">sim</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
 
 
-<span class="k">def</span> <span class="nf">hook_feat</span><span class="p">(</span><span class="n">model</span><span class="p">:</span> <span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">,</span> <span class="n">inp</span><span class="p">,</span> <span class="n">layername</span><span class="o">=</span><span class="s1">&#39;layer4.1.conv1&#39;</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">hook_feat</span><span class="p">(</span><span class="n">model</span><span class="p">:</span> <span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">,</span> <span class="n">inp</span><span class="p">,</span> <span class="n">layername</span><span class="o">=</span><span class="s1">&#39;layer4.1.conv1&#39;</span><span class="p">):</span>
 
     <span class="c1"># 设置hook</span>
     <span class="n">feat_in</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">feat_out</span> <span class="o">=</span> <span class="p">[]</span>
 
-    <span class="k">def</span> <span class="nf">hook_feat</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="n">f_in</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">,</span> <span class="n">f_out</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">hook_feat</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="n">f_in</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">,</span> <span class="n">f_out</span><span class="p">):</span>
         <span class="n">feat_in</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
         <span class="n">feat_out</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
         <span class="n">feat_in</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">f_in</span><span class="p">)</span>
@@ -279,7 +279,7 @@
     <span class="k">return</span> <span class="n">feat</span>
 
 
-<span class="k">def</span> <span class="nf">calc_img_feats_to_local</span><span class="p">(</span><span class="n">model</span><span class="p">:</span> <span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">,</span> <span class="n">dataloader</span><span class="p">,</span> <span class="n">savefolder</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">prefix</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="s1">&#39;cuda&#39;</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">calc_img_feats_to_local</span><span class="p">(</span><span class="n">model</span><span class="p">:</span> <span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">,</span> <span class="n">dataloader</span><span class="p">,</span> <span class="n">savefolder</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">prefix</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="s1">&#39;cuda&#39;</span><span class="p">):</span>
 
     <span class="c1"># 模型运行</span>
     <span class="n">model</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
@@ -302,7 +302,7 @@
     <span class="k">return</span> <span class="mi">0</span>
 
 
-<span class="k">def</span> <span class="nf">copy_ref_img</span><span class="p">(</span><span class="n">img_path</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">save_dir</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">copy_ref_img</span><span class="p">(</span><span class="n">img_path</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">save_dir</span><span class="p">):</span>
     <span class="n">cls_name</span> <span class="o">=</span> <span class="n">img_path</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">name</span>
     <span class="n">dir_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">save_dir</span><span class="p">)</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="n">cls_name</span><span class="p">)</span>
     <span class="n">dir_path</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># 创建文件夹如果文件夹不存在</span>
@@ -314,7 +314,7 @@
         <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">copy_dup_img</span><span class="p">(</span><span class="n">dataset</span><span class="p">:</span> <span class="n">ImageDataset</span><span class="p">,</span> <span class="n">idx_of_dup</span><span class="p">,</span> <span class="n">ref_img</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">save_dir</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">copy_dup_img</span><span class="p">(</span><span class="n">dataset</span><span class="p">:</span> <span class="n">ImageDataset</span><span class="p">,</span> <span class="n">idx_of_dup</span><span class="p">,</span> <span class="n">ref_img</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">save_dir</span><span class="p">):</span>
     <span class="n">cls_name</span> <span class="o">=</span> <span class="n">ref_img</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">name</span>
     <span class="n">pathes</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">get_img_info</span><span class="p">(</span><span class="n">idx_of_dup</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">curr_img_path</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">pathes</span><span class="p">):</span>
@@ -329,7 +329,7 @@
             <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">find_similar_img</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="n">thresh</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span> <span class="n">calc</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">savededup</span><span class="o">=</span><span class="s1">&#39;/dedup&#39;</span><span class="p">,</span> <span class="n">savedup</span><span class="o">=</span><span class="s1">&#39;/dup&#39;</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="s1">&#39;non&#39;</span><span class="p">,</span> <span class="n">batchsize</span><span class="o">=</span><span class="mi">512</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">find_similar_img</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="n">thresh</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span> <span class="n">calc</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">savededup</span><span class="o">=</span><span class="s1">&#39;/dedup&#39;</span><span class="p">,</span> <span class="n">savedup</span><span class="o">=</span><span class="s1">&#39;/dup&#39;</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="s1">&#39;non&#39;</span><span class="p">,</span> <span class="n">batchsize</span><span class="o">=</span><span class="mi">512</span><span class="p">):</span>
     <span class="n">device</span> <span class="o">=</span> <span class="s1">&#39;cuda&#39;</span> <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span> <span class="k">else</span> <span class="s1">&#39;cpu&#39;</span>
     <span class="n">thresh</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">thresh</span><span class="p">)</span>
 

@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="chinese (simplified)">
+
+<head>
+            <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+        <title>[Godot] 使用 WebSocket 连接 Godot 客户端与 Python 服务器</title>
+
+            <link href="https://zeng-yan.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Zeng Yan's Blog Full Atom Feed" />
+            <link href="https://zeng-yan.github.io/feeds/{slug}.atom.xml" type="application/atom+xml" rel="alternate" title="Zeng Yan's Blog Categories Atom Feed" />
+        <!-- Bootstrap Core CSS -->
+        <link href="https://zeng-yan.github.io/theme/css/bootstrap.min.css" rel="stylesheet">
+
+        <!-- Custom CSS -->
+        <link href="https://zeng-yan.github.io/theme/css/clean-blog.min.css" rel="stylesheet">
+
+        <!-- Code highlight color scheme -->
+            <link href="https://zeng-yan.github.io/theme/css/code_blocks/monokai.css" rel="stylesheet">
+
+
+        <!-- Custom Fonts -->
+        <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+        <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+        <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+
+
+        <meta name="description" content="搭建 Python WebSocket 服务器 import asyncio import websockets PORT = 9000 IP = "localhost" async def handle_websocket(websocket, path):...">
+
+        <meta name="author" content="Zengyan">
+
+        <meta name="tags" content="Godot">
+        <meta name="tags" content="Python">
+
+	                <meta property="og:locale" content="">
+		<meta property="og:site_name" content="Zeng Yan's Blog">
+
+	<meta property="og:type" content="article">
+            <meta property="article:author" content="https://zeng-yan.github.io/author/zengyan.html">
+	<meta property="og:url" content="https://zeng-yan.github.io/websocket-between-godot-and-python.html">
+	<meta property="og:title" content="[Godot] 使用 WebSocket 连接 Godot 客户端与 Python 服务器">
+	<meta property="article:published_time" content="2024-08-28 00:00:00+08:00">
+            <meta property="og:description" content="搭建 Python WebSocket 服务器 import asyncio import websockets PORT = 9000 IP = "localhost" async def handle_websocket(websocket, path):...">
+
+            <meta property="og:image" content="https://zeng-yan.github.io/images/gavin-o-donnell-archipelago9.jpg">
+    <link rel="icon" href="/images/favicon.ico">
+</head>
+
+<body class="article-websocket-between-godot-and-python">
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header page-scroll">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="https://zeng-yan.github.io/">Zeng Yan's Blog</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <!-- Page Header -->
+        <header class="intro-header" style="background-image: url('https://zeng-yan.github.io//images/gavin-o-donnell-archipelago9.jpg')">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <div class="post-heading">
+                        <h1>[Godot] 使用 WebSocket 连接 Godot 客户端与 Python 服务器</h1>
+                        <span class="meta">Posted by
+                                <a href="https://zeng-yan.github.io/author/zengyan.html">Zengyan</a>
+                             on 周三 28 八月 2024
+                        </span>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+    <!-- Post Content -->
+    <article>
+        <h2 id="python-websocket">搭建 Python WebSocket 服务器</h2>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">asyncio</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">websockets</span>
+
+<span class="n">PORT</span> <span class="o">=</span> <span class="mi">9000</span>
+<span class="n">IP</span> <span class="o">=</span> <span class="s2">&quot;localhost&quot;</span>
+
+
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">handle_websocket</span><span class="p">(</span><span class="n">websocket</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;处理接收消息的回调函数</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">message</span> <span class="o">=</span> <span class="k">await</span> <span class="n">websocket</span><span class="o">.</span><span class="n">recv</span><span class="p">()</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Received message: </span><span class="si">{</span><span class="n">message</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+            <span class="c1"># XXX: Do some stuff here with the message.</span>
+
+            <span class="n">response</span> <span class="o">=</span> <span class="s2">&quot;Pong!&quot;</span>
+            <span class="k">await</span> <span class="n">websocket</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">websockets</span><span class="o">.</span><span class="n">ConnectionClosed</span><span class="p">:</span>
+        <span class="k">pass</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="c1"># 启动 WebSocket 服务器</span>
+    <span class="n">start_server</span> <span class="o">=</span> <span class="n">websockets</span><span class="o">.</span><span class="n">serve</span><span class="p">(</span><span class="n">handle_websocket</span><span class="p">,</span> <span class="n">IP</span><span class="p">,</span> <span class="n">PORT</span><span class="p">)</span>
+
+    <span class="n">asyncio</span><span class="o">.</span><span class="n">get_event_loop</span><span class="p">()</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="n">start_server</span><span class="p">)</span>
+    <span class="n">asyncio</span><span class="o">.</span><span class="n">get_event_loop</span><span class="p">()</span><span class="o">.</span><span class="n">run_forever</span><span class="p">()</span>
+</code></pre></div>
+
+<h2 id="godot">实现 Godot 客户端</h2>
+<div class="highlight"><pre><span></span><code><span class="k">extends</span><span class="w"> </span><span class="n">Node</span>
+
+<span class="k">var</span><span class="w"> </span><span class="n">websocket_url</span><span class="p">:</span><span class="w"> </span><span class="n">string</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;ws://localhost:9000&quot;</span><span class="w">  </span><span class="c1"># 服务器URL</span>
+<span class="k">var</span><span class="w"> </span><span class="n">socket</span><span class="w"> </span><span class="p">:</span><span class="o">=</span><span class="w"> </span><span class="n">WebSocketPeer</span><span class="o">.</span><span class="n">new</span><span class="p">()</span>
+
+<span class="k">func</span><span class="w"> </span><span class="n">_ready</span><span class="p">():</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">socket</span><span class="o">.</span><span class="n">connect_to_url</span><span class="p">(</span><span class="n">websocket_url</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">OK</span><span class="p">:</span><span class="w">  </span><span class="c1"># 连接到服务器</span>
+<span class="w">        </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Could not connect.&quot;</span><span class="p">)</span>
+<span class="w">        </span><span class="n">set_process</span><span class="p">(</span><span class="bp">false</span><span class="p">)</span><span class="w">  </span><span class="c1"># 禁用 _process()</span>
+
+<span class="k">func</span><span class="w"> </span><span class="n">_process</span><span class="p">(</span><span class="n">_delta</span><span class="p">):</span>
+<span class="w">    </span><span class="n">socket</span><span class="o">.</span><span class="n">poll</span><span class="p">()</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">socket</span><span class="o">.</span><span class="n">get_ready_state</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">WebSocketPeer</span><span class="o">.</span><span class="n">STATE_OPEN</span><span class="p">:</span>
+<span class="w">        </span><span class="k">while</span><span class="w"> </span><span class="n">socket</span><span class="o">.</span><span class="n">get_available_packet_count</span><span class="p">():</span>
+<span class="w">            </span><span class="k">var</span><span class="w"> </span><span class="n">packet</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">socket</span><span class="o">.</span><span class="n">get_packet</span><span class="p">()</span>
+<span class="w">            </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Recv Packet: &quot;</span><span class="p">,</span><span class="w"> </span><span class="n">packet</span><span class="p">)</span>
+<span class="w">            </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Content to string: &quot;</span><span class="p">,</span><span class="w"> </span><span class="n">packet</span><span class="o">.</span><span class="n">get_string_from_ascii</span><span class="p">())</span>
+
+
+<span class="k">func</span><span class="w"> </span><span class="n">_exit_tree</span><span class="p">():</span>
+<span class="w">    </span><span class="n">socket</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+<span class="k">func</span><span class="w"> </span><span class="n">_input</span><span class="p">(</span><span class="n">event</span><span class="p">):</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">event</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">InputEventKey</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="n">event</span><span class="o">.</span><span class="n">pressed</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="n">event</span><span class="o">.</span><span class="n">keycode</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">KEY_ENTER</span><span class="p">:</span><span class="w">  </span><span class="c1"># 按下回车键向服务器发送文本&quot;Ping!&quot;</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="n">socket</span><span class="o">.</span><span class="n">get_ready_state</span><span class="p">()</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">WebSocketPeer</span><span class="o">.</span><span class="n">STATE_OPEN</span><span class="p">:</span>
+<span class="w">            </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;You are currently not connected to the server.&quot;</span><span class="p">)</span>
+<span class="w">        </span><span class="k">else</span><span class="p">:</span>
+<span class="w">            </span><span class="n">socket</span><span class="o">.</span><span class="n">send_text</span><span class="p">(</span><span class="s2">&quot;Ping!&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+<h2 id="refer">REFER</h2>
+<blockquote>
+<p><a href="https://dev.to/olaf007/how-to-set-up-a-python-websocket-server-with-godot-4s-websocketpeer-client-tutorial-1a5f">How to set up a Python WebSocket Server with Godot 4&rsquo;s WebSocketPeer Client.</a></p>
+</blockquote>
+    </article>
+
+        <div class="tags">
+            <p>tags: <a href="https://zeng-yan.github.io/tag/godot.html">Godot</a>, <a href="https://zeng-yan.github.io/tag/python.html">Python</a></p>
+        </div>
+
+    <hr>
+
+            </div>
+        </div>
+    </div>
+
+    <hr>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <ul class="list-inline text-center">
+                            <li>
+                                <a href="https://github.com/Zeng-Yan">
+                                    <span class="fa-stack fa-lg">
+                                        <i class="fa fa-circle fa-stack-2x"></i>
+                                        <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                    </span>
+                                </a>
+                            </li>
+                    </ul>
+<p class="copyright text-muted">
+    Blog powered by <a href="http://getpelican.com">Pelican</a>,
+    which takes great advantage of <a href="http://python.org">Python</a>. <br />        &copy;  Zengyan
+</p>                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- jQuery -->
+    <script src="https://zeng-yan.github.io/theme/js/jquery.min.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="https://zeng-yan.github.io/theme/js/bootstrap.min.js"></script>
+
+        <!-- Custom Theme JavaScript -->
+        <script src="https://zeng-yan.github.io/theme/js/clean-blog.min.js"></script>
+
+</body>
+
+</html>

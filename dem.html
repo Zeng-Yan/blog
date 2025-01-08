@@ -111,18 +111,18 @@
 <p>要使用 <code>gdal-python</code> 来读取和处理 <code>tif</code> 格式的高程地图, 其核心在于理解 gdal 中的 <code>GetGeoTransform</code> 方法并使用它来进行坐标转换. 下面我绘制了一张图片来帮助理解 <code>GetGeoTransform</code> 方法返回结果的含义: 对于读取的方形区域图像, <span class="math">\(GT[0]\)</span> 和 <span class="math">\(GT[3]\)</span> 标识了区域的左上角顶点的经纬度, <span class="math">\(GT[1]\)</span> 和 <span class="math">\(GT[5]\)</span> 表示该图像每个像素对应经纬度的大小, 以 <span class="math">\(\theta\)</span> 表示区域相对正北方向的偏移角度, <span class="math">\(GT[2]\)</span> 和 <span class="math">\(GT[4]\)</span> 表示 <span class="math">\(-\tanh\theta\)</span> 的值.</p>
 <p><img alt="GetGeoTransform" src="https://zeng-yan.github.io/essayimages/gdal%20transform.svg"></p>
 <p>这里使用到了第一部分光栅化 <code>src.raster_utils</code> 中的部分函数.</p>
-<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">loguru</span> <span class="kn">import</span> <span class="n">logger</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Optional</span>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">loguru</span><span class="w"> </span><span class="kn">import</span> <span class="n">logger</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Optional</span>
 
-<span class="kn">from</span> <span class="nn">src.raster_utils</span> <span class="kn">import</span> <span class="p">(</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">src.raster_utils</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">flood_fill</span><span class="p">,</span> <span class="n">create_circle_mask</span><span class="p">,</span> <span class="n">create_poly_mask</span>
 <span class="p">)</span>
 
 <span class="n">CONSTANTS_RADIUS_OF_EARTH</span> <span class="o">=</span> <span class="mf">6371000.</span>     <span class="c1"># meters (m)</span>
 
 
-<span class="k">def</span> <span class="nf">geo_to_xy</span><span class="p">(</span><span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">ref_lon</span><span class="o">=</span><span class="mf">0.</span><span class="p">,</span> <span class="n">ref_lat</span><span class="o">=</span><span class="mf">0.</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">geo_to_xy</span><span class="p">(</span><span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">ref_lon</span><span class="o">=</span><span class="mf">0.</span><span class="p">,</span> <span class="n">ref_lat</span><span class="o">=</span><span class="mf">0.</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    input GPS ($lon, $lat) in degrees (longitude, latitude) and Reference GPS ($ref_lon, $ref_lat) in degrees, output (x, y) in meters(m) (North, East).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -152,7 +152,7 @@
     <span class="k">return</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span>
 
 
-<span class="k">def</span> <span class="nf">xy_to_geo</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">ref_lon</span><span class="o">=</span><span class="mf">0.</span><span class="p">,</span> <span class="n">ref_lat</span><span class="o">=</span><span class="mf">0.</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">xy_to_geo</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">ref_lon</span><span class="o">=</span><span class="mf">0.</span><span class="p">,</span> <span class="n">ref_lat</span><span class="o">=</span><span class="mf">0.</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    input ($x, $y) in meters(m) (North, East) and Reference GPS ($ref_lon, $ref_lat) in degrees, output GPS.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -183,7 +183,7 @@
     <span class="k">return</span> <span class="n">lon</span><span class="p">,</span> <span class="n">lat</span>
 
 
-<span class="k">def</span> <span class="nf">calc_geo_distance</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">calc_geo_distance</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    given (longitude, latitude, altitude) or (longitude, latitude) format point $p1 and $p2,</span>
 <span class="sd">    calcluate distance between $p1 and $p2.</span>
@@ -203,14 +203,14 @@
     <span class="k">return</span> <span class="n">distance</span>
 
 
-<span class="k">def</span> <span class="nf">simple_down_sampling</span><span class="p">(</span><span class="n">mat</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">scale</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">simple_down_sampling</span><span class="p">(</span><span class="n">mat</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">scale</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
     <span class="n">rows</span><span class="p">,</span> <span class="n">cols</span> <span class="o">=</span> <span class="n">mat</span><span class="o">.</span><span class="n">shape</span>
     <span class="n">idx_r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">rows</span><span class="p">,</span> <span class="n">scale</span><span class="p">)</span>
     <span class="n">idx_c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">cols</span><span class="p">,</span> <span class="n">scale</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">mat</span><span class="p">[</span><span class="n">idx_r</span><span class="p">][:,</span> <span class="n">idx_c</span><span class="p">]</span>
 
 
-<span class="k">def</span> <span class="nf">simple_edge_detect</span><span class="p">(</span><span class="n">mat</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">thresh</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">simple_edge_detect</span><span class="p">(</span><span class="n">mat</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">thresh</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
     <span class="n">shift_r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">roll</span><span class="p">(</span><span class="n">mat</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
     <span class="n">shift_c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">roll</span><span class="p">(</span><span class="n">mat</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
@@ -221,14 +221,14 @@
     <span class="k">return</span> <span class="n">detect</span>
 
 
-<span class="k">def</span> <span class="nf">scale_height</span><span class="p">(</span><span class="n">mat</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">low</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">high</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">scale_height</span><span class="p">(</span><span class="n">mat</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">low</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">high</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
     <span class="n">h_max</span><span class="p">,</span> <span class="n">h_min</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">mat</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">mat</span><span class="p">)</span>
     <span class="c1"># print(h_max, h_min)</span>
     <span class="k">return</span> <span class="p">(</span><span class="n">mat</span> <span class="o">-</span> <span class="n">h_min</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">h_max</span> <span class="o">-</span> <span class="n">h_min</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">high</span><span class="o">-</span><span class="n">low</span><span class="p">)</span> <span class="o">+</span> <span class="n">low</span>
 
 
-<span class="k">class</span> <span class="nc">BaseDEMMap</span><span class="p">:</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">band</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">BaseDEMMap</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">band</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">):</span>
         <span class="c1"># print(dataset.GetMetadata())  # 元数据</span>
         <span class="n">nx</span><span class="p">,</span> <span class="n">ny</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">RasterXSize</span><span class="p">,</span> <span class="n">dataset</span><span class="o">.</span><span class="n">RasterYSize</span>  <span class="c1"># x及y方向的像素计数</span>
         <span class="n">bands</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">RasterCount</span>  <span class="c1"># 波段数</span>
@@ -262,14 +262,14 @@
 
         <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;GEO cell length: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_cell_length</span><span class="p">()</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">aux_operate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">coord</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="s1">&#39;xyz&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">aux_operate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">coord</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="s1">&#39;xyz&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        apply function $func with its params to chosen coordinates given by string $coord.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">affine</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">Y</span><span class="p">,</span> <span class="s1">&#39;z&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">Z</span><span class="p">}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Z</span> <span class="o">=</span> <span class="p">[</span><span class="n">func</span><span class="p">(</span><span class="n">affine</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">coord</span> <span class="k">else</span> <span class="n">affine</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;z&#39;</span><span class="p">]]</span>
 
-    <span class="k">def</span> <span class="nf">coord_to_geo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">with_h</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">|</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">coord_to_geo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">with_h</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">|</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        convert (row, col) format coordinate ($x, $y) into (longitude, latitude, altitude).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -278,7 +278,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="p">[</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">Y</span><span class="p">[</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">]</span>  <span class="c1"># type: ignore</span>
 
-    <span class="k">def</span> <span class="nf">geo_to_coord</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">longitude</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">latitude</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">geo_to_coord</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">longitude</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">latitude</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        convert ($longitude, $latitude) into (row, col) format coordinate.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -288,7 +288,7 @@
         <span class="n">y</span> <span class="o">=</span> <span class="p">((</span><span class="n">latitude</span> <span class="o">-</span> <span class="n">ys</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">ye</span> <span class="o">-</span> <span class="n">ys</span><span class="p">))</span> <span class="o">*</span> <span class="n">rows</span>
         <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">y</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">_geo_to_coord_on_origin</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">longitude</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">latitude</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_geo_to_coord_on_origin</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">longitude</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">latitude</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        convert ($longitude, $latitude) into (row, col) format coordinate according to the original map.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -298,7 +298,7 @@
         <span class="n">y</span> <span class="o">=</span> <span class="p">((</span><span class="n">latitude</span> <span class="o">-</span> <span class="n">ys</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">ye</span> <span class="o">-</span> <span class="n">ys</span><span class="p">))</span> <span class="o">*</span> <span class="n">rows</span>
         <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">y</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">legitimize_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">:</span> <span class="n">List</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">legitimize_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">:</span> <span class="n">List</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        check and relocate a given geo location $p to make sure it located in map region.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -322,7 +322,7 @@
 
         <span class="k">return</span> <span class="n">p</span>
 
-    <span class="k">def</span> <span class="nf">set_area</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">top_left_pos</span><span class="p">,</span> <span class="n">bottom_right_pos</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_area</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">top_left_pos</span><span class="p">,</span> <span class="n">bottom_right_pos</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        clip a rectangle area from the original map.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -337,18 +337,18 @@
 
         <span class="k">return</span> <span class="kc">None</span>
 
-    <span class="k">def</span> <span class="nf">get_cell_length</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_cell_length</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">calc_geo_distance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">coord_to_geo</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">with_h</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">coord_to_geo</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">with_h</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
 
 
-<span class="k">class</span> <span class="nc">DEMMap</span><span class="p">(</span><span class="n">BaseDEMMap</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">DEMMap</span><span class="p">(</span><span class="n">BaseDEMMap</span><span class="p">):</span>
 
-    <span class="k">def</span> <span class="nf">create_circle_mask</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ctlp</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span> <span class="n">radius</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">create_circle_mask</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ctlp</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span> <span class="n">radius</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
         <span class="n">ctlp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">legitimize_point</span><span class="p">(</span><span class="n">ctlp</span><span class="p">)</span>
 
         <span class="n">shape</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Z</span><span class="o">.</span><span class="n">shape</span>
 
-        <span class="k">def</span> <span class="nf">geo_distance_with_coord</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">geo_distance_with_coord</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">):</span>
             <span class="n">geo1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">coord_to_geo</span><span class="p">(</span><span class="n">p1</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">p1</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">with_h</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
             <span class="n">geo2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">coord_to_geo</span><span class="p">(</span><span class="n">p2</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">p2</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">with_h</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">calc_geo_distance</span><span class="p">(</span><span class="n">geo1</span><span class="p">,</span> <span class="n">geo2</span><span class="p">)</span>
@@ -359,7 +359,7 @@
 
         <span class="k">return</span> <span class="n">mask</span>
 
-    <span class="k">def</span> <span class="nf">create_poly_mask</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p_list</span><span class="p">:</span> <span class="n">List</span><span class="p">,</span> <span class="n">ctlp</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">typ</span><span class="o">=</span><span class="s1">&#39;slim&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">create_poly_mask</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p_list</span><span class="p">:</span> <span class="n">List</span><span class="p">,</span> <span class="n">ctlp</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">typ</span><span class="o">=</span><span class="s1">&#39;slim&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
         <span class="n">p_list</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">legitimize_point</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">p_list</span><span class="p">]</span>
         <span class="n">ctlp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">legitimize_point</span><span class="p">(</span><span class="n">ctlp</span><span class="p">)</span> <span class="k">if</span> <span class="n">ctlp</span> <span class="k">else</span> <span class="kc">None</span>
 
@@ -369,12 +369,12 @@
 
         <span class="k">return</span> <span class="n">mask</span>
 
-    <span class="k">def</span> <span class="nf">create_h_mask</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">h_threshold</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">create_h_mask</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">h_threshold</span><span class="p">):</span>
         <span class="n">mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Z</span><span class="p">)</span>
         <span class="n">mask</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">Z</span> <span class="o">&gt;=</span> <span class="n">h_threshold</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
         <span class="k">return</span> <span class="n">mask</span>
 
-    <span class="k">def</span> <span class="nf">wrap_path_to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">route</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">wrap_path_to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">route</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        return a dict describing a path by giving a list composed of (x, y). and it will be like:</span>
 <span class="sd">            {&#39;index&#39;:{&#39;lng&#39;: longitude, &#39;lat&#39;: latitude, &#39;alt&#39;: altitude}}</span>
@@ -386,7 +386,7 @@
             <span class="c1"># path_dict[f&#39;{idx}&#39;] = [longitude, latitude, altitude]  # 经纬高</span>
         <span class="k">return</span> <span class="n">path_dict</span>
 
-    <span class="k">def</span> <span class="nf">get_binary_image</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">height_diff_thresh</span> <span class="o">=</span> <span class="mi">20</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_binary_image</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">height_diff_thresh</span> <span class="o">=</span> <span class="mi">20</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
         <span class="c1"># 预处理</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">aux_operate</span><span class="p">(</span><span class="n">simple_down_sampling</span><span class="p">,</span> <span class="s1">&#39;xyz&#39;</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mi">13</span><span class="p">)</span>  <span class="c1"># 下采样</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">aux_operate</span><span class="p">(</span><span class="n">scale_height</span><span class="p">,</span> <span class="s1">&#39;z&#39;</span><span class="p">,</span> <span class="n">low</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>  <span class="c1"># 高度缩放</span>
@@ -395,13 +395,13 @@
         <span class="n">grid_binary</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">flood_fill</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>  <span class="c1"># 洪水去噪</span>
         <span class="k">return</span> <span class="n">grid_binary</span>
 
-    <span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">route</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">route</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        plot a 3D surface of this DEM image with a path &#39;route&#39; on it.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">cm</span>
-        <span class="kn">from</span> <span class="nn">matplotlib.colors</span> <span class="kn">import</span> <span class="n">LightSource</span>
-        <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">cm</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib.colors</span><span class="w"> </span><span class="kn">import</span> <span class="n">LightSource</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 
         <span class="c1"># plot surface</span>
         <span class="c1"># plt.clf()</span>
@@ -428,13 +428,13 @@
 </code></pre></div>
 
 <p>测试代码</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">src.dem_utils</span> <span class="kn">import</span> <span class="n">DEMMap</span><span class="p">,</span> <span class="n">simple_down_sampling</span>
-<span class="kn">from</span> <span class="nn">src.raster_utils</span> <span class="kn">import</span> <span class="n">RasterImgPainter</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">src.dem_utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">DEMMap</span><span class="p">,</span> <span class="n">simple_down_sampling</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">src.raster_utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">RasterImgPainter</span>
 
 
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">from</span> <span class="nn">osgeo</span> <span class="kn">import</span> <span class="n">gdal</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">osgeo</span><span class="w"> </span><span class="kn">import</span> <span class="n">gdal</span>
 
 
 <span class="c1"># 仅显示地图</span>

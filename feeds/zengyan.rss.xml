@@ -1,5 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0"><channel><title>Zeng Yan's Blog - Zengyan</title><link>https://zeng-yan.github.io/</link><description>If dreams can't come true, then why not pretend?</description><lastBuildDate>Sat, 27 Jul 2024 00:00:00 +0800</lastBuildDate><item><title>[GOFAI] Boids 群聚模型</title><link>https://zeng-yan.github.io/boids.html</link><description>&lt;p&gt;Boids (Bird-oid objects) 是一种模拟鸟类, 鱼类等动物群体行为的模型. 在 Boids 中, 单个成员仅遵循极其简单的规则, 但这些个体与个体之间以 …&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Zengyan</dc:creator><pubDate>Sat, 27 Jul 2024 00:00:00 +0800</pubDate><guid isPermaLink="false">tag:zeng-yan.github.io,2024-07-27:/boids.html</guid><category>算法</category><category>算法</category><category>GOFAI</category><category>Godot</category></item><item><title>[PCG] 使用 Diamond-Square 算法生成分形地形</title><link>https://zeng-yan.github.io/diamond-square.html</link><description>&lt;p&gt;&lt;img alt="Terrain made by diamond-square" src="https://zeng-yan.github.io/essayimages/diamond%20square%20terrain.png"&gt;&lt;/p&gt;
+<rss version="2.0"><channel><title>Zeng Yan's Blog - Zengyan</title><link>https://zeng-yan.github.io/</link><description>If dreams can't come true, then why not pretend?</description><lastBuildDate>Wed, 08 Jan 2025 00:00:00 +0800</lastBuildDate><item><title>[Godot] Flat-Color Shader</title><link>https://zeng-yan.github.io/flat-color-shader.html</link><description>&lt;p&gt;一直想学习Shader, 之前的几次入门尝试结果都不甚满意. 可能以具体的带有目标的学习会是更好的方法.&lt;br&gt;
+然后看见了下面这 …&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Zengyan</dc:creator><pubDate>Wed, 08 Jan 2025 00:00:00 +0800</pubDate><guid isPermaLink="false">tag:zeng-yan.github.io,2025-01-08:/flat-color-shader.html</guid><category>Godot</category><category>Godot</category></item><item><title>WebRTC 简明笔记</title><link>https://zeng-yan.github.io/webrtc.html</link><description>&lt;h2 id="_1"&gt;简介&lt;/h2&gt;
+&lt;p&gt;WebRTC (Web Real-Time Communication) 是一套复杂的规范集合, 它依赖于许多后台技术 (如 ICE、DTLS、SDP) 来提供快速、实时以及安全的点对点 (P2P) 通信. &lt;/p&gt;
+&lt;p&gt;其基 …&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Zengyan</dc:creator><pubDate>Thu, 29 Aug 2024 00:00:00 +0800</pubDate><guid isPermaLink="false">tag:zeng-yan.github.io,2024-08-29:/webrtc.html</guid><category>工具</category><category>工具</category><category>Python</category><category>Godot</category></item><item><title>[Godot] 使用 WebSocket 连接 Godot 客户端与 Python 服务器</title><link>https://zeng-yan.github.io/websocket-between-godot-and-python.html</link><description>&lt;h2 id="python-websocket"&gt;搭建 Python WebSocket 服务器&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="kn"&gt;import&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nn"&gt;asyncio&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nn"&gt;websockets&lt;/span&gt;
+
+&lt;span class="n"&gt;PORT&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;9000&lt;/span&gt;
+&lt;span class="n"&gt;IP&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;localhost&amp;quot;&lt;/span&gt;
+
+
+&lt;span class="k"&gt;async&lt;/span&gt; &lt;span class="k"&gt;def&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nf"&gt;handle_websocket&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;websocket&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;path&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="sd"&gt;&amp;quot;&amp;quot;&amp;quot;处理接收消息的回调函数&lt;/span&gt;
+&lt;span class="sd"&gt;    &amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
+    &lt;span class="k"&gt;try&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+        &lt;span class="k"&gt;while&lt;/span&gt; &lt;span class="kc"&gt;True&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+            &lt;span class="n"&gt;message&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="k"&gt;await&lt;/span&gt; &lt;span class="n"&gt;websocket&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;recv&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+            &lt;span class="nb"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="sa"&gt;f&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;Received message: &lt;/span&gt;&lt;span class="si"&gt;{&lt;/span&gt;&lt;span class="n"&gt;message&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+            &lt;span class="c1"&gt;# XXX: Do some stuff here with the …&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Zengyan</dc:creator><pubDate>Wed, 28 Aug 2024 00:00:00 +0800</pubDate><guid isPermaLink="false">tag:zeng-yan.github.io,2024-08-28:/websocket-between-godot-and-python.html</guid><category>Godot</category><category>Godot</category><category>Python</category></item><item><title>[Godot] 在 Godot 中生成无限地形</title><link>https://zeng-yan.github.io/godot-infinite-terrain.html</link><description>&lt;h2 id="_1"&gt;无限地形加载的实现&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;class_name&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;InfTerrain&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;extends&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;Node3D&lt;/span&gt;
+
+&lt;span class="err"&gt;@&lt;/span&gt;&lt;span class="k"&gt;export&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;var&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;chunk_size&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nb nb-Type"&gt;int&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;32&lt;/span&gt;&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="c1"&gt;# 每个块的尺寸&lt;/span&gt;
+&lt;span class="err"&gt;@&lt;/span&gt;&lt;span class="k"&gt;export&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;var&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;chunk_amount&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nb nb-Type"&gt;int&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;16&lt;/span&gt;&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="c1"&gt;# 每次生成和显示的块数&lt;/span&gt;
+&lt;span class="err"&gt;@&lt;/span&gt;&lt;span class="k"&gt;export&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;var&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;base_height&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nb nb-Type"&gt;float&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mf"&gt;0.&lt;/span&gt;&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="c1"&gt;# 生成块的基准 …&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Zengyan</dc:creator><pubDate>Thu, 15 Aug 2024 00:00:00 +0800</pubDate><guid isPermaLink="false">tag:zeng-yan.github.io,2024-08-15:/godot-infinite-terrain.html</guid><category>Godot</category><category>Godot</category></item><item><title>[GOFAI] Boids 群聚模型</title><link>https://zeng-yan.github.io/boids.html</link><description>&lt;p&gt;Boids (Bird-oid objects) 是一种模拟鸟类, 鱼类等动物群体行为的模型. 在 Boids 中, 单个成员仅遵循极其简单的规则, 但这些个体与个体之间以 …&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Zengyan</dc:creator><pubDate>Sat, 27 Jul 2024 00:00:00 +0800</pubDate><guid isPermaLink="false">tag:zeng-yan.github.io,2024-07-27:/boids.html</guid><category>算法</category><category>算法</category><category>GOFAI</category><category>Godot</category></item><item><title>[PCG] 使用 Diamond-Square 算法生成分形地形</title><link>https://zeng-yan.github.io/diamond-square.html</link><description>&lt;p&gt;&lt;img alt="Terrain made by diamond-square" src="https://zeng-yan.github.io/essayimages/diamond%20square%20terrain.png"&gt;&lt;/p&gt;
 &lt;h2 id="_1"&gt;分形地形&lt;/h2&gt;
 &lt;p&gt;对于地形生成, 第一个问题是使用何种数据结构表示地形. 通常采用的高度图是一种二维矩阵或像素图的形式 …&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Zengyan</dc:creator><pubDate>Fri, 12 Jul 2024 00:00:00 +0800</pubDate><guid isPermaLink="false">tag:zeng-yan.github.io,2024-07-12:/diamond-square.html</guid><category>算法</category><category>算法</category><category>程序化生成</category><category>Python</category></item><item><title>[PCG] 快速泊松盘采样</title><link>https://zeng-yan.github.io/fast-poisson-disc-sampling.html</link><description>&lt;p&gt;&lt;img alt="fast poisson disc sampling" src="https://zeng-yan.github.io/essayimages/fast%20poisson%20disc%20sampling.png"&gt;&lt;/p&gt;
 &lt;h2 id="_1"&gt;算法概述&lt;/h2&gt;
@@ -10,68 +34,7 @@
 这一模型的吸引力在于通过一系列基 …&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Zengyan</dc:creator><pubDate>Wed, 26 Jun 2024 00:00:00 +0800</pubDate><guid isPermaLink="false">tag:zeng-yan.github.io,2024-06-26:/cellular-automata.html</guid><category>算法</category><category>算法</category><category>GOFAI</category></item><item><title>[PCG] 一种地牢生成算法</title><link>https://zeng-yan.github.io/dungeon-generator.html</link><description>&lt;p&gt;地牢是 Rouge-like 游戏中常见的一种地形设计, 一个地牢通常包含很多房间, 房间之间通过蜿蜒曲折的通道连接起来. 在我一开始 …&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Zengyan</dc:creator><pubDate>Wed, 26 Jun 2024 00:00:00 +0800</pubDate><guid isPermaLink="false">tag:zeng-yan.github.io,2024-06-26:/dungeon-generator.html</guid><category>算法</category><category>算法</category><category>程序化生成</category><category>Python</category><category>Godot</category></item><item><title>[Godot] 旋转物体朝向目标</title><link>https://zeng-yan.github.io/godot-rotate.html</link><description>&lt;p&gt;旋转物体 &lt;code&gt;self&lt;/code&gt; 朝向目标 &lt;code&gt;target&lt;/code&gt;, 最快捷的方式是使用 &lt;code&gt;self.look_at()&lt;/code&gt; 方法, 但是这个方法会立即让物体转向目标, 很多时候显得不自然.&lt;/p&gt;
 &lt;p&gt;下面 …&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Zengyan</dc:creator><pubDate>Mon, 29 Jan 2024 00:00:00 +0800</pubDate><guid isPermaLink="false">tag:zeng-yan.github.io,2024-01-29:/godot-rotate.html</guid><category>Godot</category><category>Godot</category></item><item><title>[Godot] 抛体运动</title><link>https://zeng-yan.github.io/projectile-motion.html</link><description>&lt;h2 id="_1"&gt;已知目标位置, 固定速度求发射角度&lt;/h2&gt;
 &lt;p&gt;记发射速度 &lt;span class="math"&gt;\(v\)&lt;/span&gt; , 水平距离 &lt;span class="math"&gt;\(d\)&lt;/span&gt; , 垂直距离 &lt;span class="math"&gt;\(h\)&lt;/span&gt; , 求发射角 &lt;span class="math"&gt;\(\theta\)&lt;/span&gt; &lt;/p&gt;
-&lt;p&gt;将弹头的移动分解为水平和垂直 …&lt;/p&gt;&lt;script type='text/javascript'&gt;if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
-    var align = "center",
-        indent = "0em",
-        linebreak = "false";
-
-    if (false) {
-        align = (screen.width &lt; 768) ? "left" : align;
-        indent = (screen.width &lt; 768) ? "0em" : indent;
-        linebreak = (screen.width &lt; 768) ? 'true' : linebreak;
-    }
-
-    var mathjaxscript = document.createElement('script');
-    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
-    mathjaxscript.type = 'text/javascript';
-    mathjaxscript.src = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.3/latest.js?config=TeX-AMS-MML_HTMLorMML';
-
-    var configscript = document.createElement('script');
-    configscript.type = 'text/x-mathjax-config';
-    configscript[(window.opera ? "innerHTML" : "text")] =
-        "MathJax.Hub.Config({" +
-        "    config: ['MMLorHTML.js']," +
-        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'none' } }," +
-        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
-        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
-        "    displayAlign: '"+ align +"'," +
-        "    displayIndent: '"+ indent +"'," +
-        "    showMathMenu: true," +
-        "    messageStyle: 'normal'," +
-        "    tex2jax: { " +
-        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
-        "        displayMath: [ ['$$','$$'] ]," +
-        "        processEscapes: true," +
-        "        preview: 'TeX'," +
-        "    }, " +
-        "    'HTML-CSS': { " +
-        "        availableFonts: ['STIX', 'TeX']," +
-        "        preferredFont: 'STIX'," +
-        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
-        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
-        "    }, " +
-        "}); " +
-        "if ('default' !== 'default') {" +
-            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
-                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
-                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
-                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
-                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
-                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
-            "});" +
-            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
-                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
-                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
-                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
-                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
-                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
-            "});" +
-        "}";
-
-    (document.body || document.getElementsByTagName('head')[0]).appendChild(configscript);
-    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
-}
-&lt;/script&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Zengyan</dc:creator><pubDate>Mon, 29 Jan 2024 00:00:00 +0800</pubDate><guid isPermaLink="false">tag:zeng-yan.github.io,2024-01-29:/projectile-motion.html</guid><category>Godot</category><category>Godot</category></item><item><title>使用神经网络寻找相似图像和图像去重</title><link>https://zeng-yan.github.io/image-similarity-and-deduplicate.html</link><description>&lt;h1 id="_1"&gt;使用神经网络计算图像图像相似度&lt;/h1&gt;
+&lt;p&gt;将弹头的移动分解为水平和垂直 …&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Zengyan</dc:creator><pubDate>Mon, 29 Jan 2024 00:00:00 +0800</pubDate><guid isPermaLink="false">tag:zeng-yan.github.io,2024-01-29:/projectile-motion.html</guid><category>Godot</category><category>Godot</category></item><item><title>使用神经网络寻找相似图像和图像去重</title><link>https://zeng-yan.github.io/image-similarity-and-deduplicate.html</link><description>&lt;h1 id="_1"&gt;使用神经网络计算图像图像相似度&lt;/h1&gt;
 &lt;p&gt;这里 Resnet18 用作图像的特征提取器, 即模型隐藏层的输出被视为输入图像的特征. 然后, 通 …&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Zengyan</dc:creator><pubDate>Wed, 26 Jul 2023 00:00:00 +0800</pubDate><guid isPermaLink="false">tag:zeng-yan.github.io,2023-07-26:/image-similarity-and-deduplicate.html</guid><category>算法</category><category>算法</category><category>神经网络</category><category>Python</category></item><item><title>栅格地图 (二) DEM高程地图处理</title><link>https://zeng-yan.github.io/dem.html</link><description>&lt;p&gt;&lt;img alt="结果示例" src="https://zeng-yan.github.io/essayimages/dem-tw.png"&gt;&lt;/p&gt;
 &lt;p&gt;要使用 &lt;code&gt;gdal-python&lt;/code&gt; 来读取和处理 &lt;code&gt;tif&lt;/code&gt; 格式的高程地图, 其核心在于理解 gdal 中的 &lt;code&gt;GetGeoTransform&lt;/code&gt; 方法并使用它来进行坐标转换. 下面我绘制了一张 …&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Zengyan</dc:creator><pubDate>Tue, 27 Jun 2023 00:00:00 +0800</pubDate><guid isPermaLink="false">tag:zeng-yan.github.io,2023-06-27:/dem.html</guid><category>算法</category><category>算法</category><category>Python</category></item><item><title>栅格地图 (一) 直线光栅化</title><link>https://zeng-yan.github.io/rasterization.html</link><description>&lt;p&gt;&lt;img alt="alt text" src="https://zeng-yan.github.io/essayimages/rasterization.png"&gt;&lt;/p&gt;
 &lt;p&gt;在工作中频繁涉及对栅格地图的处理, 所以写一些笔记来进行归纳总结.&lt;/p&gt;
@@ -102,11 +65,11 @@
 &lt;ul&gt;
 &lt;li&gt;远端 (Remote) : 源码位置. &lt;/li&gt;
 &lt;li&gt;工作空间 (Workingspace) : 本地存放项目代码的地方. &lt;/li&gt;
-&lt;li&gt;暂存区 (Index/Stage) : 一个记录改动信息的 …&lt;/li&gt;&lt;/ul&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Zengyan</dc:creator><pubDate>Fri, 09 Dec 2022 00:00:00 +0800</pubDate><guid isPermaLink="false">tag:zeng-yan.github.io,2022-12-09:/note-of-git.html</guid><category>工具</category><category>工具</category></item><item><title>绘制神经网络层的权值分布</title><link>https://zeng-yan.github.io/draw-nn-weight-distribution.html</link><description>&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;plot_module_weights&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;module&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;excludes&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;bias&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]):&lt;/span&gt;
-    &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;math&lt;/span&gt;
-    &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;matplotlib.pyplot&lt;/span&gt; &lt;span class="k"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;plt&lt;/span&gt;
+&lt;li&gt;暂存区 (Index/Stage) : 一个记录改动信息的 …&lt;/li&gt;&lt;/ul&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Zengyan</dc:creator><pubDate>Fri, 09 Dec 2022 00:00:00 +0800</pubDate><guid isPermaLink="false">tag:zeng-yan.github.io,2022-12-09:/note-of-git.html</guid><category>工具</category><category>工具</category></item><item><title>绘制神经网络层的权值分布</title><link>https://zeng-yan.github.io/draw-nn-weight-distribution.html</link><description>&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;def&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nf"&gt;plot_module_weights&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;module&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;excludes&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;bias&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]):&lt;/span&gt;
+    &lt;span class="kn"&gt;import&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nn"&gt;math&lt;/span&gt;
+    &lt;span class="kn"&gt;import&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nn"&gt;matplotlib.pyplot&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;as&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nn"&gt;plt&lt;/span&gt;
 
-    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;get_flatten_weight&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;weight&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="k"&gt;def&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nf"&gt;get_flatten_weight&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;weight&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
         &lt;span class="n"&gt;w&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;weight&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;data&lt;/span&gt;
         &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;w&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;cpu&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;numpy&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;flatten&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
 
@@ -119,68 +82,7 @@
 &lt;div class="math"&gt;$$
 [x_1,x_2,...,x_t,..., x_n]
 $$&lt;/div&gt;
-&lt;p&gt;序列中的每个元素都不是独立的，而是和其他元素存在着一定联 …&lt;/p&gt;&lt;script type='text/javascript'&gt;if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
-    var align = "center",
-        indent = "0em",
-        linebreak = "false";
-
-    if (false) {
-        align = (screen.width &lt; 768) ? "left" : align;
-        indent = (screen.width &lt; 768) ? "0em" : indent;
-        linebreak = (screen.width &lt; 768) ? 'true' : linebreak;
-    }
-
-    var mathjaxscript = document.createElement('script');
-    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
-    mathjaxscript.type = 'text/javascript';
-    mathjaxscript.src = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.3/latest.js?config=TeX-AMS-MML_HTMLorMML';
-
-    var configscript = document.createElement('script');
-    configscript.type = 'text/x-mathjax-config';
-    configscript[(window.opera ? "innerHTML" : "text")] =
-        "MathJax.Hub.Config({" +
-        "    config: ['MMLorHTML.js']," +
-        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'none' } }," +
-        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
-        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
-        "    displayAlign: '"+ align +"'," +
-        "    displayIndent: '"+ indent +"'," +
-        "    showMathMenu: true," +
-        "    messageStyle: 'normal'," +
-        "    tex2jax: { " +
-        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
-        "        displayMath: [ ['$$','$$'] ]," +
-        "        processEscapes: true," +
-        "        preview: 'TeX'," +
-        "    }, " +
-        "    'HTML-CSS': { " +
-        "        availableFonts: ['STIX', 'TeX']," +
-        "        preferredFont: 'STIX'," +
-        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
-        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
-        "    }, " +
-        "}); " +
-        "if ('default' !== 'default') {" +
-            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
-                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
-                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
-                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
-                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
-                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
-            "});" +
-            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
-                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
-                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
-                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
-                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
-                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
-            "});" +
-        "}";
-
-    (document.body || document.getElementsByTagName('head')[0]).appendChild(configscript);
-    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
-}
-&lt;/script&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Zengyan</dc:creator><pubDate>Mon, 13 Sep 2021 00:00:00 +0800</pubDate><guid isPermaLink="false">tag:zeng-yan.github.io,2021-09-13:/rnn-and-lstm.html</guid><category>算法</category><category>算法</category><category>神经网络</category><category>Python</category></item><item><title>支持向量机的理解和推导</title><link>https://zeng-yan.github.io/svm.html</link><description>&lt;p&gt;支持向量机(Support Vector Machines, SVM)&lt;/p&gt;
+&lt;p&gt;序列中的每个元素都不是独立的，而是和其他元素存在着一定联 …&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Zengyan</dc:creator><pubDate>Mon, 13 Sep 2021 00:00:00 +0800</pubDate><guid isPermaLink="false">tag:zeng-yan.github.io,2021-09-13:/rnn-and-lstm.html</guid><category>算法</category><category>算法</category><category>神经网络</category><category>Python</category></item><item><title>支持向量机的理解和推导</title><link>https://zeng-yan.github.io/svm.html</link><description>&lt;p&gt;支持向量机(Support Vector Machines, SVM)&lt;/p&gt;
 &lt;h2 id="_1"&gt;一些概念&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;
@@ -190,10 +92,14 @@ $$&lt;/div&gt;
 &lt;p&gt;支持向量（support vector）：距离超平面距离最近的 …&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Zengyan</dc:creator><pubDate>Fri, 10 Sep 2021 00:00:00 +0800</pubDate><guid isPermaLink="false">tag:zeng-yan.github.io,2021-09-10:/svm.html</guid><category>算法</category><category>算法</category></item><item><title>日常中突发奇想和尚未整理的代码与材料</title><link>https://zeng-yan.github.io/messy-stuff.html</link><description>&lt;blockquote&gt;
 &lt;p&gt;不要为了学习而学习，而是为了解决需求而学习&lt;/p&gt;
 &lt;/blockquote&gt;
+&lt;h1 id="_1"&gt;自用软件&lt;/h1&gt;
+&lt;p&gt;&lt;a href="https://github.com/sandboxie-plus/Sandboxie"&gt;Sandboxie&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://github.com/M2Team/NanaZip"&gt;NanaZip&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://github.com/clash-verge-rev/clash-verge-rev"&gt;Clash Verge&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://github.com/Planshit/Tai"&gt;Tai&lt;/a&gt;&lt;/p&gt;
+&lt;h1 id="_2"&gt;常用代码&lt;/h1&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;# 统计代码行数&lt;/span&gt;
-&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;pathlib&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;Path&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nn"&gt;pathlib&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;Path&lt;/span&gt;
 
 &lt;span class="n"&gt;folder&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Path&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;D:/Projects/Godot/isolatown&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;span class="n"&gt;gd_files&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;f&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;f&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;folder&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;rglob&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;*.gd&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)]&lt;/span&gt;
-&lt;span class="n"&gt;count&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;
-&lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;gd&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;gd_files …&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Zengyan</dc:creator><pubDate>Wed, 01 Oct 1997 00:00:00 +0800</pubDate><guid isPermaLink="false">tag:zeng-yan.github.io,1997-10-01:/messy-stuff.html</guid><category>Python</category><category>Python</category></item></channel></rss>
+&lt;span class="n"&gt;gd_files …&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Zengyan</dc:creator><pubDate>Wed, 01 Oct 1997 00:00:00 +0800</pubDate><guid isPermaLink="false">tag:zeng-yan.github.io,1997-10-01:/messy-stuff.html</guid><category>Python</category><category>Python</category></item></channel></rss>

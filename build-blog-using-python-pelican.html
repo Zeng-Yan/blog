@@ -187,17 +187,17 @@ HTTPS = True
 <span class="sd">License: GNU GPLv3</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">markdown.extensions</span> <span class="kn">import</span> <span class="n">Extension</span>
-<span class="kn">from</span> <span class="nn">markdown.preprocessors</span> <span class="kn">import</span> <span class="n">Preprocessor</span>
-<span class="kn">import</span> <span class="nn">re</span>
-<span class="kn">import</span> <span class="nn">string</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">markdown.extensions</span><span class="w"> </span><span class="kn">import</span> <span class="n">Extension</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">markdown.preprocessors</span><span class="w"> </span><span class="kn">import</span> <span class="n">Preprocessor</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">string</span>
 
 
 <span class="n">MermaidRegex</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;^(?P&lt;mermaid_sign&gt;[\~\`])</span><span class="si">{3}</span><span class="s2">[\ \t]*[Mm]ermaid[\ \t]*$&quot;</span><span class="p">)</span>
 
 
-<span class="k">class</span> <span class="nc">MermaidPreprocessor</span><span class="p">(</span><span class="n">Preprocessor</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lines</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">MermaidPreprocessor</span><span class="p">(</span><span class="n">Preprocessor</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lines</span><span class="p">):</span>
         <span class="n">new_lines</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">mermaid_sign</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
         <span class="n">m_start</span> <span class="o">=</span> <span class="kc">None</span>
@@ -235,12 +235,12 @@ HTTPS = True
         <span class="k">return</span> <span class="n">new_lines</span>
 
 
-<span class="k">class</span> <span class="nc">MermaidExtension</span><span class="p">(</span><span class="n">Extension</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">extendMarkdown</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">md</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">MermaidExtension</span><span class="p">(</span><span class="n">Extension</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">extendMarkdown</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">md</span><span class="p">):</span>
         <span class="n">md</span><span class="o">.</span><span class="n">preprocessors</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">MermaidPreprocessor</span><span class="p">(</span><span class="n">md</span><span class="p">),</span> <span class="s1">&#39;mermaid&#39;</span><span class="p">,</span> <span class="mi">35</span><span class="p">)</span>
         <span class="n">md</span><span class="o">.</span><span class="n">registerExtension</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
-<span class="k">def</span> <span class="nf">makeExtension</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">makeExtension</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">MermaidExtension</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </code></pre></div>
 
