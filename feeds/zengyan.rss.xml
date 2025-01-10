@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <rss version="2.0"><channel><title>Zeng Yan's Blog - Zengyan</title><link>https://zeng-yan.github.io/</link><description>If dreams can't come true, then why not pretend?</description><lastBuildDate>Wed, 08 Jan 2025 00:00:00 +0800</lastBuildDate><item><title>[Godot] Flat-Color Shader</title><link>https://zeng-yan.github.io/flat-color-shader.html</link><description>&lt;p&gt;一直想学习Shader, 之前的几次入门尝试结果都不甚满意. 可能以具体的带有目标的学习会是更好的方法.&lt;br&gt;
-然后看见了下面这 …&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Zengyan</dc:creator><pubDate>Wed, 08 Jan 2025 00:00:00 +0800</pubDate><guid isPermaLink="false">tag:zeng-yan.github.io,2025-01-08:/flat-color-shader.html</guid><category>Godot</category><category>Godot</category></item><item><title>WebRTC 简明笔记</title><link>https://zeng-yan.github.io/webrtc.html</link><description>&lt;h2 id="_1"&gt;简介&lt;/h2&gt;
+前几天看见了下面 …&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Zengyan</dc:creator><pubDate>Wed, 08 Jan 2025 00:00:00 +0800</pubDate><guid isPermaLink="false">tag:zeng-yan.github.io,2025-01-08:/flat-color-shader.html</guid><category>Godot</category><category>Godot</category></item><item><title>WebRTC 简明笔记</title><link>https://zeng-yan.github.io/webrtc.html</link><description>&lt;h2 id="_1"&gt;简介&lt;/h2&gt;
 &lt;p&gt;WebRTC (Web Real-Time Communication) 是一套复杂的规范集合, 它依赖于许多后台技术 (如 ICE、DTLS、SDP) 来提供快速、实时以及安全的点对点 (P2P) 通信. &lt;/p&gt;
 &lt;p&gt;其基 …&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Zengyan</dc:creator><pubDate>Thu, 29 Aug 2024 00:00:00 +0800</pubDate><guid isPermaLink="false">tag:zeng-yan.github.io,2024-08-29:/webrtc.html</guid><category>工具</category><category>工具</category><category>Python</category><category>Godot</category></item><item><title>[Godot] 使用 WebSocket 连接 Godot 客户端与 Python 服务器</title><link>https://zeng-yan.github.io/websocket-between-godot-and-python.html</link><description>&lt;h2 id="python-websocket"&gt;搭建 Python WebSocket 服务器&lt;/h2&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="kn"&gt;import&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nn"&gt;asyncio&lt;/span&gt;
@@ -89,7 +89,14 @@ $$&lt;/div&gt;
 &lt;p&gt;超平面（hyperplane）：决策面，分类的决策边界，如图中黑色直线&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;支持向量（support vector）：距离超平面距离最近的 …&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Zengyan</dc:creator><pubDate>Fri, 10 Sep 2021 00:00:00 +0800</pubDate><guid isPermaLink="false">tag:zeng-yan.github.io,2021-09-10:/svm.html</guid><category>算法</category><category>算法</category></item><item><title>日常中突发奇想和尚未整理的代码与材料</title><link>https://zeng-yan.github.io/messy-stuff.html</link><description>&lt;blockquote&gt;
+&lt;p&gt;支持向量（support vector）：距离超平面距离最近的 …&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Zengyan</dc:creator><pubDate>Fri, 10 Sep 2021 00:00:00 +0800</pubDate><guid isPermaLink="false">tag:zeng-yan.github.io,2021-09-10:/svm.html</guid><category>算法</category><category>算法</category></item><item><title>[Godot] Tips</title><link>https://zeng-yan.github.io/godot-tips.html</link><description>&lt;h2 id="_1"&gt;执行顺序&lt;/h2&gt;
+&lt;p&gt;&lt;code&gt;_init()&lt;/code&gt; - &lt;code&gt;_enter_tree()&lt;/code&gt; - &lt;code&gt;_ready()&lt;/code&gt; - &lt;code&gt;_process()&lt;/code&gt; - &lt;code&gt;_exit_tree()&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;_ready()&lt;/code&gt; 和 &lt;code&gt;_exit_tree()&lt;/code&gt; 是先执行完子节点, 后执行父节点, 其他是先父后子.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;a href="https://docs.godotengine.org/zh-cn/4.x/tutorials/best_practices/godot_notifications.html#ready-vs-enter-tree-vs-notification-parented"&gt;Godot 通知&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id="3d"&gt;在3D空间画线&lt;/h2&gt;
+&lt;p&gt;这功能居然没有内置节点实 …&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Zengyan</dc:creator><pubDate>Wed, 01 Oct 1997 00:00:00 +0800</pubDate><guid isPermaLink="false">tag:zeng-yan.github.io,1997-10-01:/godot-tips.html</guid><category>Godot</category><category>Godot</category></item><item><title>日常中突发奇想和尚未整理的代码与材料</title><link>https://zeng-yan.github.io/messy-stuff.html</link><description>&lt;blockquote&gt;
 &lt;p&gt;不要为了学习而学习，而是为了解决需求而学习&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;h1 id="_1"&gt;自用软件&lt;/h1&gt;
